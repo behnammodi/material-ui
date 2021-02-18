@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { getDisplayName } from '@material-ui/utils';
 import { getThemeProps } from '@material-ui/styles';
@@ -25,7 +25,7 @@ export const isWidthDown = (breakpoint, width, inclusive = true) => {
 
 const useEnhancedEffect = typeof window === 'undefined' ? React.useEffect : React.useLayoutEffect;
 
-const withWidth = (options = {}) => Component => {
+const withWidth = (options = {}) => (Component) => {
   const {
     withTheme: withThemeOption = false,
     noSSR = false,
@@ -51,7 +51,7 @@ const withWidth = (options = {}) => Component => {
      *            |-------|-------|-------|-------|------>
      * width      |  xs   |  sm   |  md   |  lg   |  xl
      */
-    const keys = [...theme.breakpoints.keys].reverse();
+    const keys = theme.breakpoints.keys.slice().reverse();
     const widthComputed = keys.reduce((output, key) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const matches = useMediaQuery(theme.breakpoints.up(key));

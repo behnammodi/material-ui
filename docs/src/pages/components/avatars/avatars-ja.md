@@ -1,26 +1,58 @@
 ---
-title: Avatar React component
-components: Avatar
+title: React アバターコンポーネント
+components: Avatar, AvatarGroup, Badge
 ---
 
-# Avatars
+# Avatar
 
 <p class="description">Avatars(アバター) は、テーブルからダイアログメニューまで、あらゆる用途に使用されています。</p>
 
-## Image avatars
+## Image avatars(画像アバター)
 
-画像アバターは、標準の `img` プロップス `src` または `srcSet` をコンポーネントに渡すことで作成できます。
+Image Avatars(画像アバター) は通常の`img` propsである、 `src` もしくは `srcSet`をコンポーネントに渡すことで作成できます。
 
 {{"demo": "pages/components/avatars/ImageAvatars.js"}}
 
-## Letter avatars
+## Letter avatars(文字アバター)
 
-単純な文字を含むアバターは、文字列を `子要素`として渡すことによって作成できます。
+`children`に文字列を渡すことで、シンプルな文字列を使ったアバターを作成することができます。
 
 {{"demo": "pages/components/avatars/LetterAvatars.js"}}
 
-## Icon avatars
+## サイズ
 
-アイコンアバターは、 `子要素`としてアイコンを渡すことによって作成されます。
+アバターのサイズは、 `height` と `width` の CSS プロパティで変更できます。
+
+{{"demo": "pages/components/avatars/SizeAvatars.js"}}
+
+## Icon avatars (アイコンアバター)
+
+アイコンアバターは、 `children(子要素)`としてアイコンを渡すことによって作成されます。
 
 {{"demo": "pages/components/avatars/IconAvatars.js"}}
+
+## バリアント
+
+四角形や丸いアバターを作成したい場合は、`variant` propを指定することで実現できます。
+
+{{"demo": "pages/components/avatars/VariantAvatars.js"}}
+
+## Fallbacks (エラー回避)
+
+アバター画像の読み込み時に問題が発生した場合、コンポーネントは以下の順序に沿って代替手段をとります。
+
+- 指定された`children`(子要素)
+- `alt`に指定された文字列の頭文字
+- 汎用アバターアイコン
+
+{{"demo": "pages/components/avatars/FallbackAvatars.js"}}
+
+## Grouped
+
+`AvatarGroup`は与えられた子要素をスタックとしてレンダリングします。
+
+{{"demo": "pages/components/avatars/GroupAvatars.js"}}
+
+## バッジをつける
+
+{{"demo": "pages/components/avatars/BadgeAvatars.js"}}

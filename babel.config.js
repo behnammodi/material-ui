@@ -1,3 +1,8 @@
+const path = require('path');
+
+const errorCodesPath = path.resolve(__dirname, './docs/public/static/error-codes.json');
+const missingError = process.env.MUI_EXTRACT_ERROR_CODES === 'true' ? 'write' : 'annotate';
+
 let defaultPresets;
 
 // We release a ES version of Material-UI.
@@ -10,6 +15,7 @@ if (process.env.BABEL_ENV === 'es') {
     [
       '@babel/preset-env',
       {
+        bugfixes: true,
         modules: ['esm', 'production-umd'].includes(process.env.BABEL_ENV) ? false : 'commonjs',
       },
     ],
@@ -27,7 +33,7 @@ const defaultAlias = {
 };
 
 const productionPlugins = [
-  'babel-plugin-transform-react-constant-elements',
+  '@babel/plugin-transform-react-constant-elements',
   'babel-plugin-transform-dev-warning',
   ['babel-plugin-react-remove-properties', { properties: ['data-mui-test'] }],
   [
@@ -39,12 +45,22 @@ const productionPlugins = [
 ];
 
 module.exports = {
-  presets: defaultPresets.concat(['@babel/preset-react']),
+  presets: defaultPresets.concat(['@babel/preset-react', '@babel/preset-typescript']),
   plugins: [
+    [
+      'babel-plugin-macros',
+      {
+        muiError: {
+          errorCodesPath,
+          missingError,
+        },
+      },
+    ],
     'babel-plugin-optimize-clsx',
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
-    '@babel/plugin-transform-runtime',
+    // any package needs to declare 7.4.4 as a runtime dependency. default is ^7.0.0
+    ['@babel/plugin-transform-runtime', { version: '^7.4.4' }],
     // for IE 11 support
     '@babel/plugin-transform-object-assign',
   ],

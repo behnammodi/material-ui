@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { StandardProps } from '@material-ui/core';
 import { FabProps } from '@material-ui/core/Fab';
-import { TransitionProps } from 'react-transition-group/Transition';
-import { TransitionHandlerProps } from '@material-ui/core/transitions';
+import { TransitionHandlerProps, TransitionProps } from '@material-ui/core/transitions';
 
 export type CloseReason = 'toggle' | 'blur' | 'mouseLeave' | 'escapeKeyDown';
 export type OpenReason = 'toggle' | 'focus' | 'mouseEnter';
@@ -43,14 +42,14 @@ export interface SpeedDialProps
    * Callback fired when the component requests to be closed.
    *
    * @param {object} event The event source of the callback.
-   * @param {string} reason Can be:`"toggle"`, `"blur"`, `"mouseLeave"`, `"escapeKeyDown"`.
+   * @param {string} reason Can be: `"toggle"`, `"blur"`, `"mouseLeave"`, `"escapeKeyDown"`.
    */
   onClose?: (event: React.SyntheticEvent<{}>, reason: CloseReason) => void;
   /**
    * Callback fired when the component requests to be open.
    *
    * @param {object} event The event source of the callback.
-   * @param {string} reason Can be:`"toggle"`, `"focus"`, `"mouseEnter"`.
+   * @param {string} reason Can be: `"toggle"`, `"focus"`, `"mouseEnter"`.
    */
   onOpen?: (event: React.SyntheticEvent<{}>, reason: OpenReason) => void;
   /**
@@ -63,6 +62,7 @@ export interface SpeedDialProps
   openIcon?: React.ReactNode;
   /**
    * The component used for the transition.
+   * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
    */
   TransitionComponent?: React.ComponentType<TransitionProps>;
   /**
@@ -71,7 +71,7 @@ export interface SpeedDialProps
    */
   transitionDuration?: TransitionProps['timeout'];
   /**
-   * Props applied to the `Transition` element.
+   * Props applied to the [`Transition`](http://reactcommunity.org/react-transition-group/transition#Transition-props) element.
    */
   TransitionProps?: TransitionProps;
 }
@@ -86,4 +86,14 @@ export type SpeedDialClassKey =
   | 'actions'
   | 'actionsClosed';
 
+/**
+ *
+ * Demos:
+ *
+ * - [Speed Dial](https://material-ui.com/components/speed-dial/)
+ *
+ * API:
+ *
+ * - [SpeedDial API](https://material-ui.com/api/speed-dial/)
+ */
 export default function SpeedDial(props: SpeedDialProps): JSX.Element;

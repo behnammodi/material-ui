@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
@@ -34,34 +34,18 @@ const Stepper = React.forwardRef(function Stepper(props, ref) {
     alternativeLabel = false,
     children,
     classes,
-    className: classNameProp,
+    className,
     connector: connectorProp = defaultConnector,
     nonLinear = false,
     orientation = 'horizontal',
     ...other
   } = props;
 
-  const className = clsx(
-    classes.root,
-    classes[orientation],
-    {
-      [classes.alternativeLabel]: alternativeLabel,
-    },
-    classNameProp,
-  );
-
   const connector = React.isValidElement(connectorProp)
     ? React.cloneElement(connectorProp, { orientation })
     : null;
   const childrenArray = React.Children.toArray(children);
   const steps = childrenArray.map((step, index) => {
-    const controlProps = {
-      alternativeLabel,
-      connector: connectorProp,
-      last: index + 1 === childrenArray.length,
-      orientation,
-    };
-
     const state = {
       index,
       active: false,
@@ -77,28 +61,44 @@ const Stepper = React.forwardRef(function Stepper(props, ref) {
       state.disabled = true;
     }
 
-    return [
-      !alternativeLabel &&
-        connector &&
-        index !== 0 &&
-        React.cloneElement(connector, {
-          key: index,
-          ...state,
-        }),
-      React.cloneElement(step, { ...controlProps, ...state, ...step.props }),
-    ];
+    return React.cloneElement(step, {
+      alternativeLabel,
+      connector,
+      last: index + 1 === childrenArray.length,
+      orientation,
+      ...state,
+      ...step.props,
+    });
   });
 
   return (
-    <Paper square elevation={0} className={className} ref={ref} {...other}>
+    <Paper
+      square
+      elevation={0}
+      className={clsx(
+        classes.root,
+        classes[orientation],
+        {
+          [classes.alternativeLabel]: alternativeLabel,
+        },
+        className,
+      )}
+      ref={ref}
+      {...other}
+    >
       {steps}
     </Paper>
   );
 });
 
 Stepper.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * Set the active step (zero based index).
+   * Set to -1 to disable all the steps.
    */
   activeStep: PropTypes.number,
   /**
@@ -109,12 +109,12 @@ Stepper.propTypes = {
   /**
    * Two or more `<Step />` components.
    */
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   /**
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */

@@ -1,10 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
 import { fade } from '../styles/colorManipulator';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     height: 1,
@@ -38,6 +38,11 @@ export const styles = theme => ({
     height: '100%',
     width: 1,
   },
+  /* Styles applied to the root element if `flexItem={true}`. */
+  flexItem: {
+    alignSelf: 'stretch',
+    height: 'auto',
+  },
 });
 
 const Divider = React.forwardRef(function Divider(props, ref) {
@@ -46,6 +51,7 @@ const Divider = React.forwardRef(function Divider(props, ref) {
     classes,
     className,
     component: Component = 'hr',
+    flexItem = false,
     light = false,
     orientation = 'horizontal',
     role = Component !== 'hr' ? 'separator' : undefined,
@@ -60,6 +66,7 @@ const Divider = React.forwardRef(function Divider(props, ref) {
         {
           [classes[variant]]: variant !== 'fullWidth',
           [classes.absolute]: absolute,
+          [classes.flexItem]: flexItem,
           [classes.light]: light,
           [classes.vertical]: orientation === 'vertical',
         },
@@ -73,24 +80,37 @@ const Divider = React.forwardRef(function Divider(props, ref) {
 });
 
 Divider.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * Absolutely position the element.
    */
   absolute: PropTypes.bool,
   /**
+   * @ignore
+   */
+  children: PropTypes.node,
+  /**
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
   className: PropTypes.string,
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
+  /**
+   * If `true`, a vertical divider will have the correct height when used in flex container.
+   * (By default, a vertical divider will have a calculated height of `0px` if it is the child of a flex container.)
+   */
+  flexItem: PropTypes.bool,
   /**
    * If `true`, the divider will have a lighter color.
    */

@@ -8,6 +8,8 @@ import Drawer from '@material-ui/core/Drawer';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Divider from '@material-ui/core/Divider';
 import Hidden from '@material-ui/core/Hidden';
+import Box from '@material-ui/core/Box';
+import DiamondSponsors from 'docs/src/modules/components/DiamondSponsors';
 import AppDrawerNavItem from 'docs/src/modules/components/AppDrawerNavItem';
 import Link from 'docs/src/modules/components/Link';
 import { pageToTitleI18n } from 'docs/src/modules/utils/helpers';
@@ -19,7 +21,7 @@ function PersistScroll(props) {
   const rootRef = React.useRef();
 
   React.useEffect(() => {
-    const parent = rootRef.current ? rootRef.current.parentNode : null;
+    const parent = rootRef.current ? rootRef.current.parentElement : null;
     const activeElement = document.querySelector('.drawer-active');
 
     if (!parent || !activeElement || !activeElement.scrollIntoView) {
@@ -49,7 +51,7 @@ PersistScroll.propTypes = {
   children: PropTypes.node,
 };
 
-const styles = theme => ({
+const styles = (theme) => ({
   paper: {
     width: 240,
     backgroundColor: theme.palette.background.level1,
@@ -97,7 +99,7 @@ function reduceChildRoutes({ props, activePage, items, page, depth, t }) {
 
   if (page.children && page.children.length > 1) {
     const title = pageToTitleI18n(page, t);
-    const topLevel = activePage.pathname.indexOf(`${page.pathname}/`) === 0;
+    const topLevel = activePage ? activePage.pathname.indexOf(`${page.pathname}/`) === 0 : false;
 
     items.push(
       <AppDrawerNavItem
@@ -138,7 +140,9 @@ const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 function AppDrawer(props) {
   const { classes, className, disablePermanent, mobileOpen, onClose, onOpen } = props;
   const { activePage, pages } = React.useContext(PageContext);
-  const t = useSelector(state => state.options.t);
+  const userLanguage = useSelector((state) => state.options.userLanguage);
+  const languagePrefix = userLanguage === 'en' ? '' : `/${userLanguage}`;
+  const t = useSelector((state) => state.options.t);
 
   const drawer = (
     <PersistScroll>
@@ -148,13 +152,21 @@ function AppDrawer(props) {
             Material-UI
           </Link>
           {process.env.LIB_VERSION ? (
-            <Link color="textSecondary" variant="caption" href="/versions" onClick={onClose}>
+            <Link
+              color="textSecondary"
+              variant="caption"
+              href={`https://material-ui.com${languagePrefix}/versions/`}
+              onClick={onClose}
+            >
               {`v${process.env.LIB_VERSION}`}
             </Link>
           ) : null}
         </div>
       </div>
       <Divider />
+      <Box mx={3} my={2}>
+        <DiamondSponsors spot="drawer" />
+      </Box>
       {renderNavItems({ props, pages, activePage, depth: 0, t })}
     </PersistScroll>
   );

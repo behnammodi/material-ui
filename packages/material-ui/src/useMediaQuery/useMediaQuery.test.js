@@ -1,25 +1,25 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from '@material-ui/styles';
 import consoleErrorMock from 'test/utils/consoleErrorMock';
 import { act, createClientRender } from 'test/utils/createClientRender';
-import { createRender } from '@material-ui/core/test-utils';
+import createServerRender from 'test/utils/createServerRender';
 import mediaQuery from 'css-mediaquery';
 import { expect } from 'chai';
-import { spy } from 'sinon';
-import useMediaQuery, { testReset } from './useMediaQuery';
+import { spy, stub } from 'sinon';
+import useMediaQuery from './useMediaQuery';
 
 function createMatchMedia(width, ref) {
   const listeners = [];
-  return query => {
+  return (query) => {
     const instance = {
       matches: mediaQuery.match(query, {
         width,
       }),
-      addListener: listener => {
+      addListener: (listener) => {
         listeners.push(listener);
       },
-      removeListener: listener => {
+      removeListener: (listener) => {
         const index = listeners.indexOf(listener);
         if (index > -1) {
           listeners.splice(index, 1);
@@ -41,11 +41,10 @@ describe('useMediaQuery', () => {
     return;
   }
 
-  const render = createClientRender({ strict: true });
+  const render = createClientRender();
   let values;
 
   beforeEach(() => {
-    testReset();
     values = spy();
   });
 
@@ -69,7 +68,21 @@ describe('useMediaQuery', () => {
 
     beforeEach(() => {
       matchMediaInstances = [];
-      window.matchMedia = createMatchMedia(1200, matchMediaInstances);
+      const fakeMatchMedia = createMatchMedia(1200, matchMediaInstances);
+      // can't stub non-existent properties with sinon
+      // jsdom does not implement window.matchMedia
+      if (window.matchMedia === undefined) {
+        window.matchMedia = fakeMatchMedia;
+        window.matchMedia.restore = () => {
+          delete window.matchMedia;
+        };
+      } else {
+        stub(window, 'matchMedia').callsFake(fakeMatchMedia);
+      }
+    });
+
+    afterEach(() => {
+      window.matchMedia.restore();
     });
 
     describe('option: defaultMatches', () => {
@@ -155,7 +168,7 @@ describe('useMediaQuery', () => {
       });
     });
 
-    it('should try to reconcile only the first time', () => {
+    it('should try to reconcile each time', () => {
       const ref = React.createRef();
       const text = () => ref.current.textContent;
       const Test = () => {
@@ -174,13 +187,13 @@ describe('useMediaQuery', () => {
 
       render(<Test />);
       expect(text()).to.equal('false');
-      expect(values.callCount).to.equal(3);
+      expect(values.callCount).to.equal(4);
     });
 
     it('should be able to change the query dynamically', () => {
       const ref = React.createRef();
       const text = () => ref.current.textContent;
-      const Test = props => {
+      const Test = (props) => {
         const matches = useMediaQuery(props.query, {
           defaultMatches: true,
         });
@@ -202,7 +215,7 @@ describe('useMediaQuery', () => {
     it('should observe the media query', () => {
       const ref = React.createRef();
       const text = () => ref.current.textContent;
-      const Test = props => {
+      const Test = (props) => {
         const matches = useMediaQuery(props.query);
         React.useEffect(() => values(matches));
         return <span ref={ref}>{`${matches}`}</span>;
@@ -225,11 +238,7 @@ describe('useMediaQuery', () => {
   });
 
   describe('server-side', () => {
-    let serverRender;
-
-    before(() => {
-      serverRender = createRender();
-    });
+    const serverRender = createServerRender();
 
     it('should use the ssr match media ponyfill', () => {
       const ref = React.createRef();
@@ -240,7 +249,7 @@ describe('useMediaQuery', () => {
       }
 
       const Test = () => {
-        const ssrMatchMedia = query => ({
+        const ssrMatchMedia = (query) => ({
           matches: mediaQuery.match(query, {
             width: 3000,
           }),
@@ -266,7 +275,6 @@ describe('useMediaQuery', () => {
 
     afterEach(() => {
       consoleErrorMock.reset();
-      PropTypes.resetWarningCache();
     });
 
     it('warns on invalid `query` argument', () => {
@@ -276,7 +284,11 @@ describe('useMediaQuery', () => {
       }
 
       render(<MyComponent />);
-      expect(consoleErrorMock.args()[0][0]).to.include('the `query` argument provided is invalid');
+      // logs warning twice in StrictMode
+      expect(consoleErrorMock.callCount()).to.equal(2); // strict mode renders twice
+      expect(consoleErrorMock.messages()[0]).to.include(
+        'Material-UI: The `query` argument provided is invalid',
+      );
     });
   });
 });

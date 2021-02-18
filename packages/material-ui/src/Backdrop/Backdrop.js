@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
@@ -7,6 +7,7 @@ import Fade from '../Fade';
 export const styles = {
   /* Styles applied to the root element. */
   root: {
+    // Improve scrollable dialog support.
     zIndex: -1,
     position: 'fixed',
     display: 'flex',
@@ -17,10 +18,7 @@ export const styles = {
     top: 0,
     left: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    // Remove grey highlight
     WebkitTapHighlightColor: 'transparent',
-    // Disable scroll capabilities.
-    touchAction: 'none',
   },
   /* Styles applied to the root element if `invisible={true}`. */
   invisible: {
@@ -36,11 +34,13 @@ const Backdrop = React.forwardRef(function Backdrop(props, ref) {
     invisible = false,
     open,
     transitionDuration,
+    // eslint-disable-next-line react/prop-types
+    TransitionComponent = Fade,
     ...other
   } = props;
 
   return (
-    <Fade in={open} timeout={transitionDuration} {...other}>
+    <TransitionComponent in={open} timeout={transitionDuration} {...other}>
       <div
         data-mui-test="Backdrop"
         className={clsx(
@@ -55,7 +55,7 @@ const Backdrop = React.forwardRef(function Backdrop(props, ref) {
       >
         {children}
       </div>
-    </Fade>
+    </TransitionComponent>
   );
 });
 

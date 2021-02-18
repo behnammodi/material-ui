@@ -1,17 +1,17 @@
 ---
-title: Rating React component
+title: React Rating component
 components: Rating
 ---
 
-# Rating
+# Rating (Calificación)
 
-<p class="description">Ratings provide insight regarding others’ opinions and experiences with a product. Users can also rate products they’ve purchased.</p>
+<p class="description">Las calificaciones proporcionan información sobre las opiniones y experiencias de otros con un producto. Los usuarios también pueden calificar los productos que han comprado.</p>
 
-## Simple ratings
+## Calificaciones simples
 
 {{"demo": "pages/components/rating/SimpleRating.js"}}
 
-## Customized ratings
+## Calificaciones personalizadas
 
 Here are some examples of customizing the component. You can learn more about this in the [overrides documentation page](/customization/components/).
 
@@ -19,7 +19,7 @@ Here are some examples of customizing the component. You can learn more about th
 
 ## Hover feedback
 
-You can display a label on hover to help users pick the correct rating value. The first demo uses the `onChangeActive` prop while the last one uses the `IconContainerComponent` prop.
+You can display a label on hover to help users pick the correct rating value. The demo uses the `onChangeActive` prop.
 
 {{"demo": "pages/components/rating/HoverRating.js"}}
 

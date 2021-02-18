@@ -1,7 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import { expect } from 'chai';
 import { spy, useFakeTimers } from 'sinon';
-import { createMount, getClasses } from '@material-ui/core/test-utils';
+import { getClasses } from '@material-ui/core/test-utils';
+import createMount from 'test/utils/createMount';
 import describeConformance from '../test-utils/describeConformance';
 import { createClientRender, fireEvent } from 'test/utils/createClientRender';
 import Modal from '../Modal';
@@ -13,6 +14,7 @@ import Dialog from './Dialog';
  */
 function userClick(element) {
   fireEvent.mouseDown(element);
+  fireEvent.mouseUp(element);
   element.click();
 }
 
@@ -32,13 +34,12 @@ function clickBackdrop(container) {
 
 describe('<Dialog />', () => {
   let clock;
-  let mount;
+  // StrictModeViolation: uses Fade
+  const mount = createMount({ strict: false });
   let classes;
   const render = createClientRender({ strict: false });
 
   before(() => {
-    // StrictModeViolation: uses Fade
-    mount = createMount({ strict: false });
     classes = getClasses(<Dialog>foo</Dialog>);
   });
 
@@ -60,7 +61,6 @@ describe('<Dialog />', () => {
       // react-transition-group issue
       'reactTestRenderer',
     ],
-    after: () => mount.cleanUp(),
   }));
 
   it('should render with a TransitionComponent', () => {
@@ -96,10 +96,11 @@ describe('<Dialog />', () => {
       );
     }
     const { getByRole, queryByRole } = render(<TestCase />);
-    expect(getByRole('dialog')).to.be.ok;
+    const dialog = getByRole('dialog');
+    expect(dialog).not.to.equal(null);
 
-    getByRole('dialog').click();
-    fireEvent.keyDown(document.activeElement, { key: 'Esc' });
+    dialog.click();
+    fireEvent.keyDown(document.querySelector('[data-mui-test="FakeBackdrop"]'), { key: 'Esc' });
     expect(onEscapeKeyDown.calledOnce).to.equal(true);
     expect(onClose.calledOnce).to.equal(true);
 
@@ -120,10 +121,11 @@ describe('<Dialog />', () => {
         foo
       </Dialog>,
     );
-    expect(getByRole('dialog')).to.be.ok;
+    const dialog = getByRole('dialog');
+    expect(dialog).not.to.equal(null);
 
-    getByRole('dialog').click();
-    fireEvent.keyDown(document.activeElement, { key: 'Esc' });
+    dialog.click();
+    fireEvent.keyDown(document.querySelector('[data-mui-test="FakeBackdrop"]'), { key: 'Esc' });
     expect(onClose.callCount).to.equal(0);
 
     clickBackdrop(document.body);
@@ -184,7 +186,7 @@ describe('<Dialog />', () => {
 
       fireEvent.mouseDown(getByRole('heading'));
       findBackdrop(document.body).click();
-      expect(getByRole('dialog')).to.be.ok;
+      expect(getByRole('dialog')).not.to.equal(null);
     });
   });
 
@@ -260,6 +262,22 @@ describe('<Dialog />', () => {
 
       expect(getByTestId('paper')).to.have.class(classes.paper);
       expect(getByTestId('paper')).to.have.class('custom-paper-class');
+    });
+  });
+
+  describe('a11y', () => {
+    it('can be labelled by another element', () => {
+      const { getByRole } = render(
+        <Dialog open aria-labelledby="dialog-title">
+          <h1 id="dialog-title">Choose either one</h1>
+          <div>Actually you cant</div>
+        </Dialog>,
+      );
+
+      const dialog = getByRole('dialog');
+      expect(dialog).to.have.attr('aria-labelledby', 'dialog-title');
+      const label = document.getElementById(dialog.getAttribute('aria-labelledby'));
+      expect(label).to.have.text('Choose either one');
     });
   });
 });

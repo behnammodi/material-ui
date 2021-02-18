@@ -25,7 +25,7 @@ Material-UI allows you to change the root element that will be rendered via a pr
 
 ### Wie funktioniert das?
 
-Die Komponente wird wie folgt gerendert:
+The custom component will be rendered by Material-UI like this:
 
 ```js
 return React.createElement(props.component, props)
@@ -48,7 +48,7 @@ This pattern is very powerful and allows for great flexibility, as well as a way
 
 ### Vorbehalt beim Inlining
 
-Using an inline function as an argument for the `component` prop may result in **unexpected unmounting**, since a new component is passed every time React renders. Zum Beispiel, wenn Sie ein benutzerdefiniertes `ListItem` erstellen möchten, das als Link fungiert, können Sie Folgendes tun:
+React aktualisiert nicht nur das DOM unnötig, sondern die Wellenvisualisierung des `ListItem` funktioniert auch nicht richtig. ⚠️ Da wir jedoch eine Inline-Funktion verwenden, um die gerenderte Komponente zu ändern, wird die Verknüpfung von React bei jedem Rendern des `ListItemLink` aufgehoben.
 
 ```jsx
 import { Link } from 'react-router-dom';
@@ -56,9 +56,11 @@ import { Link } from 'react-router-dom';
 function ListItemLink(props) {
   const { icon, primary, to } = props;
 
+  const CustomLink = props => <Link to={to} {...props} />;
+
   return (
     <li>
-      <ListItem button component={props => <Link to={to} {...props} />}>
+      <ListItem button component={CustomLink}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={primary} />
       </ListItem>
@@ -67,9 +69,9 @@ function ListItemLink(props) {
 }
 ```
 
-⚠️ Da wir jedoch eine Inline-Funktion verwenden, um die gerenderte Komponente zu ändern, wird die Verknüpfung von React bei jedem Rendern des `ListItemLink ` aufgehoben. React aktualisiert nicht nur das DOM unnötig, sondern die Wellenvisualisierung des `ListItem` funktioniert auch nicht richtig.
+⚠️ Da wir jedoch eine Inline-Funktion verwenden, um die gerenderte Komponente zu ändern, wird die Verknüpfung von React bei jedem Rendern des `ListItemLink` aufgehoben. React aktualisiert nicht nur das DOM unnötig, sondern die Wellenvisualisierung des `ListItem` funktioniert auch nicht richtig.
 
-The solution is simple: **avoid inline functions and pass a static component to the `component` prop** instead. Let's change the `ListItemLink` to the following:
+The solution is simple: **avoid inline functions and pass a static component to the `component` prop** instead. Let's change the `ListItemLink` component so `CustomLink` always reference the same component:
 
 ```jsx
 import { Link } from 'react-router-dom';
@@ -77,19 +79,17 @@ import { Link } from 'react-router-dom';
 function ListItemLink(props) {
   const { icon, primary, to } = props;
 
-  const renderLink = React.useMemo(
+  const CustomLink = React.useMemo(
     () =>
       React.forwardRef((linkProps, ref) => (
-        // With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
-        // See https://github.com/ReactTraining/react-router/issues/6056
-        <Link to={to} {...linkProps} innerRef={ref} />
+        <Link ref={ref} to={to} {...linkProps} />
       )),
     [to],
   );
 
   return (
     <li>
-      <ListItem button component={renderLink}>
+      <ListItem button component={CustomLink}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={primary} />
       </ListItem>
@@ -97,8 +97,6 @@ function ListItemLink(props) {
   );
 }
 ```
-
-`renderLink` wird jetzt immer auf dieselbe Komponente verweisen.
 
 ### Caveat with prop forwarding
 
@@ -112,7 +110,7 @@ import { Link } from 'react-router-dom';
 
 ⚠️ However, this strategy suffers from a limitation: prop collisions. The component providing the `component` prop (e.g. ListItem) might not forward all the props (for example dense) to the root element.
 
-### With TypeScript
+### Mit TypeScript
 
 You can find the details in the [TypeScript guide](/guides/typescript/#usage-of-component-prop).
 
@@ -128,11 +126,11 @@ The integration with third-party routing libraries is achieved with the `compone
 
 {{"demo": "pages/guides/composition/LinkRouter.js"}}
 
-### List
+### List (liste)
 
 {{"demo": "pages/guides/composition/ListRouter.js"}}
 
-## Caveat with refs
+## Vorbehalt bei Refs
 
 This section covers caveats when using a custom component as `children` or for the `component` prop.
 
@@ -158,18 +156,18 @@ In some instances an additional warning is issued to help with debugging, simila
 Only the two most common use cases are covered. For more information see [this section in the official React docs](https://reactjs.org/docs/forwarding-refs.html).
 
 ```diff
-- const MyButton = props => <div role="button" {...props} />;
-+ const MyButton = React.forwardRef((props, ref) => <div role="button" {...props} ref={ref} />);
+-const MyButton = props => <div role="button" {...props} />;
++const MyButton = React.forwardRef((props, ref) => <div role="button" {...props} ref={ref} />);
 <Button component={MyButton} />;
 ```
 
 ```diff
-- const SomeContent = props => <div {...props}>Hello, World!</div>;
-+ const SomeContent = React.forwardRef((props, ref) => <div {...props} ref={ref}>Hello, World!</div>);
+-const SomeContent = props => <div {...props}>Hello, World!</div>;
++const SomeContent = React.forwardRef((props, ref) => <div {...props} ref={ref}>Hello, World!</div>);
 <Tooltip title="Hello, again."><SomeContent /></Tooltip>;
 ```
 
-To find out if the Material-UI component you're using has this requirement, check out the the props API documentation for that component. If you need to forward refs the description will link to this section.
+Um herauszufinden, ob die Material-UI - Komponente, die Sie verwenden, diese Anforderung hat, überprüfen Sie API - Dokumentation für diese Komponente. Wenn Sie Refs weiterleiten müssen, wird die Beschreibung mit diesem Abschnitt verknüpft.
 
 ### Caveat with StrictMode
 

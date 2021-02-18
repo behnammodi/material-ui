@@ -1,15 +1,15 @@
 ---
-title: Composant React Téléportation
+title: React Portal component
 components: Portal
 ---
 
 # Portal
 
-<p class="description">Le composant de portail convertit ses enfants en un nouveau "sous-arbre" en dehors de la hiérarchie de composants actuelle.</p>
+<p class="description">The portal component renders its children into a new "subtree" outside of current DOM hierarchy.</p>
 
-- 📦 [1.3 kB gzipped](/size-snapshot)
+- 📦 [1.3 kB gzippé](/size-snapshot)
 
-The children of the portal component will be appended to the `container` specified. The component is used internally by the [`Modal`](/components/modal/) and [`Popper`](/components/popper/) components.
+Les enfants du composant Portal seront ajoutés au `container` fournit. Ce composant est utilisé en interne par les composants [`Modal`](/components/modal/) et [`Popper`](/components/popper/).
 
 ## Exemple
 

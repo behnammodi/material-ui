@@ -1,104 +1,108 @@
 ---
 title: React Table（表格）组件
-components: Table, TableBody, TableCell, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel
+components: Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel
 ---
 
-# Table（表格）
+# Table 表格
 
-<p class="description">Data tables display sets of data. They can be fully customized.</p>
+<p class="description">表格展示数据组。 它们是完全可以自定义的。</p>
 
-[数据表格](https://material.io/design/components/data-tables.html)以一种一目了然地方式显示信息，这便于用户寻找一些规律和深入的见解。 表格可以被内嵌在主要内容中，如 cards（卡片）。
+[表格](https://material.io/design/components/data-tables.html)以一目了然的方式显示信息，这样一来用户可以寻找规律并探索见解。 表格可以被内嵌在主要内容中，如 卡片（cards）。
 
-数据表格可以包括这些：
+表格可以包括：
 
-- 相应的可视化
+- 对应的可视化效果
 - 导航
-- 用于查询和操作数据的工具
+- 一个用于查询和操作数据的工具
 
-在包含工具时，我们应将它们直接放在表格的上方或下方。
+当在引入工具时，我们应将它们直接放在表格的上方或下方。
 
-## 结构
+## 基础表格
 
-一个数据表的顶部是标题行，给出各列的名称，后续的各行是表格数据。
+一个没有多余装饰的简单例子
 
-如果用户需要选择或操作数据，则每一行应包含有复选框。
+{{"demo": "pages/components/tables/BasicTable.js", "bg": true}}
 
-考虑到可及性，我们应该将表格的第一列设置为 `<th>` 元素，而它带有了一个指定为 `"row"` 的 `scope` 属性。 这样，屏幕阅读器就可以通过行和列的名字标识某个单元格的值。
+## 数据表格
 
-## 简单表格
+`Table` 组件与原生 `<table>` 元素存在密切关联。 这种限制条件导致要构建丰富的数据表格会变得很有挑战性。
 
-一个没有多余装饰的简单例子。
+[`DataGrid` 组件](/components/data-grid/) 专为需要处理大量表格数据的情况而设计。 虽然它的结构相比之下不够灵活，但是有失必有得，牺牲灵活性来换取更强大的功能。 
 
-{{"demo": "pages/components/tables/SimpleTable.js"}}
+{{"demo": "pages/components/tables/DataTable.js", "bg": "inline"}}
 
-## Dense Table（紧凑表格）
+## 紧凑型表格
 
-一个没有多余修饰的简单紧凑型表格。
+这是一个简单紧凑型表格，并且没有多余的装饰。
 
-{{"demo": "pages/components/tables/DenseTable.js"}}
+{{"demo": "pages/components/tables/DenseTable.js", "bg": true}}
 
-## 排序& 筛选
+## 排序 & 选择
 
-此示例演示了 ` Checkbox（选择框）` 和单击选择行的用法, 该表格具有自定义的 `Toolbar（工具条）`。 该示例使用 `TableSortLabel` 组件来辅助实现列标题的样式效果。
+此示例演示了在表格内使用了 ` 选择框组件（Checkbox）` 以及单击选择行，而且这个表格带有一个自定义的 `工具条组件（Toolbar）`。 它也展示了如何使用 `TableSortLabel` 组件来给列标题添加样式。
 
-此表已被赋予固定宽度，这样能够展示水平方向的滚动。 在表格外部使用 TablePagination 组件，能够防止分页控件的滚动。 (以下的['Custom Table Pagination Action' （自定义表分页操作示例）](#custom-table-pagination-action)展示了 TableFooter 中的分页。)
+这个表格已被赋予一个固定的宽度，您可以查看如何实现横向滚动。 在表格外部使用 TablePagination 组件，能够防止分页控件的滚动。 (以下的['Custom Table Pagination Action' （自定义表分页操作示例）](#custom-pagination-actions)展示了 TableFooter 中的分页。)
 
-{{"demo": "pages/components/tables/EnhancedTable.js"}}
+{{"demo": "pages/components/tables/EnhancedTable.js", "bg": true}}
 
 ## 自定义表格
 
 以下是自定义组件的一个示例。 您可以在[重写文档页](/customization/components/)中了解有关此内容的更多信息。
 
-{{"demo": "pages/components/tables/CustomizedTables.js"}}
+{{"demo": "pages/components/tables/CustomizedTables.js", "bg": true}}
 
-## 自定义表格的分页操作
+### 自定义的分页选项
 
-`TablePagination` 组件的 `Action` 属性允许实现自定义行为。
+通过 `rowsPerPageOptions` 属性，也可以自定义 "Rows per page" 选择中显示的选项。 你应该提供以下一种数组：
 
-{{"demo": "pages/components/tables/CustomPaginationActionsTable.js"}}
+- **数字（numbers）**，而每个数字用作为选择项的标签（label）和值（value）。
+    
+    ```jsx
+    <TablePagination rowsPerPageOptions={[10, 50]} />
+    ```
 
-## Fixed header
+- **对象（objects）**，而 `value` 和 `label` 键则相应的对照选择项的标签（label）和值（value）（譬如，当有一个语言字符串为“All” 时你会受益匪浅）。
+    
+    ```jsx
+    <TablePagination rowsPerPageOptions={[10, 50, { value: -1, label: 'All' }]} />
+    ```
 
-An example of a table with scrollable rows and fixed column headers. It leverages the `stickyHeader` prop (⚠️ no IE 11 support).
+### 自定义表格分页操作
 
-{{"demo": "pages/components/tables/StickyHeadTable.js"}}
+`TablePagination` 组件的 ` ActionsComponent ` 属性能够让您实现一些自定义的行为。
 
-## Spanning Table
+{{"demo": "pages/components/tables/CustomPaginationActionsTable.js", "bg": true}}
 
-A simple example with spanning rows & columns.
+## 固定表头
 
-{{"demo": "pages/components/tables/SpanningTable.js"}}
+一个具有可滚动行和固定表头的表格示例。 它利用了 `stickyheader` 这个属性（⚠️不支持 IE11）。
 
-## Virtualized Table
+{{"demo": "pages/components/tables/StickyHeadTable.js", "bg": true}}
 
-In the following example, we demonstrate how to use [react-virtualized](https://github.com/bvaughn/react-virtualized) with the `Table` component. 它渲染了200行，可以轻松处理更多行。 可视化优化了整体的性能。
+## 可折叠的表格
 
-{{"demo": "pages/components/tables/ReactVirtualizedTable.js"}}
+以可扩展行的表格为例，揭示更多信息。 它利用了 [`Collapse`](/api/collapse/) 组件。
 
-## 补充项目
+{{"demo": "pages/components/tables/CollapsibleTable.js", "bg": true}}
 
-对于更高级的用例，您可以利用：
+## 跨越表格（Spanning Table）
 
-### material-table
+一个行和列跨越的简单例子。
 
-![评星](https://img.shields.io/github/stars/mbrn/material-table.svg?style=social&label=Stars) ![npm downloads](https://img.shields.io/npm/dm/material-table.svg)
+{{"demo": "pages/components/tables/SpanningTable.js", "bg": true}}
 
-[material-table](https://github.com/mbrn/material-table) is a simple and powerful Datatable for React based on Material-UI Table with some additional features. They support many different use cases (editable, filtering, grouping, sorting, selection, i18n, tree data and more). You should check it out.
+## 大型列表渲染（Virtualized Table）
 
-{{"demo": "pages/components/tables/MaterialTableDemo.js"}}
+以下例子展示了将 [react-virtualized](https://github.com/bvaughn/react-virtualized) 与 `Table` 组件一起使用的方法。 它渲染了200多行，并且可以轻松的延展到更多行。 可视化优化了整体的性能。
 
-### 其他
+{{"demo": "pages/components/tables/ReactVirtualizedTable.js", "bg": true}}
 
-- [dx-react-grid-material-ui](https://devexpress.github.io/devextreme-reactive/react/grid/): A data grid for Material-UI with paging, sorting, filtering, grouping and editing features ([paid license](https://js.devexpress.com/licensing/)).
-- [mui-datatables](https://github.com/gregnb/mui-datatables): Responsive data tables for Material-UI with filtering, sorting, search and more.
-- [tubular-react](https://github.com/unosquare/tubular-react): A Material-UI table with local or remote data-source. Featuring filtering, sorting, free-text search, export to CSV locally, and aggregations.
+## 无障碍设计
 
-## 可访问性
+（WAI 教程：https://www.w3.org/WAI/tutorials/tables/）
 
-(WAI tutorial: https://www.w3.org/WAI/tutorials/tables/)
+### Caption 字幕
 
-### Caption
+字幕能够充当表格的表头。 大多数屏幕阅读器能够宣读字幕的内容。 字幕能够帮助用户找到一个表格，并且描述这个表格的内容，从而协助用户决定是不是想继续阅读这个表格。
 
-A caption functions like a heading for a table. Most screen readers announce the content of captions. Captions help users to find a table and understand what it’s about and decide if they want to read it.
-
-{{"demo": "pages/components/tables/AcccessibleTable.js"}}
+{{"demo": "pages/components/tables/AcccessibleTable.js", "bg": true}}

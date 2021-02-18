@@ -1,19 +1,20 @@
-import React from 'react';
+import * as React from 'react';
 import { expect } from 'chai';
-import { createMount, createRender, getClasses } from '../test-utils';
-import describeConformance from '../test-utils/describeConformance';
+import { getClasses } from '@material-ui/core/test-utils';
+import describeConformance from '@material-ui/core/test-utils/describeConformance';
 import { createClientRender } from 'test/utils/createClientRender';
+import createMount from 'test/utils/createMount';
+import createServerRender from 'test/utils/createServerRender';
 import Fab from './Fab';
 import ButtonBase from '../ButtonBase';
 import Icon from '../Icon';
 
 describe('<Fab />', () => {
-  let mount;
+  const mount = createMount();
   const render = createClientRender({ strict: false });
   let classes;
 
   before(() => {
-    mount = createMount({ strict: true });
     classes = getClasses(<Fab>Fab</Fab>);
   });
 
@@ -23,7 +24,6 @@ describe('<Fab />', () => {
     mount,
     refInstanceof: window.HTMLButtonElement,
     skip: ['componentProp'],
-    after: () => mount.cleanUp(),
   }));
 
   it('should render with the root class but no others', () => {
@@ -117,7 +117,7 @@ describe('<Fab />', () => {
     const { getByTestId } = render(<Fab>{iconChild}</Fab>);
     const renderedIconChild = getByTestId('icon');
 
-    expect(renderedIconChild).to.be.ok;
+    expect(renderedIconChild).not.to.equal(null);
     expect(renderedIconChild).to.have.class(childClassName);
   });
 
@@ -126,11 +126,7 @@ describe('<Fab />', () => {
     if (!/jsdom/.test(window.navigator.userAgent)) {
       return;
     }
-
-    let serverRender;
-    before(() => {
-      serverRender = createRender();
-    });
+    const serverRender = createServerRender({ expectUseLayoutEffectWarning: true });
 
     it('should server-side render', () => {
       const markup = serverRender(<Fab>Fab</Fab>);

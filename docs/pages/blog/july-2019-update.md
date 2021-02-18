@@ -4,9 +4,7 @@ description: Here are the most significant improvements in July.
 
 # July 2019 Update
 
-**Olivier Tassinari**
-
-*August 4, 2019*
+Olivier Tassinari. August 4, 2019.
 
 Here are the most significant improvements in July:
 
@@ -37,10 +35,8 @@ But this summary is just scratching the surface. We have accepted 146 commits fr
 
 - 🔍 We will work on providing ready to use autocomplete, combo box, and multi-select components.
 
-- 🦴 We will continue to work on a new Skeleton component. You can already [preview it](https://deploy-preview-16786--material-ui.netlify.com/components/skeleton/).
+- 🦴 We will continue to work on a new Skeleton component. You can already [preview it](https://deploy-preview-16786--material-ui.netlify.app/components/skeleton/).
 
   ![Skeleton](/static/blog/july-2019-update/skeleton.png)
 
-<hr />
-
-Material-UI is an MIT-licensed open source project. It’s an independent project with ongoing development helped by the support of these awesome [backers](/discover-more/backers/). Please join them ✨.
+- ❓ Please upvote our [GitHub issues](https://github.com/mui-org/material-ui/issues) if you want something specific. The number of 👍 helps us to prioritize.

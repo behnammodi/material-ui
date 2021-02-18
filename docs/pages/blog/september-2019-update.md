@@ -4,9 +4,7 @@ description: Here are the most significant improvements in September.
 
 # September 2019 Update
 
-**Olivier Tassinari**
-
-*October 12, 2019*
+Olivier Tassinari. October 12, 2019.
 
 Here are the most significant improvements in September:
 
@@ -48,7 +46,7 @@ But this summary is just scratching the surface. We have accepted 199 commits fr
 
 *(We'll do our best, no guarantee!)*
 
-- 🔍 We will provide a ready to use autocomplete, combo box, and multi-select components in the lab. You can already [preview it](https://deploy-preview-17037--material-ui.netlify.com/components/autocomplete/).
+- 🔍 We will provide a ready to use autocomplete, combo box, and multi-select components in the lab. You can already [preview it](https://deploy-preview-17037--material-ui.netlify.app/components/autocomplete/).
 
   ![combobox](/static/blog/september-2019-update/combobox.png)
   <p class="blog-description">Combo box (limited options)</p>
@@ -64,8 +62,4 @@ But this summary is just scratching the surface. We have accepted 199 commits fr
 - 🧮 We will start to work on a Data Table component.
 ⭐️ Notice that the advanced features of the data grid will be paid, behind an enterprise subscription. This is an effort part of [our roadmap](/discover-more/roadmap/) to answer enterprise needs.
 
-- ❓ Do you want something in specific? Please upvote our [GitHub issues](https://github.com/mui-org/material-ui/issues), the number of 👍 matters to us.
-
-<hr />
-
-Material-UI is an MIT-licensed open source project. It’s an independent project with ongoing development helped by the support of these awesome [backers](/discover-more/backers/). Please join them ✨.
+- ❓ Please upvote our [GitHub issues](https://github.com/mui-org/material-ui/issues) if you want something specific. The number of 👍 helps us to prioritize.

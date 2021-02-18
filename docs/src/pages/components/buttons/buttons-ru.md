@@ -1,9 +1,9 @@
 ---
-title: React-компонент Кнопка
-components: Button, ButtonGroup, Fab, IconButton, ButtonBase, Zoom
+title: Компонент React Button
+components: Button, IconButton, ButtonBase
 ---
 
-# Кнопки
+# Button (кнопки)
 
 <p class="description">Кнопки позволяют пользователям выполнять действия и делать выбор одним нажатием.</p>
 
@@ -19,13 +19,15 @@ components: Button, ButtonGroup, Fab, IconButton, ButtonBase, Zoom
 
 [Блочные кнопки](https://material.io/design/components/buttons.html#contained-button) имеют высокий акцент, отличаются использованием возвышения и заполнения. Они содержат действия, которые являются основными для вашего приложения.
 
-Этот пример показывает, как использовать кнопку загрузки.
-
 {{"demo": "pages/components/buttons/ContainedButtons.js"}}
+
+Вы можете убрать эффект "всплытия" с помощью пропа `disableElevation`.
+
+{{"demo": "pages/components/buttons/DisableElevation.js"}}
 
 ## Текстовые кнопки
 
-[Текстовые кнопки](https://material.io/design/components/buttons.html#text-button) обычно используются для менее выраженных действий, в том числе расположенных:
+[Текстовые кнопки](https://material.io/design/components/buttons.html#text-button) обычно используются для менее важных действий, в том числе расположенных:
 
 - В диалогах
 - В карточках - Cards
@@ -38,45 +40,27 @@ components: Button, ButtonGroup, Fab, IconButton, ButtonBase, Zoom
 
 [Контурные кнопки](https://material.io/design/components/buttons.html#outlined-button) - это кнопки со средним акцентом. Они содержат действия, которые важны, но не являются основными в приложении.
 
-### Альтернатива
-
 Выделенные кнопки также являются альтернативой выделенным кнопкам или могут использоваться как альтернатива текстовым кнопкам.
 
 {{"demo": "pages/components/buttons/OutlinedButtons.js"}}
 
-## Сгруппированные кнопки
+## Handling clicks
 
-Компонент ButtonGroup можно использовать для группировки контурных (по умолчанию) или блочных кнопок.
+All components accept an `onClick` handler that is applied to the root DOM element.
 
-{{"demo": "pages/components/buttons/GroupedButtons.js"}}
+```jsx
+<Button onClick={() => { alert('clicked') }}>Click me</Button>
+```
 
-## Split Button
+Note that the documentation [avoids](/guides/api/#native-properties) mentioning native props (there are a lot) in the API section of the components.
 
-ButtonGroup can also be used to create a split button. The dropdown can change the button action (as in this example), or be used to immediately trigger a related action.
+## Кнопка загрузки файла
 
-{{"demo": "pages/components/buttons/SplitButton.js"}}
-
-## Плавающие кнопки действий
-
-[Плавающая кнопка действия](https://material.io/design/components/buttons-floating-action-button.html) выполняет основное или наиболее распространенное действие на экране. Они отображаются над всем содержимым экрана, обычно в виде закрашенного круга со значком в центре. FABs бывают двух типов: обычные и расширенные.
-
-Используйте плавающую кнопку действий (FAB) только в том случае, если это наиболее подходящий способ представить основное действие экрана.
-
-Для отображения наиболее распространенных действий рекомендуется использовать только одну кнопку с плавающим действием.
-
-{{"demo": "pages/components/buttons/FloatingActionButtons.js"}}
-
-По умолчанию анимация кнопки с плавающим действием на экране является расширяющейся.
-
-Кнопка с плавающим действием, которая охватывает несколько боковых экранов (например, экраны с вкладками), должна анимироваться при переходах.
-
-Переход масштабирование (Zoom) может быть использован для достижения этой цели. Обратите внимание, что так как выход и вход анимации запускаются одновременно, мы используем ` enterDelay `, чтобы разрешить исходящим кнопкам плавающего действия анимироваться постепенно.
-
-{{"demo": "pages/components/buttons/FloatingActionButtonZoom.js"}}
+{{"demo": "pages/components/buttons/UploadButtons.js"}}
 
 ## Размеры
 
-Fancy larger or smaller buttons? Use the `size` property.
+Fancy larger or smaller buttons? Использовать свойство `size`.
 
 {{"demo": "pages/components/buttons/ButtonSizes.js"}}
 
@@ -98,50 +82,52 @@ Fancy larger or smaller buttons? Use the `size` property.
 
 Ниже находятся примеры кастомизации компонента. You can learn more about this in the [overrides documentation page](/customization/components/).
 
-{{"demo": "pages/components/buttons/CustomizedButtons.js"}}
+{{"demo": "pages/components/buttons/CustomizedButtons.js", "defaultCodeOpen": false}}
 
-👑 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/components/button).
+🎨 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/styles/button).
 
 ## Сложные кнопки
 
 Текстовые кнопки, плавающие кнопки действий, блочные кнопки построены на основе одного и того же компонента: `ButtonBase`. Вы можете воспользоваться этим более низкоуровневым компонентом для создания пользовательских взаимодействий.
 
-{{"demo": "pages/components/buttons/ButtonBases.js"}}
+{{"demo": "pages/components/buttons/ButtonBase.js"}}
 
 ## Сторонняя библиотека маршрутизации
 
-One common use case is to use the button to trigger navigation to a new page. `ButtonBase` компонент предоставляет свойство для обработки этого варианта использования: `component`. However for certain focus polyfills `ButtonBase` requires the DOM node of the provided component. This is achieved by attaching a ref to the component and expecting that the component forwards this ref to the underlying DOM node. Given that many of the interactive components rely on `ButtonBase`, you should be able to take advantage of it everywhere.
+Одно из обыденных случаев использования кнопки - это навигация на другую страницу. `ButtonBase` компонент предоставляет свойство для обработки этого варианта использования: `component`. However for certain focus polyfills `ButtonBase` requires the DOM node of the provided component. Этого можно достичь, указав ref для данного компонента, ожидая что компонент пересылает этот ref в базовый узел DOM. Учитывая то, что многие наши компоненты используют `ButtonBase`, вы сможете пользоваться ими повсюду в вашем приложении.
 
-Here is an [integration example with react-router](/guides/composition/#button).
+Здесь можно ознакомится [с примером использования с react-router](/guides/composition/#button).
 
 ## Ограничения
 
 ### Cursor not-allowed
 
-The ButtonBase component sets `pointer-events: none;` on disabled buttons. which prevents the appearance of a disabled cursor.
+Компонент ButtonBase устанавливает `pointer-events: none;` на отключенных (disabled) кнопках, что отменяет появление disabled-курсора.
 
-If you wish to use `not-allowed`, you have two options:
+Есть два способа использовать `not-allowed`
 
-1. **CSS only**. You can remove the pointer events style on the disabled state of the `<button>` element:
+1. **CSS only**. Вы можете удалить все стили событий курсора в выключенном(disabled) состоянии в элементе `<button>`:
 
-```css
-.MuiButtonBase-root:disabled {
-  cursor: not-allowed;
-  pointer-events: auto;
-}
-```
+  ```css
+  .MuiButtonBase-root:disabled {
+    cursor: not-allowed;
+    pointer-events: auto;
+  }
+  ```
 
-However:
+Однако:
 
-- You should add `pointer-events: none;` back when you need to display [tooltips on disabled elements](/components/tooltips/#disabled-elements)
-- The cursor won't change if you render something other than a button element, for instance, a link `<a>` element.
+- Необходимо вернуть `pointer-events: none;` назад, в момент когда вам нужно будет отобразить [подсказку на отключенном элементе](/components/tooltips/#disabled-elements).
+- Курсор не изменится, в случае если вы отрендерите какой-либо другой элемент, например `<a>`.
 
-2. **DOM change**. You can wrap the button:
+2. **DOM change**. Вы можете обернуть кнопку в дополнительный контейнер:
 
-```jsx
-<span style={{ cursor: "not-allowed" }}>
-  <Button component={Link} disabled>disabled</Button>
-</span>
-```
+  ```jsx
+  <span style={{ cursor: 'not-allowed' }}>
+    <Button component={Link} disabled>
+      disabled
+    </Button>
+  </span>
+  ```
 
-This has the advantage of supporting any element, for instance, a link `<a>` element.
+Этот способ работает для всех элементов, в том числе и для `<a>`.

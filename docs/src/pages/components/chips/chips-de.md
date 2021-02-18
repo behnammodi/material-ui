@@ -1,9 +1,9 @@
 ---
-title: Chip React Component
+title: React Chip component
 components: Chip
 ---
 
-# Chips
+# Chip
 
 <p class="description">Chips sind kompakte Elemente, die eine Eingabe, ein Attribut oder eine Aktion repräsentieren.</p>
 
@@ -30,7 +30,7 @@ Umrandete Chips bieten einen alternativen Stil.
 
 Ein Beispiel vom Rendern mehrerer Chips aus einem Array von Werten. Das Löschen eines Chips entfernt ihn aus dem Array. Beachte, das dadurch, dass kein `onClick` Property gesetzt ist, der Chip zwar fokussiert, jedoch nicht geklickt oder berührt werden kann.
 
-{{"demo": "pages/components/chips/ChipsArray.js"}}
+{{"demo": "pages/components/chips/ChipsArray.js", "bg": true}}
 
 ## Kleiner Chip
 
@@ -46,4 +46,8 @@ Sie können die Requisite `size` verwenden, um einen kleinen Chip zu definieren.
 
 ## Chip Spielwiese
 
-{{"demo": "pages/components/chips/ChipsPlayground.js", "hideHeader": true}}
+{{"demo": "pages/components/chips/ChipsPlayground.js", "hideToolbar": true}}
+
+## Barrierefreiheit
+
+If the Chip is deletable or clickable then it is a button in tab order. When the Chip is focused (e.g. when tabbing) releasing (`keyup` event) `Backspace` or `Delete` will call the `onDelete` handler while releasing `Escape` will blur the Chip.

@@ -1,8 +1,8 @@
 # @material-ui/styles
 
-<p class="description">You can use Material-UI's styling solution in your app, whether or not you are using Material-UI components.</p>
+<p class="description">Material-UIコンポーネントを使用していなくても使う事が出来ます。</p>
 
-Material-UI aims to provide a strong foundation for building dynamic UIs. For the sake of simplicity, **we expose the styling solution used in Material-UI components** as the `@material-ui/styles` package. You can use it, but you don't have to, since Material-UI is also [interoperable with](/guides/interoperability/) all the other major styling solutions.
+Material-UI's styles are powered by the [@material-ui/styles](https://www.npmjs.com/package/@material-ui/styles) package, (built with JSS). Material-UI's styles are powered by the [@material-ui/styles](https://www.npmjs.com/package/@material-ui/styles) package, (built with JSS). It doesn't have a default theme, and can be used to style React applications that are not using Material-UI components.
 
 ## Material-UIのスタイリングソリューションを使用する理由
 
@@ -17,6 +17,8 @@ Material-UI's styling solution is inspired by many other styling libraries such 
 - 📦 Less than [15 KB gzipped](https://bundlephobia.com/result?p=@material-ui/styles); and no bundle size increase if used alongside Material-UI.
 
 ## インストール
+
+> `@material-ui/styles`は`@material-ui/core/styles`を切り出したものです。Material-UIを使わない場合のみインストールの必要があります。
 
 インストールして`package.json` のdependenciesに保存します。次を実行してください。
 
@@ -61,7 +63,7 @@ export default function Hook() {
 
 ### Styled components API
 
-注：これは呼び出し構文にのみ適用されます。スタイル定義は引き続きJSSオブジェクトを使用します。 [この動作を変更することもできます](/styles/advanced/#string-templates) が、いくつかの制限があります。
+注：これは呼び出し構文にのみ適用されます。スタイル定義は引き続きJSSオブジェクトを使用します。 [この動作を変更することもできます](/styles/advanced/#string-templates) が、いくつかの制限があります。 注：これは呼び出し構文にのみ適用されます。スタイル定義は引き続きJSSオブジェクトを使用します。 [この動作を変更することもできます](/styles/advanced/#string-templates) が、いくつかの制限があります。 [この動作を変更することもできます](/styles/advanced/#string-templates) が、いくつかの制限があります。
 
 ```jsx
 import React from 'react';
@@ -121,12 +123,11 @@ export default withStyles(styles)(HigherOrderComponent);
 
 ## Nesting selectors
 
-You can nest selectors to target elements inside the current class or component. The following example uses the Hook API, but it works the same way with the other APIs.
+現在のクラスやコンポーネント内のターゲット要素に、セレクターを入れ子にすることができます。 以下の例はHook APIを使用していますが、他のAPIでも同様に機能します。 以下の例はHook APIを使用していますが、他のAPIでも同様に機能します。 以下の例はHook APIを使用していますが、他のAPIでも同様に機能します。
 
 ```js
 const useStyles = makeStyles({
   root: {
-    padding: 16,
     color: 'red',
     '& p': {
       color: 'green',
@@ -138,7 +139,7 @@ const useStyles = makeStyles({
 });
 ```
 
-{{"demo": "pages/styles/basics/NestedStylesHook.js"}}
+{{"demo": "pages/styles/basics/NestedStylesHook.js", "defaultCodeOpen": false}}
 
 ## Adapting based on props
 
@@ -180,7 +181,7 @@ This button component has a color property that changes its color:
 
 {{"demo": "pages/styles/basics/AdaptingHOC.js"}}
 
-### Stress test
+### ストレステスト
 
 In the following stress test, you can update the *theme color* and the *background-color property* live:
 
@@ -195,7 +196,7 @@ const useStyles = makeStyles(theme => ({
 
 {{"demo": "pages/styles/basics/StressTest.js"}}
 
-## @material-ui/core/styles vs @material-ui/styles
+## @material-ui/core/styles と @material-ui/styles
 
 Material-UI's styles are powered by the [@material-ui/styles](https://www.npmjs.com/package/@material-ui/styles) package, (built with JSS). This solution is [isolated](https://bundlephobia.com/result?p=@material-ui/styles). It doesn't have a default theme, and can be used to style React applications that are not using Material-UI components.
 

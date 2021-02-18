@@ -166,7 +166,7 @@ It implements all these custom pseudo-classes:
 
 ### Use `$ruleName` to reference a local rule within the same style sheet
 
-The [jss-nested](https://github.com/cssinjs/jss-nested) plugin (available by default) can make the process of increasing specificity easier.
+The [jss-nested](https://github.com/cssinjs/jss/tree/master/packages/jss-plugin-nested) plugin (available by default) can make the process of increasing specificity easier.
 
 ```js
 const styles = {
@@ -211,13 +211,13 @@ You don't have to worry about CSS specificity as the inline-style takes preceden
 
 {{"demo": "pages/customization/components/InlineStyle.js"}}
 
-[When should I use inline-style vs classes?](/getting-started/faq/#when-should-i-use-inline-style-vs-classes)
+[When should I use inline-style vs classes?](/getting-started/faq/#when-should-i-use-inline-style-vs-css)
 
 ## 2. Dynamic variation for a one-time situation
 
 You have learned how to override the style of a Material-UI component in the previous section.
 Now, let's see how we can make these overrides dynamic.
-Here are five alternatives; each has it's pros and cons.
+Here are five alternatives; each has its pros and cons.
 
 ### Dynamic CSS
 

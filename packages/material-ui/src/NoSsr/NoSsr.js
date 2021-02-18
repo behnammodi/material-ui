@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { exactProp } from '@material-ui/utils';
 
@@ -37,10 +37,14 @@ function NoSsr(props) {
 }
 
 NoSsr.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * You can wrap a node.
    */
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   /**
    * If `true`, the component will not only prevent server-side rendering.
    * It will also defer the rendering of the children into a different screen frame.

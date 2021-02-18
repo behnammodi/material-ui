@@ -2,8 +2,6 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import Radio from '@material-ui/core/Radio';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 
 const GreenRadio = withStyles({
   root: {
@@ -13,12 +11,12 @@ const GreenRadio = withStyles({
     },
   },
   checked: {},
-})(props => <Radio color="default" {...props} />);
+})((props) => <Radio color="default" {...props} />);
 
 export default function RadioButtons() {
   const [selectedValue, setSelectedValue] = React.useState('a');
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
 
@@ -60,8 +58,7 @@ export default function RadioButtons() {
         color="default"
         name="radio-button-demo"
         inputProps={{ 'aria-label': 'E' }}
-        icon={<RadioButtonUncheckedIcon fontSize="small" />}
-        checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
+        size="small"
       />
     </div>
   );

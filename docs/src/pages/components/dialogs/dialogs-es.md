@@ -1,9 +1,9 @@
 ---
-title: Componente React Dialog
+title: React Dialog component
 components: Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Slide
 ---
 
-# Diálogos
+# Dialog (diálogo)
 
 <p class="description">Los diálogos informan a los usuarios sobre una tarea y pueden contener información importante, requerir decisiones, o involucrar múltiples tareas.</p>
 
@@ -26,7 +26,7 @@ Mecánica táctil:
 
 Las alertas son interrupciones urgentes, que requieren reconocimiento, que informan al usuario sobre una situación.
 
-Most alerts don't need titles. They summarize a decision in a sentence or two by either:
+La mayoría de las alertas no necesitan títulos. Resumen una decisión en una o dos frase, ya sea por:
 
 - Hacer una pregunta (por ejemplo, "¿Eliminar esta conversación?")
 - Hacer una declaración relacionada con los botones de acción
@@ -52,9 +52,9 @@ Los diálogos de formulario permiten a los usuarios llenar campos dentro de un c
 
 {{"demo": "pages/components/dialogs/FormDialog.js"}}
 
-## Customized dialogs
+## Diálogos personalizados
 
-Here is an example of customizing the component. You can learn more about this in the [overrides documentation page](/customization/components/).
+He aquí un ejemplo de personalización del componente. You can learn more about this in the [overrides documentation page](/customization/components/).
 
 The dialog has a close button added to aide usability.
 
@@ -95,23 +95,27 @@ Al tocar "Cancelar" en un cuadro de diálogo de confirmación, o al presionar At
 
 {{"demo": "pages/components/dialogs/ConfirmationDialog.js"}}
 
-## Draggable dialog
+## Diálogo arrastrable
 
-You can create a draggable dialog by using [react-draggable](https://github.com/mzabriskie/react-draggable). To do so, you can pass the the imported `Draggable` component as the `PaperComponent` of the `Dialog` component. This will make the entire dialog draggable.
+Puede crear un cuadro de diálogo arrastrable utilizando [react-draggable](https://github.com/mzabriskie/react-draggable). Para hacerlo, puede pasar el componente importado `Draggable` como `PaperComponent` del componente `Dialog`. Esto hará que todo el diálogo se pueda arrastrar.
 
 {{"demo": "pages/components/dialogs/DraggableDialog.js"}}
 
 ## Desplazando contenido largo
 
-When dialogs become too long for the user’s viewport or device, they scroll.
+Cuando los diálogos se vuelven demasiado largos para la ventana o el dispositivo del usuario, se desplazan.
 
 - `scroll=paper` el contenido del diálogo se desplaza dentro del elemento Paper.
 - `scroll=body` el contenido del diálogo se desplaza dentro del elemento body.
 
-Try the demo below to see what we mean:
+Prueba la demostración de abajo para ver lo que queremos decir:
 
 {{"demo": "pages/components/dialogs/ScrollDialog.js"}}
 
+## Limitaciones
+
+Follow the [Modal limitations section](/components/modal/#limitations).
+
 ## Accesibilidad
 
-Follow the [Modal accessibility section](/components/modal/#accessibility).
+Sigue la [Sección de accesibilidad de Modal](/components/modal/#accessibility).

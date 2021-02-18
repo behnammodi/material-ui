@@ -1,13 +1,13 @@
 ---
-title: Dialog Reactコンポーネント
+title: React Dialog component
 components: Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Slide
 ---
 
-# ダイアログ
+# Dialog (ダイアログ)
 
 <p class="description">ダイアログは、タスクについてユーザーに通知します。重要な情報を含める、決定を求める、または複数のタスクを伴うことができます。</p>
 
-[ダイアログ](https://material.io/design/components/dialogs.html) は、重要な情報を提供したり決定を求めたりするために、アプリのコンテンツの前に表示される [モーダル](/components/modal/) ウィンドウの一種です。 ダイアログは表示されるとアプリのすべての機能を無効にし、確認、却下、または必要な操作が行われるまで画面に表示されたままになります。
+[ダイアログ](https://material.io/design/components/dialogs.html) は、重要な情報を提供したり決定を求めたりするために、アプリのコンテンツの前に表示される [モーダル](/components/modal/) ウィンドウの一種です。 ダイアログは表示されるとアプリのすべての機能を無効にし、確認、却下、または必要な操作が行われるまで画面に表示されたままになります。 ダイアログは表示されるとアプリのすべての機能を無効にし、確認、却下、または必要な操作が行われるまで画面に表示されたままになります。 ダイアログは表示されるとアプリのすべての機能を無効にし、確認、却下、または必要な操作が行われるまで画面に表示されたままになります。 ダイアログは表示されるとアプリのすべての機能を無効にし、確認、却下、または必要な操作が行われるまで画面に表示されたままになります。
 
 ダイアログは意図的に中断されるので、慎重にに使用する必要があります。
 
@@ -40,7 +40,7 @@ components: Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
 
 {{"demo": "pages/components/dialogs/AlertDialog.js"}}
 
-## Transições
+## Transitions
 
 トランジションを入れ替えることもできます。次の例では、`Slide`. を使用します。
 
@@ -54,7 +54,7 @@ components: Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
 
 ## Customized dialogs
 
-コンポーネントのカスタマイズ例を次に示します。 詳細については、 [オーバーライドのドキュメントページ](/customization/components/)を参照してください。
+コンポーネントのカスタマイズ例を次に示します。 コンポーネントのカスタマイズ例を次に示します。 コンポーネントのカスタマイズ例を次に示します。 詳細については、 [オーバーライドのドキュメントページ](/customization/components/)を参照してください。
 
 ダイアログボックスには、操作性を高めるために閉じるボタンが追加されています。
 
@@ -95,23 +95,27 @@ function MyComponent() {
 
 {{"demo": "pages/components/dialogs/ConfirmationDialog.js"}}
 
-## Draggable dialog
+## ドラッグ可能なダイアログ
 
-You can create a draggable dialog by using [react-draggable](https://github.com/mzabriskie/react-draggable). To do so, you can pass the the imported `Draggable` component as the `PaperComponent` of the `Dialog` component. This will make the entire dialog draggable.
+[react-draggable](https://github.com/mzabriskie/react-draggable)を使用して、ドラッグ可能なダイアログを作成できます。 [react-draggable](https://github.com/mzabriskie/react-draggable)を使用して、ドラッグ可能なダイアログを作成できます。 これを行うには、インポートした`Draggable`コンポーネントを `Dialog` コンポーネントの`PaperComponent` として渡します。 これによりダイアログ全体がドラッグ可能になります。 これによりダイアログ全体がドラッグ可能になります。 [react-draggable](https://github.com/mzabriskie/react-draggable)を使用して、ドラッグ可能なダイアログを作成できます。 これを行うには、インポートした`Draggable`コンポーネントを `Dialog` コンポーネントの`PaperComponent` として渡します。 これによりダイアログ全体がドラッグ可能になります。 これによりダイアログ全体がドラッグ可能になります。 [react-draggable](https://github.com/mzabriskie/react-draggable)を使用して、ドラッグ可能なダイアログを作成できます。 これを行うには、インポートした`Draggable`コンポーネントを `Dialog` コンポーネントの`PaperComponent` として渡します。 これによりダイアログ全体がドラッグ可能になります。 これによりダイアログ全体がドラッグ可能になります。 [react-draggable](https://github.com/mzabriskie/react-draggable)を使用して、ドラッグ可能なダイアログを作成できます。 これを行うには、インポートした`Draggable`コンポーネントを `Dialog` コンポーネントの`PaperComponent` として渡します。 これによりダイアログ全体がドラッグ可能になります。 これによりダイアログ全体がドラッグ可能になります。
 
 {{"demo": "pages/components/dialogs/DraggableDialog.js"}}
 
 ## 長いコンテンツをスクロールする
 
-When dialogs become too long for the user’s viewport or device, they scroll.
+ダイアログがユーザのビューポートまたはデバイスに対して長すぎる場合は、スクロールします。
 
 - `scroll=paper`: paper要素内でダイアログボックスの内容がスクロールします。
 - `scroll=body`: ダイアログの内容がbody要素内をスクロールします。
 
-Try the demo below to see what we mean:
+以下のデモを試してみてください。
 
 {{"demo": "pages/components/dialogs/ScrollDialog.js"}}
 
+## 制限事項
+
+Follow the [Modal limitations section](/components/modal/#limitations).
+
 ## アクセシビリティ
 
-Follow the [Modal accessibility section](/components/modal/#accessibility).
+[モーダルアクセシビリティのセクション](/components/modal/#accessibility)従ってください。

@@ -1,42 +1,43 @@
 # Часто задаваемые вопросы (FAQ)
 
-<p class="description">Столкнулись с особой проблемой? Check some of these common gotchas first in the FAQ.</p>
+<p class="description">Застряли на чём-то? Гляньте сперва на список типичных граблей здесь.</p>
 
-If you still can't find what you're looking for, you can refer to our [support page](/getting-started/support/).
+И если всё-таки здесь не найдётся вашей проблемы, обратитесь к [странице поддержки](/getting-started/support/).
 
-## Material-UI is awesome. How can I support the project?
+## Material-UI просто нечто. Как я могу поддержать проект?
 
-There are many ways to support Material-UI:
+Способов поддержать Material-UI много:
 
-- **Spread the word**. Evangelize Material-UI by [linking to material-ui.com](https://material-ui.com/) on your website, every backlink matters. Follow us on [Twitter](https://twitter.com/MaterialUI), like and retweet the important news. Or just talk about us with your friends.
-- **Give us feedback**. Tell us what we're doing well or where we can improve. Please upvote (👍) the issues that you are the most interested in seeing solved.
-- **Help new users**. You can answer questions on [StackOverflow](https://stackoverflow.com/questions/tagged/material-ui) or chat with the community on [Spectrum](https://spectrum.chat/material-ui) (notice that the core team gives priority to StackOverflow over Spectrum).
-- **Make changes happen**. 
-  - Report bugs or missing features by [creating an issue](https://github.com/mui-org/material-ui/issues/new).
-  - Reviewing and commenting on existing [pull requests](https://github.com/mui-org/material-ui/pulls) and [issues](https://github.com/mui-org/material-ui/issues).
-  - Help [translate](https://translate.material-ui.com) the documentation.
-  - Fixing bugs, adding features, and [improving our documentation](https://github.com/mui-org/material-ui/tree/master/docs) by [submitting a pull request](https://github.com/mui-org/material-ui/pulls).
-- **Support us financially on [OpenCollective](https://opencollective.com/material-ui)**. If you use Material-UI in a commercial project and would like to support its continued development by becoming a Sponsor, or in a side or hobby project and would like to become a Backer, you can do so through OpenCollective. All funds donated are managed transparently, and Sponsors receive recognition in the README and on the Material-UI home page.
+- **Говорите о нас**. Продвигайте Material-UI в массы: разместите ссылки на [material-ui.com](https://material-ui.com/) на своём сайте, каждое упоминание имеет значение. Зафолловьте нас в [Твиттере](https://twitter.com/MaterialUI), лайкайте и ретвитьте значимые новости. Или просто расскажите о нас друзьям.
+- **Делитесь отзывами и предложениями**. Говорите, что у нас получается хорошо, а где можно и получше. Пожалуйста, плюсуйте (👍) тикеты, которые вам хотелось бы поскорее увидеть решёнными.
+- **Помогайте новичкам**. Поотвечайте на вопросы на [StackOverflow](https://stackoverflow.com/questions/tagged/material-ui).
+- **Двигайте проект вперёд**. 
+  - Edit the documentation. Every page has an "EDIT THIS PAGE" link in the top right.
+  - Присылайте багрепорты и фичреквесты [через тикеты](https://github.com/mui-org/material-ui/issues/new).
+  - Review and comment on existing [pull requests](https://github.com/mui-org/material-ui/pulls) and [issues](https://github.com/mui-org/material-ui/issues).
+  - Помогите [перевести документацию](https://translate.material-ui.com).
+  - [Improve our documentation](https://github.com/mui-org/material-ui/tree/master/docs), fix bugs, or add features by [submitting a pull request](https://github.com/mui-org/material-ui/pulls).
+- **Поддержите нас финансово на [OpenCollective](https://opencollective.com/material-ui)**. Если вы применяете Material-UI в коммерческих разработках и хотите спонсировать его дальнейшую развитие, или если это личный проект, и вы хотите сделать посильный вклад, вы можете воспользоваться OpenCollective. Мы открыто сообщаем, на что уходят пожертвования, а спонсорам достаётся упоминание в README и на главной странице Material-UI.
 
-## Why aren't my components rendering correctly in production builds?
+## Почему мои компоненты не отображаются корректно в продакшн-сборках?
 
-This is likely an n°1 issue that happens due to class name conflicts once your code is in a production bundle. For Material-UI to work, the `className` values of all components on a page must be generated by a single instance of the [class name generator](/styles/advanced/#class-names).
+But you shouldn't share a `createGenerateClassName()` between different requests: You need to provide a new class name generator for each request.
 
-To correct this issue, all components on the page need to be initialized such that there is only ever **one class name generator** between them.
+To correct this issue, all components on the page need to be initialized such that there is only ever **one class name generator** among them.
 
-You could end up accidentally using two class name generators in a variety of scenarios:
+Два генератора имен классов вы можете получить в различных сценариях:
 
-- You accidentally **bundle** two versions of Material-UI. You might have a dependency not correctly setting Material-UI as a peer dependency.
-- You are using `StylesProvider` for a **subset** of your React Tree.
-- You are using a bundler and it is splitting code in a way that causes multiple class name generator instances to be created.
+- Вы случайно используете две версии Material-UI в **пакете**. Возможно, у вас есть зависимость, неправильно устанавливающая Material-UI в качестве одноранговой зависимости.
+- You are using `StylesProvider` for a **subset** of your React tree.
+- Вы используете сборщик, и он разбивает код таким образом, что создает несколько экземпляров генератора имен классов.
 
 > Если вы используете webpack с [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/), попробуйте настроить [`runtimeChunk` в секции `optimizations`](https://webpack.js.org/configuration/optimization/#optimization-runtimechunk).
 
-Overall, it's simple to recover from this problem by wrapping each Material-UI application with [`StylesProvider`](/styles/api/#stylesprovider) components at the top of their component trees **and using a single class name generator shared between them**.
+Overall, it's simple to recover from this problem by wrapping each Material-UI application with [`StylesProvider`](/styles/api/#stylesprovider) components at the top of their component trees **and using a single class name generator shared among them**.
 
 ## Why do the fixed positioned elements move when a modal is opened?
 
-Scroll is blocked as soon as a modal is opened. This prevents interacting with the background when the modal should be the only interactive content, however, removing the scrollbar can make your **fixed positioned elements** move. In this situation, you can apply a global `.mui-fixed` class name to tell Material-UI to handle those elements.
+Scrolling is blocked as soon as a modal is opened. This prevents interacting with the background when the modal should be the only interactive content. However, removing the scrollbar can make your **fixed positioned elements** move. In this situation, you can apply a global `.mui-fixed` class name to tell Material-UI to handle those elements.
 
 ## How can I disable the ripple effect globally?
 
@@ -56,9 +57,9 @@ const theme = createMuiTheme({
 });
 ```
 
-## How can I disable transitions globally?
+## Как я могу отключить transitions глобально?
 
-Material-UI uses the same theme helper for creating all its transitions. So you can disable all the transitions by overriding the helper in your theme:
+Material-UI uses the same theme helper for creating all its transitions. Therefore you can disable all transitions by overriding the helper in your theme:
 
 ```js
 import { createMuiTheme } from '@material-ui/core';
@@ -73,7 +74,7 @@ const theme = createMuiTheme({
 
 It can be useful to disable transitions during visual testing or to improve performance on low-end devices.
 
-You can go one step further by disabling all the transitions and animations effect:
+You can go one step further by disabling all transitions and animations effects:
 
 ```js
 import { createMuiTheme } from '@material-ui/core';
@@ -103,11 +104,11 @@ Notice that the usage of `CssBaseline` is required for the above approach to wor
 }
 ```
 
-## Do I have to use JSS to style my app?
+## Должен ли я использовать JSS для стилизации своего приложения?
 
-No, it's not required. But this dependenency comes built in, so carries no additional bundle size overhead.
+No, it's not required. But this dependency comes built in, so carries no additional bundle size overhead.
 
-However perhaps you're adding some Material-UI components to an app that already uses another styling solution, or are already familiar with a different API, and don't want to learn a new one? In that case, head over to the [Style Library Interoperability](/guides/interoperability/) section, where we show how simple it is to restyle Material-UI components with alternative style libraries.
+You can use `npm ls @material-ui/styles`, `yarn list @material-ui/styles` or `find -L ./node_modules | grep /@material-ui/styles/package.json` commands in your application folder. If you think that the issue may be in the duplication of the @material-ui/styles module somewhere in your dependencies, there are several ways to check this.
 
 ## When should I use inline-style vs CSS?
 
@@ -115,14 +116,14 @@ As a rule of thumb, only use inline-style for dynamic style properties. The CSS 
 
 - auto-prefixing
 - better debugging
-- media queries
-- keyframes
+- медиа-запросы
+- ключевые кадры
 
-## How do I use react-router?
+## Как мне использовать react-router?
 
 We detail the [integration with third-party routing libraries](/guides/composition/#routing-libraries) like react-router, Gatsby or Next.js in our guide.
 
-## How can I access the DOM element?
+## Как я могу получить доступ к элементу DOM?
 
 All Material-UI components that should render something in the DOM forward their ref to the underlying DOM component. This means that you can get DOM elements by reading the ref attached to Material-UI components:
 
@@ -145,11 +146,11 @@ indicating that you can access the DOM element with a ref.
 
 If you are seeing a warning message in the console like the one below, you probably have several instances of `@material-ui/styles` initialized on the page.
 
-> It looks like there are several instances of `@material-ui/styles` initialized in this application. This may cause theme propagation issues, broken class names, specificity issues, and makes your application bigger without a good reason.
+> It looks like there are several instances of `@material-ui/styles` initialized in this application. This may cause theme propagation issues, broken class names, specificity issues, and make your application bigger without a good reason.
 
 ### Возможные причины
 
-There are several common reasons for this to happen:
+Существует несколько распространенных причин для этого:
 
 - You have another `@material-ui/styles` library somewhere in your dependencies.
 - You have a monorepo structure for your project (e.g, lerna, yarn workspaces) and `@material-ui/styles` module is a dependency in more than one package (this one is more or less the same as the previous one).
@@ -157,7 +158,7 @@ There are several common reasons for this to happen:
 
 ### Duplicated module in node_modules
 
-If you think that the issue is in duplicated @material-ui/styles module somewhere in your dependencies, there are several ways to check this. You can use `npm ls @material-ui/styles`, `yarn list @material-ui/styles` or `find -L ./node_modules | grep /@material-ui/styles/package.json` commands in your application folder.
+You can use `npm ls @material-ui/styles`, `yarn list @material-ui/styles` or `find -L ./node_modules | grep /@material-ui/styles/package.json` commands in your application folder. If you think that the issue may be in the duplication of the @material-ui/styles module somewhere in your dependencies, there are several ways to check this.
 
 If none of these commands identified the duplication, try analyzing your bundle for multiple instances of @material-ui/styles. You can just check your bundle source, or use a tool like [source-map-explorer](https://github.com/danvk/source-map-explorer) or [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer).
 
@@ -177,7 +178,7 @@ If you are using webpack, you can change the way it will [resolve](https://webpa
 
 ### Usage with Lerna
 
-One possible fix to get @material-ui/styles to run in a Lerna monorepo across packages, is to [hoist](https://github.com/lerna/lerna/blob/master/doc/hoist.md) shared dependencies to the root of your monorepo file. Try running the bootstrap option with the --hoist flag.
+One possible fix to get @material-ui/styles to run in a Lerna monorepo across packages is to [hoist](https://github.com/lerna/lerna/blob/master/doc/hoist.md) shared dependencies to the root of your monorepo file. Try running the bootstrap option with the --hoist flag.
 
 ```sh
 lerna bootstrap --hoist
@@ -227,7 +228,7 @@ If you have several applications running on one page, consider using one @materi
 
 ## My App doesn't render correctly on the server
 
-If it doesn't work, in 99% of cases it's a configuration issue. A missing property, a wrong call order, or a missing component. Server side rendering is strict about configuration, and the best way to find out what's wrong is to compare your project to an already working setup, check out the [reference implementations](/guides/server-rendering/#reference-implementations), bit by bit.
+If it doesn't work, in 99% of cases it's a configuration issue. A missing property, a wrong call order, or a missing component – server-side rendering is strict about configuration, and the best way to find out what's wrong is to compare your project to an already working setup. Check out the [reference implementations](/guides/server-rendering/#reference-implementations), bit by bit.
 
 ### CSS works only on first load then is missing
 
@@ -240,7 +241,6 @@ The styling solution relies on a cache, the *sheets manager*, to only inject the
 *example of fix:*
 
 ```diff
--// Create a sheets instance.
 -const sheets = new ServerStyleSheets();
 
 function handleRender(req, res) {
@@ -251,7 +251,11 @@ function handleRender(req, res) {
   //…
 
   // Render the component to a string.
+const html = ReactDOMServer.renderToString(
   const html = ReactDOMServer.renderToString(
+  const html = ReactDOMServer.renderToString(
+  const html = ReactDOMServer.renderToString(
+  -// Create a sheets instance.
 ```
 
 ### React class name hydration mismatch
@@ -260,7 +264,7 @@ There is a class name mismatch between the client and the server. It might work 
 
 #### Action to Take
 
-The class names value relies on the concept of [class name generator](/styles/advanced/#class-names). The whole page needs to be rendered with **a single generator**. This generator needs to behave identically on the server and on the client. For instance:
+The class names value relies on the concept of [class name generator](/styles/advanced/#class-names). The whole page needs to be rendered with **a single generator**. This generator needs to behave identically on the server and on the client. Например:
 
 - You need to provide a new class name generator for each request. But you shouldn't share a `createGenerateClassName()` between different requests:
 
@@ -279,6 +283,9 @@ function handleRender(req, res) {
 
   // Render the component to a string.
   const html = ReactDOMServer.renderToString(
+  const html = ReactDOMServer.renderToString(
+  const html = ReactDOMServer.renderToString(
+  -// Create a sheets instance.
 ```
 
 - You need to verify that your client and server are running the **exactly the same version** of Material-UI. It is possible that a mismatch of even minor versions can cause styling problems. To check version numbers, run `npm list @material-ui/core` in the environment where you build your application and also in your deployment environment.
@@ -301,7 +308,7 @@ function handleRender(req, res) {
 
 ## Why are the colors I am seeing different from what I see here?
 
-The documentation site is using a custom theme. Hence, the color palette is different from the default theme that Material-UI ships. Please refer to [this page](/customization/theming/) to learn about theme customization.
+Сайт документации использует пользовательскую тему. Следовательно, цветовая палитра отличается от темы по умолчанию, которую поставляет Material-UI. Пожалуйста, обратитесь к [этой странице](/customization/theming/), чтобы узнать о настройке темы.
 
 ## Why does component X require a DOM node in a prop instead of a ref object?
 
@@ -339,7 +346,7 @@ function Portal({ children, container }) {
 }
 ```
 
-With this simple heuristic `Portal` might re-render after it mounts because refs are up-to-date before any effects run. However, just because a ref is up-to-date doesn't mean it points to a defined instance. If the ref is attached to a ref forwarding component it is not clear when the DOM node will be available. In the above example the `Portal` would run run an effect once but might not re-render because `ref.current` is still `null`. This is especially apparent for React.lazy components in Suspense. The above implementation could also not account for a change in the DOM node.
+With this simple heuristic `Portal` might re-render after it mounts because refs are up-to-date before any effects run. However, just because a ref is up-to-date doesn't mean it points to a defined instance. If the ref is attached to a ref forwarding component it is not clear when the DOM node will be available. The above implementation could also not account for a change in the DOM node. In the example above, the `Portal` would run an effect once, but might not re-render because `ref.current` is still `null`. This is especially apparent for React.lazy components in Suspense.
 
 This is why we require a prop with the actual DOM node so that React can take care of determining when the `Portal` should re-render:
 
@@ -361,16 +368,20 @@ function App() {
 
 ## What's the clsx dependency for?
 
-[clsx](https://github.com/lukeed/clsx) is a tiny utility for constructing `className` strings conditionally.
+[clsx](https://github.com/lukeed/clsx) is a tiny utility for constructing `className` strings conditionally, out of an object with keys being the class strings, and values being booleans.
 
 Instead of writing:
 
 ```jsx
+// let disabled = false, selected = true;
+
 return (
   <div
-    className={`MuiButton-root ${disabled ? 'Mui-disabled' : ''} ${selected ? 'Mui-selected' : ''}`}
-  />
-);
+    className={`MuiButton-root ${disabled ? // let disabled = false, selected = true;
+
+return (
+  <div
+    className={`MuiButton-root ${disabled ? 'Mui-disabled' : ''} ${selected ?
 ```
 
 you can do:

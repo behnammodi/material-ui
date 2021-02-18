@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { refType } from '@material-ui/utils';
@@ -6,7 +6,7 @@ import InputBase from '../InputBase';
 import NotchedOutline from './NotchedOutline';
 import withStyles from '../styles/withStyles';
 
-export const styles = theme => {
+export const styles = (theme) => {
   const borderColor =
     theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)';
 
@@ -14,6 +14,7 @@ export const styles = theme => {
     /* Styles applied to the root element. */
     root: {
       position: 'relative',
+      borderRadius: theme.shape.borderRadius,
       '&:hover $notchedOutline': {
         borderColor: theme.palette.text.primary,
       },
@@ -34,6 +35,12 @@ export const styles = theme => {
         borderColor: theme.palette.action.disabled,
       },
     },
+    /* Styles applied to the root element if the color is secondary. */
+    colorSecondary: {
+      '&$focused $notchedOutline': {
+        borderColor: theme.palette.secondary.main,
+      },
+    },
     /* Styles applied to the root element if the component is focused. */
     focused: {},
     /* Styles applied to the root element if `disabled={true}`. */
@@ -46,7 +53,7 @@ export const styles = theme => {
     adornedEnd: {
       paddingRight: 14,
     },
-    /* Styles applied to the root element if `error={true}`. */
+    /* Pseudo-class applied to the root element if `error={true}`. */
     error: {},
     /* Styles applied to the `input` element if `margin="dense"`. */
     marginDense: {},
@@ -66,19 +73,16 @@ export const styles = theme => {
     input: {
       padding: '18.5px 14px',
       '&:-webkit-autofill': {
-        WebkitBoxShadow: theme.palette.type === 'dark' ? '0 0 0 100px #266798 inset' : null,
-        WebkitTextFillColor: theme.palette.type === 'dark' ? '#fff' : null,
-        borderRadius: theme.shape.borderRadius,
+        WebkitBoxShadow: theme.palette.type === 'light' ? null : '0 0 0 100px #266798 inset',
+        WebkitTextFillColor: theme.palette.type === 'light' ? null : '#fff',
+        caretColor: theme.palette.type === 'light' ? null : '#fff',
+        borderRadius: 'inherit',
       },
     },
     /* Styles applied to the `input` element if `margin="dense"`. */
     inputMarginDense: {
       paddingTop: 10.5,
       paddingBottom: 10.5,
-    },
-    /* Styles applied to the `input` element if `select={true}`. */
-    inputSelect: {
-      paddingRight: 24,
     },
     /* Styles applied to the `input` element if `multiline={true}`. */
     inputMultiline: {
@@ -100,6 +104,7 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
     classes,
     fullWidth = false,
     inputComponent = 'input',
+    label,
     labelWidth = 0,
     multiline = false,
     notched,
@@ -109,9 +114,10 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
 
   return (
     <InputBase
-      renderSuffix={state => (
+      renderSuffix={(state) => (
         <NotchedOutline
           className={classes.notchedOutline}
+          label={label}
           labelWidth={labelWidth}
           notched={
             typeof notched !== 'undefined'
@@ -136,6 +142,10 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
 });
 
 OutlinedInput.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * This prop helps users to fill forms faster, especially on mobile devices.
    * The name can be confusing, as it's more like an autofill.
@@ -150,11 +160,11 @@ OutlinedInput.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
-   * The CSS class name of the wrapper element.
+   * The color of the component. It supports those theme colors that make sense for this component.
    */
-  className: PropTypes.string,
+  color: PropTypes.oneOf(['primary', 'secondary']),
   /**
    * The default `input` element value. Use when the component is not controlled.
    */
@@ -181,8 +191,8 @@ OutlinedInput.propTypes = {
    */
   id: PropTypes.string,
   /**
-   * The component used for the native input.
-   * Either a string to use a DOM element or a component.
+   * The component used for the `input` element.
+   * Either a string to use a HTML element or a component.
    */
   inputComponent: PropTypes.elementType,
   /**
@@ -194,7 +204,13 @@ OutlinedInput.propTypes = {
    */
   inputRef: refType,
   /**
-   * The width of the label.
+   * The label of the input. It is only used for layout. The actual labelling
+   * is handled by `InputLabel`. If specified `labelWidth` is ignored.
+   */
+  label: PropTypes.node,
+  /**
+   * The width of the label. Is ignored if `label` is provided. Prefer `label`
+   * if the input label appears with a strike through.
    */
   labelWidth: PropTypes.number,
   /**
@@ -237,11 +253,11 @@ OutlinedInput.propTypes = {
   /**
    * Number of rows to display when multiline option is set to true.
    */
-  rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
    * Maximum number of rows to display when multiline option is set to true.
    */
-  rowsMax: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  rowsMax: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
    * Start `InputAdornment` for this component.
    */

@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
@@ -20,7 +21,7 @@ const GridList = React.forwardRef(function GridList(props, ref) {
     cellHeight = 180,
     children,
     classes,
-    className: classNameProp,
+    className,
     cols = 2,
     component: Component = 'ul',
     spacing = 4,
@@ -30,21 +31,21 @@ const GridList = React.forwardRef(function GridList(props, ref) {
 
   return (
     <Component
-      className={clsx(classes.root, classNameProp)}
+      className={clsx(classes.root, className)}
       ref={ref}
       style={{ margin: -spacing / 2, ...style }}
       {...other}
     >
-      {React.Children.map(children, child => {
+      {React.Children.map(children, (child) => {
         if (!React.isValidElement(child)) {
           return null;
         }
 
         if (process.env.NODE_ENV !== 'production') {
-          if (child.type === React.Fragment) {
+          if (isFragment(child)) {
             console.error(
               [
-                "Material-UI: the GridList component doesn't accept a Fragment as a child.",
+                "Material-UI: The GridList component doesn't accept a Fragment as a child.",
                 'Consider providing an array instead.',
               ].join('\n'),
             );
@@ -55,14 +56,12 @@ const GridList = React.forwardRef(function GridList(props, ref) {
         const childRows = child.props.rows || 1;
 
         return React.cloneElement(child, {
-          style: Object.assign(
-            {
-              width: `${(100 / cols) * childCols}%`,
-              height: cellHeight === 'auto' ? 'auto' : cellHeight * childRows + spacing,
-              padding: spacing / 2,
-            },
-            child.props.style,
-          ),
+          style: {
+            width: `${(100 / cols) * childCols}%`,
+            height: cellHeight === 'auto' ? 'auto' : cellHeight * childRows + spacing,
+            padding: spacing / 2,
+            ...child.props.style,
+          },
         });
       })}
     </Component>
@@ -94,9 +93,9 @@ GridList.propTypes = {
   cols: PropTypes.number,
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * Number of px for the spacing between tiles.
    */

@@ -1,5 +1,5 @@
 ---
-title: Menu React component
+title: React Menu component
 components: Menu, MenuItem, MenuList, ClickAwayListener, Popover, Popper
 ---
 
@@ -36,7 +36,7 @@ For answering those needs, we expose a `MenuList` component that you can compose
 
 The primary responsibility of the `MenuList` component is to handle the focus.
 
-{{"demo": "pages/components/menus/MenuListComposition.js"}}
+{{"demo": "pages/components/menus/MenuListComposition.js", "bg": true}}
 
 ## Customized menus
 
@@ -47,6 +47,8 @@ Here is an example of customizing the component. You can learn more about this i
 
 The `MenuItem` is a wrapper around `ListItem` with some additional styles.
 You can use the same list composition features with the `MenuItem` component:
+
+🎨 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/styles/menu).
 
 ## Max height menus
 
@@ -59,7 +61,7 @@ If the height of a menu prevents all menu items from being displayed, the menu c
 There is [a flexbox bug](https://bugs.chromium.org/p/chromium/issues/detail?id=327437) that prevents `text-overflow: ellipsis` from working in a flexbox layout.
 You can use the `Typography` component with `noWrap` to workaround this issue:
 
-{{"demo": "pages/components/menus/TypographyMenu.js"}}
+{{"demo": "pages/components/menus/TypographyMenu.js", "bg": true}}
 
 ## Change transition
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
 
 function classesTest() {
@@ -10,6 +10,6 @@ function classesTest() {
   };
 
   <TablePagination classes={{ actions: 'actions' }} {...defaultProps} />;
-  // desired
-  <TablePagination classes={{ alignCenter: 'center' }} {...defaultProps} />; // $ExpectError
+  // @ts-expect-error desired
+  <TablePagination classes={{ alignCenter: 'center' }} {...defaultProps} />;
 }

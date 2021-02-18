@@ -1,15 +1,15 @@
 ---
-title: React-компонент Таблица
-components: Table, TableBody, TableCell, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel
+title: Компонент React Table
+components: Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel
 ---
 
-# Таблицы
+# Table (таблица)
 
-<p class="description">Data tables display sets of data. They can be fully customized.</p>
+<p class="description">Таблицы отображают наборы данных. Они могут быть полностью модифицированы.</p>
 
-[Таблицы](https://material.io/design/components/data-tables.html) отображают информацию так, чтобы ее было легко воспринимать визуально. Так чтобы пользователи видели шаблоны отображения данных. Они могут быть встроены в основной контент, например в карточки.
+[Tables](https://material.io/design/components/data-tables.html) display information in a way that’s easy to scan, so that users can look for patterns and insights. Они могут быть встроены в основной контент, например в карточки.
 
-Таблицы могут включать в себя:
+Таблицы могу включать в себя:
 
 - Соответствующую визуализацию
 - Навигацию
@@ -19,79 +19,83 @@ components: Table, TableBody, TableCell, TableFooter, TableHead, TablePagination
 
 ## Структура
 
-Таблица данных содержит 1 строку заголовка, в которой перечислены имена столбцов, за которыми следуют строки для данных.
-
-Флажки должны сопровождать каждую строку, если пользователю необходимо выбрать или манипулировать данными.
-
-Для доступности(accessibility) первый столбец должен быть элементом `<th>` с атрибутом `scope` со значением `"row"`. Это позволяет программам чтения с экрана идентифицировать значение ячейки по имени строки и столбца.
-
-## Простая таблица
-
 Простой пример без излишеств.
 
-{{"demo": "pages/components/tables/SimpleTable.js"}}
-
-## Плотная компоновка таблицы
-
-Простой пример таблицы с плотной компоновкой и без излишеств.
-
-{{"demo": "pages/components/tables/DenseTable.js"}}
+Таблица данных содержит 1 строку заголовка, в которой перечислены имена столбцов, за которыми следуют строки для данных.
 
 ## Сортировка и выбор строк
 
+The `Table` component has a close mapping to the native `<table>` elements. This constraint makes building rich data tables challenging.
+
+The [`DataGrid` component](/components/data-grid/) is designed for use-cases that are focused around handling a large amounts of tabular data. While it comes with a more rigid structure, in exchange, you gain more powerful features.
+
+{{"demo": "pages/components/tables/DataTable.js", "bg": "inline"}}
+
+## Простая таблица
+
+Флажки должны сопровождать каждую строку, если пользователю необходимо выбрать или манипулировать данными.
+
+{{"demo": "pages/components/tables/DenseTable.js", "bg": true}}
+
+## Плотная компоновка таблицы
+
 В этом примере демонстрируется использование `чекбокса` и кликабельных строк для выбора данных в настраиваемой `панели инструментов`. Здесь используется компонент `TableSortLabel` чтобы помочь стилизовать заголовки столбцов.
 
-Таблица имеет фиксированную ширину для демонстрации горизонтальной прокрутки. Чтобы предотвратить прокрутку элементов управления нумерацией страниц, компонент TablePagination находится за пределами таблицы. (В [примерe «собственные действия элементов нумерации»](#custom-table-pagination-action) ниже показывается управление нумерацией таблиц с помощью TableFooter.)
+Таблица имеет фиксированную ширину для демонстрации горизонтальной прокрутки. Чтобы предотвратить прокрутку элементов управления нумерацией страниц, компонент TablePagination находится за пределами таблицы. (В [примерe «собственные действия элементов нумерации»](#custom-pagination-actions) ниже показывается управление нумерацией таблиц с помощью TableFooter.)
 
-{{"demo": "pages/components/tables/EnhancedTable.js"}}
+{{"demo": "pages/components/tables/EnhancedTable.js", "bg": true}}
 
-## Customized tables
+## Настраиваемые таблицы
 
 Ниже находится пример кастомизации компонента. You can learn more about this in the [overrides documentation page](/customization/components/).
 
-{{"demo": "pages/components/tables/CustomizedTables.js"}}
+{{"demo": "pages/components/tables/CustomizedTables.js", "bg": true}}
 
-## Настройка постраничной навигации
+### Пользовательские параметры разбивки на страницы
 
-Свойство `Action` компонента `TablePagination` позволяет реализовать собственную обработку пользовательский событий.
+Возможна настройка параметров, отображаемых в "Строках на странице", используя `rowsPerPageOptions` prop. You should either provide an array of:
 
-{{"demo": "pages/components/tables/CustomPaginationActionsTable.js"}}
+- **numbers**, each number will be used for the option's label and value.
+    
+    ```jsx
+    <TablePagination rowsPerPageOptions={[10, 50]} />
+    ```
 
-## Fixed header
+- **objects**, the `value` and `label` keys will be used respectively for the value and label of the option (useful for language strings such as 'All').
+    
+    ```jsx
+    <TablePagination rowsPerPageOptions={[10, 50, { value: -1, label: 'All' }]} />
+    ```
 
-An example of a table with scrollable rows and fixed column headers. It leverages the `stickyHeader` prop (⚠️ no IE 11 support).
+### Пользовательские действия разбивки на страницы
 
-{{"demo": "pages/components/tables/StickyHeadTable.js"}}
+The `ActionsComponent` prop of the `TablePagination` component allows the implementation of custom actions.
 
-## Spanning Table
+{{"demo": "pages/components/tables/CustomPaginationActionsTable.js", "bg": true}}
 
-A simple example with spanning rows & columns.
+## Фиксированный заголовок
 
-{{"demo": "pages/components/tables/SpanningTable.js"}}
+Пример таблицы с прокручиваемыми строками и фиксированными заголовками столбцов. It leverages the `stickyHeader` prop (⚠️ no IE 11 support).
 
-## Virtualized Table
+{{"demo": "pages/components/tables/StickyHeadTable.js", "bg": true}}
 
-In the following example, we demonstrate how to use [react-virtualized](https://github.com/bvaughn/react-virtualized) with the `Table` component. Он отображает 200 строк и c легкостью может еще больше. Virtualization helps with performance issues.
+## Collapsible table
 
-{{"demo": "pages/components/tables/ReactVirtualizedTable.js"}}
+An example of a table with expandable rows, revealing more information. It utilizes the [`Collapse`](/api/collapse/) component.
 
-## Дополнительные проекты
+{{"demo": "pages/components/tables/CollapsibleTable.js", "bg": true}}
 
-Для более сложных вариантов использования вы можете воспользоваться:
+## Объединение таблиц
 
-### material-table
+Простой пример с объединением строк и столбцов.
 
-![stars](https://img.shields.io/github/stars/mbrn/material-table.svg?style=social&label=Stars) ![npm downloads](https://img.shields.io/npm/dm/material-table.svg)
+{{"demo": "pages/components/tables/SpanningTable.js", "bg": true}}
 
-[material-table](https://github.com/mbrn/material-table) is a simple and powerful Datatable for React based on Material-UI Table with some additional features. They support many different use cases (editable, filtering, grouping, sorting, selection, i18n, tree data and more). You should check it out.
+## Виртуализированная таблица
 
-{{"demo": "pages/components/tables/MaterialTableDemo.js"}}
+В следующем примере мы покажем, как использовать [react-virtualized](https://github.com/bvaughn/react-virtualized) с компонентом `Table`. Он отображает 200 строк и c легкостью может еще больше. Virtualization helps with performance issues.
 
-### Прочее
-
-- [dx-react-grid-material-ui](https://devexpress.github.io/devextreme-reactive/react/grid/): A data grid for Material-UI with paging, sorting, filtering, grouping and editing features ([paid license](https://js.devexpress.com/licensing/)).
-- [mui-datatables](https://github.com/gregnb/mui-datatables): Responsive data tables for Material-UI with filtering, sorting, search and more.
-- [tubular-react](https://github.com/unosquare/tubular-react): A Material-UI table with local or remote data-source. Featuring filtering, sorting, free-text search, export to CSV locally, and aggregations.
+{{"demo": "pages/components/tables/ReactVirtualizedTable.js", "bg": true}}
 
 ## Доступность
 
@@ -101,4 +105,4 @@ In the following example, we demonstrate how to use [react-virtualized](https://
 
 A caption functions like a heading for a table. Most screen readers announce the content of captions. Captions help users to find a table and understand what it’s about and decide if they want to read it.
 
-{{"demo": "pages/components/tables/AcccessibleTable.js"}}
+{{"demo": "pages/components/tables/AcccessibleTable.js", "bg": true}}

@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-
 import Benchmark from 'benchmark';
 import fs from 'fs';
 import path from 'path';
@@ -11,7 +10,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 const suite = new Benchmark.Suite('core', {
-  onError: event => {
+  onError: (event) => {
     console.log(event.target.error);
   },
 });
@@ -22,7 +21,7 @@ const markdown = fs.readFileSync(
   'UTF-8',
 );
 
-const store = createStore(state => state, {
+const store = createStore((state) => state, {
   options: {
     userLanguage: 'en',
   },
@@ -39,7 +38,7 @@ suite
       </Provider>,
     );
   })
-  .on('cycle', event => {
+  .on('cycle', (event) => {
     console.log(String(event.target));
   })
   .run();

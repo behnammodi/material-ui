@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Typography from '../Typography';
@@ -12,6 +12,7 @@ export const styles = {
     height: '0.01em', // Fix IE 11 flexbox alignment. To remove at some point.
     maxHeight: '2em',
     alignItems: 'center',
+    whiteSpace: 'nowrap',
   },
   /* Styles applied to the root element if `variant="filled"`. */
   filled: {
@@ -112,9 +113,9 @@ InputAdornment.propTypes = {
   className: PropTypes.string,
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * Disable pointer events on the root.
    * This allows for the content of the adornment to focus the input on click.

@@ -1,29 +1,21 @@
-import React from 'react';
-import { assert } from 'chai';
-import { createMount, createRender } from '@material-ui/core/test-utils';
+import * as React from 'react';
+import { expect } from 'chai';
+import createMount from 'test/utils/createMount';
+import createServerRender from 'test/utils/createServerRender';
 import NoSsr from './NoSsr';
 
 describe('<NoSsr />', () => {
-  let mount;
-  let render;
-
-  before(() => {
-    mount = createMount({ strict: true });
-    render = createRender();
-  });
-
-  after(() => {
-    mount.cleanUp();
-  });
+  const mount = createMount();
+  const serverRender = createServerRender();
 
   describe('server-side rendering', () => {
     it('should not render the children as the width is unknown', () => {
-      const wrapper = render(
+      const wrapper = serverRender(
         <NoSsr>
           <span>Hello</span>
         </NoSsr>,
       );
-      assert.strictEqual(wrapper.text(), '');
+      expect(wrapper.text()).to.equal('');
     });
   });
 
@@ -34,20 +26,20 @@ describe('<NoSsr />', () => {
           <span id="client-only" />
         </NoSsr>,
       );
-      assert.strictEqual(wrapper.find('#client-only').exists(), true);
+      expect(wrapper.find('#client-only').exists()).to.equal(true);
     });
   });
 
   describe('prop: fallback', () => {
     it('should render the fallback', () => {
-      const wrapper = render(
+      const wrapper = serverRender(
         <div>
           <NoSsr fallback="fallback">
             <span>Hello</span>
           </NoSsr>
         </div>,
       );
-      assert.strictEqual(wrapper.text(), 'fallback');
+      expect(wrapper.text()).to.equal('fallback');
     });
   });
 
@@ -58,7 +50,7 @@ describe('<NoSsr />', () => {
           <span id="client-only">Hello</span>
         </NoSsr>,
       );
-      assert.strictEqual(wrapper.find('#client-only').exists(), true);
+      expect(wrapper.find('#client-only').exists()).to.equal(true);
     });
   });
 });

@@ -1,38 +1,40 @@
 # Flexbox
 
-<p class="description">使用一整套响应式Flexbox实用程序，快速管理网格列，导航，组件等的布局，对齐和大小调整。</p>
+<p class="description">借助一整套的响应式 flex 的小方法，实现快速地管理布局，对齐，网格栏的大小，导航，组件等等。</p>
 
-如果你**对 flexbox 不熟悉**，我们建议你阅读：[CSS-Tricks flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) 手册。
+如果你**对 flexbox 不熟悉**，我们建议你阅读 [CSS-Tricks flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) 手册。
 
-## 父母的属性
+## 父元素的属性
 
 ### display
+
+{{"demo": "pages/system/flexbox/Display.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box display="flex">…
 ```
 
-{{"demo": "pages/system/flexbox/Display.js"}}
-
 ### flex-direction
+
+{{"demo": "pages/system/flexbox/FlexDirection.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box flexDirection="row">…
 <Box flexDirection="row-reverse">…
 ```
 
-{{"demo": "pages/system/flexbox/FlexDirection.js"}}
-
 ### flex-wrap
+
+{{"demo": "pages/system/flexbox/FlexWrap.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box flexWrap="nowrap">…
 <Box flexWrap="wrap">…
 ```
 
-{{"demo": "pages/system/flexbox/FlexWrap.js"}}
-
 ### justify-content
+
+{{"demo": "pages/system/flexbox/JustifyContent.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box justifyContent="flex-start">…
@@ -40,9 +42,9 @@
 <Box justifyContent="center">…
 ```
 
-{{"demo": "pages/system/flexbox/JustifyContent.js"}}
-
 ### align-items
+
+{{"demo": "pages/system/flexbox/AlignItems.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box alignItems="flex-start">…
@@ -50,20 +52,20 @@
 <Box alignItems="center">…
 ```
 
-{{"demo": "pages/system/flexbox/AlignItems.js"}}
-
 ### align-content
+
+{{"demo": "pages/system/flexbox/AlignContent.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box alignContent="flex-start">…
 <Box alignContent="flex-end">…
 ```
 
-{{"demo": "pages/system/flexbox/AlignContent.js"}}
-
-## 儿童的属性
+## 子元素的属性
 
 ### order
+
+{{"demo": "pages/system/flexbox/Order.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box order={2}>Item 1</Box>
@@ -71,9 +73,9 @@
 <Box order={1}>Item 3</Box>
 ```
 
-{{"demo": "pages/system/flexbox/Order.js"}}
-
 ### flex-grow
+
+{{"demo": "pages/system/flexbox/FlexGrow.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box flexGrow={1}>Item 1</Box>
@@ -81,9 +83,9 @@
 <Box>Item 3</Box>
 ```
 
-{{"demo": "pages/system/flexbox/FlexGrow.js"}}
-
 ### flex-shrink
+
+{{"demo": "pages/system/flexbox/FlexShrink.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box width="100%">Item 1</Box>
@@ -91,9 +93,9 @@
 <Box flexShrink={0}>Item 3</Box>
 ```
 
-{{"demo": "pages/system/flexbox/FlexShrink.js"}}
-
 ### align-self
+
+{{"demo": "pages/system/flexbox/AlignSelf.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box>Item 1</Box>
@@ -101,15 +103,13 @@
 <Box>Item 3</Box>
 ```
 
-{{"demo": "pages/system/flexbox/AlignSelf.js"}}
-
 ## API
 
 ```js
 import { flexbox } from '@material-ui/system';
 ```
 
-| 导入名称             | Prop             | CSS 属性            | Theme key |
+| 导入名称             | 属性               | CSS 属性            | Theme key |
 |:---------------- |:---------------- |:----------------- |:--------- |
 | `flexDirection`  | `flexDirection`  | `flex-direction`  | none      |
 | `flexWrap`       | `flexWrap`       | `flex-wrap`       | none      |

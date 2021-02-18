@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-
 import Benchmark from 'benchmark';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
@@ -15,17 +14,13 @@ import styledComponents, {
 } from 'styled-components';
 
 const suite = new Benchmark.Suite('system', {
-  onError: event => {
+  onError: (event) => {
     console.log(event.target.error);
   },
 });
 Benchmark.options.minSamples = 100;
 
-const materialSystem = compose(
-  palette,
-  spacing,
-  typography,
-);
+const materialSystem = compose(palette, spacing, typography);
 const styledSystem = compose2(color, space, fontFamily, fontSize);
 
 const BoxStyles = styled('div')(styleFunction);
@@ -199,7 +194,7 @@ suite
       </StyledComponentsThemeProvider>,
     );
   })
-  .on('cycle', event => {
+  .on('cycle', (event) => {
     console.log(String(event.target));
   })
   .run();

@@ -1,9 +1,9 @@
-import React from 'react';
-import { assert } from 'chai';
+import * as React from 'react';
+import { expect } from 'chai';
 
 function assertDOMNode(node) {
   // duck typing a DOM node
-  assert.ok(node.nodeName);
+  expect(typeof node.nodeName).to.equal('string');
 }
 
 /**

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import ArrowDownwardIcon from '../internal/svg-icons/ArrowDownward';
@@ -6,7 +6,7 @@ import withStyles from '../styles/withStyles';
 import ButtonBase from '../ButtonBase';
 import capitalize from '../utils/capitalize';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     cursor: 'pointer',
@@ -20,7 +20,7 @@ export const styles = theme => ({
     '&:hover': {
       color: theme.palette.text.secondary,
       '& $icon': {
-        opacity: 1,
+        opacity: 0.5,
       },
     },
     '&$active': {
@@ -36,6 +36,7 @@ export const styles = theme => ({
   active: {},
   /* Styles applied to the icon component. */
   icon: {
+    fontSize: 18,
     marginRight: 4,
     marginLeft: 4,
     opacity: 0,
@@ -63,7 +64,7 @@ const TableSortLabel = React.forwardRef(function TableSortLabel(props, ref) {
     children,
     classes,
     className,
-    direction = 'desc',
+    direction = 'asc',
     hideSortIcon = false,
     IconComponent = ArrowDownwardIcon,
     ...other

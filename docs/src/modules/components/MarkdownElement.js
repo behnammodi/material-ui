@@ -1,152 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
-import marked from 'marked';
-import { withStyles } from '@material-ui/core/styles';
-import textToHash from 'docs/src/modules/utils/textToHash';
-import prism from 'docs/src/modules/components/prism';
+import { makeStyles } from '@material-ui/core/styles';
 
-// Monkey patch to preserve non-breaking spaces
-// https://github.com/chjj/marked/blob/6b0416d10910702f73da9cb6bb3d4c8dcb7dead7/lib/marked.js#L142-L150
-marked.Lexer.prototype.lex = function lex(src) {
-  src = src
-    .replace(/\r\n|\r/g, '\n')
-    .replace(/\t/g, '    ')
-    .replace(/\u2424/g, '\n');
-
-  return this.token(src, true);
-};
-
-const renderer = new marked.Renderer();
-renderer.heading = (text, level) => {
-  // Small title. No need for an anchor.
-  // It's reducing the risk of duplicated id and it's fewer elements in the DOM.
-  if (level >= 4) {
-    return `<h${level}>${text}</h${level}>`;
-  }
-
-  // eslint-disable-next-line no-underscore-dangle
-  const escapedText = textToHash(text, global.__MARKED_UNIQUE__);
-
-  return (
-    `
-    <h${level}>
-      <a class="anchor-link" id="${escapedText}"></a>${text}` +
-    `<a class="anchor-link-style" aria-label="anchor" href="#${escapedText}">
-        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M46.9 13.9c-.5-.6-1.2-.94-2.07-.94h-6.67l1.86-8.98c.17-.85 0-1.7-.52-2.3-.48-.6-1.2-.94-2.07-.94-1.6 0-3.2 1.27-3.54 2.93l-.5 2.42c0 .07-.07.13-.07.2l-1.37 6.62H20.7l1.88-8.96c.16-.85 0-1.7-.53-2.3-.48-.6-1.2-.94-2.07-.94-1.65 0-3.2 1.27-3.56 2.93l-.52 2.58v.08l-1.37 6.64H7.3c-1.67 0-3.22 1.3-3.58 2.96-.16.86 0 1.7.52 2.3.48.6 1.2.93 2.07.93h6.97l-2 9.65H4c-1.67 0-3.22 1.27-3.56 2.94-.2.8 0 1.67.5 2.27.5.6 1.2.93 2.08.93H10l-1.84 9.05c-.2.84 0 1.67.52 2.3.5.6 1.25.92 2.08.92 1.66 0 3.2-1.3 3.55-2.94l1.94-9.33h11.22l-1.87 9.05c-.15.84.03 1.67.53 2.3.5.6 1.2.92 2.07.92 1.65 0 3.22-1.3 3.56-2.94l1.9-9.33h7c1.6 0 3.2-1.28 3.53-2.93.2-.87 0-1.7-.52-2.3-.48-.62-1.2-.96-2.05-.96h-6.7l2.02-9.65h6.93c1.67 0 3.22-1.27 3.56-2.92.2-.85 0-1.7-.5-2.3l-.04.03zM17.53 28.77l1.95-9.65H30.7l-1.97 9.66H17.5h.03z"/></svg>
-      </a></h${level}>
-  `
-  );
-};
-
-const externs = [
-  'https://material.io/',
-  'https://getbootstrap.com/',
-  'https://www.amazon.com/',
-  'https://materialdesignicons.com/',
-  'https://www.w3.org/',
-];
-
-renderer.link = (href, title, text) => {
-  let more = '';
-
-  if (externs.some(domain => href.indexOf(domain) !== -1)) {
-    more = ' target="_blank" rel="noopener nofollow"';
-  }
-
-  // eslint-disable-next-line no-underscore-dangle
-  const userLanguage = global.__MARKED_USER_LANGUAGE__;
-  let finalHref = href;
-
-  if (userLanguage !== 'en' && finalHref.indexOf('/') === 0 && finalHref !== '/size-snapshot') {
-    finalHref = `/${userLanguage}${finalHref}`;
-  }
-
-  return `<a href="${finalHref}"${more}>${text}</a>`;
-};
-
-const markedOptions = {
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false,
-  highlight(code, language) {
-    let prismLanguage;
-    switch (language) {
-      case 'ts':
-        prismLanguage = prism.languages.tsx;
-        break;
-
-      case 'js':
-      case 'sh':
-        prismLanguage = prism.languages.jsx;
-        break;
-
-      case 'diff':
-        prismLanguage = { ...prism.languages.diff };
-        // original `/^[-<].*$/m` matches lines starting with `<` which matches
-        // <SomeComponent />
-        // we will only use `-` as the deleted marker
-        prismLanguage.deleted = /^[-].*$/m;
-        break;
-
-      default:
-        prismLanguage = prism.languages[language];
-        break;
-    }
-
-    if (!prismLanguage) {
-      if (language) {
-        throw new Error(`unsuppored language: "${language}", "${code}"`);
-      } else {
-        prismLanguage = prism.languages.jsx;
-      }
-    }
-
-    return prism.highlight(code, prismLanguage);
-  },
-  renderer,
-};
-
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    fontFamily: theme.typography.fontFamily,
-    fontSize: 16,
+    ...theme.typography.body1,
     color: theme.palette.text.primary,
+    wordBreak: 'break-word',
     '& .anchor-link': {
       marginTop: -96, // Offset for the anchor.
       position: 'absolute',
     },
     '& pre': {
-      margin: '24px 0',
-      padding: '12px 18px',
-      backgroundColor: '#333',
+      margin: theme.spacing(3, 'auto'),
+      padding: theme.spacing(2),
+      backgroundColor: '#272c34',
       direction: 'ltr',
       borderRadius: theme.shape.borderRadius,
       overflow: 'auto',
       WebkitOverflowScrolling: 'touch', // iOS momentum scrolling.
+      maxWidth: 'calc(100vw - 32px)',
+      [theme.breakpoints.up('md')]: {
+        maxWidth: 'calc(100vw - 32px - 16px)',
+      },
     },
+    // inline code
     '& code': {
+      direction: 'ltr',
+      lineHeight: 1.4,
       display: 'inline-block',
       fontFamily: 'Consolas, "Liberation Mono", Menlo, Courier, monospace',
       WebkitFontSmoothing: 'subpixel-antialiased',
-      padding: '2px 6px',
+      padding: '0 3px',
       color: theme.palette.text.primary,
       backgroundColor:
-        theme.palette.type === 'dark' ? 'rgba(255,229,100,0.2)' : 'rgba(255,229,100,0.1)',
-      fontSize: 14,
+        theme.palette.type === 'light' ? 'rgba(255, 229, 100, 0.2)' : 'rgba(255, 229, 100, 0.2)',
+      fontSize: '.85em',
       borderRadius: 2,
     },
     '& code[class*="language-"]': {
-      backgroundColor: '#333',
+      backgroundColor: '#272c34',
       color: '#fff',
+      // Avoid layout jump after hydration (style injected by prism)
+      lineHeight: 1.5,
     },
-    '& p code, & ul code, & pre code': {
-      fontSize: 14,
+    // code blocks
+    '& pre code': {
+      fontSize: '.9em',
     },
     '& .token.operator': {
       background: 'transparent',
@@ -178,9 +79,8 @@ const styles = theme => ({
       margin: '32px 0 16px',
     },
     '& p, & ul, & ol': {
-      lineHeight: 1.6,
       marginTop: 0,
-      marginBottom: '16px',
+      marginBottom: 16,
     },
     '& ul': {
       paddingLeft: 30,
@@ -193,28 +93,28 @@ const styles = theme => ({
         wordBreak: 'break-all',
       },
       '& .anchor-link-style': {
-        opacity: 0,
         // To prevent the link to get the focus.
         display: 'none',
       },
       '&:hover .anchor-link-style': {
         display: 'inline-block',
-        opacity: 1,
         padding: '0 8px',
-        color: theme.palette.text.hint,
+        color: theme.palette.text.secondary,
         '&:hover': {
-          color: theme.palette.text.secondary,
+          color: theme.palette.text.primary,
         },
         '& svg': {
-          width: '0.55em',
-          height: '0.55em',
+          width: '0.7em',
+          height: '0.7em',
           fill: 'currentColor',
         },
       },
     },
     '& table': {
-      width: '100%',
+      // Trade display table for scroll overflow
       display: 'block',
+      wordBreak: 'normal',
+      width: '100%',
       overflowX: 'auto',
       WebkitOverflowScrolling: 'touch', // iOS momentum scrolling.
       borderCollapse: 'collapse',
@@ -222,21 +122,18 @@ const styles = theme => ({
       borderSpacing: 0,
       overflow: 'hidden',
       '& .prop-name': {
-        fontSize: 13,
         fontFamily: 'Consolas, "Liberation Mono", Menlo, monospace',
       },
       '& .required': {
         color: theme.palette.type === 'light' ? '#006500' : '#a5ffa5',
       },
       '& .prop-type': {
-        fontSize: 13,
         fontFamily: 'Consolas, "Liberation Mono", Menlo, monospace',
         color: theme.palette.type === 'light' ? '#932981' : '#ffb6ec',
       },
       '& .prop-default': {
-        fontSize: 13,
         fontFamily: 'Consolas, "Liberation Mono", Menlo, monospace',
-        borderBottom: `1px dotted ${theme.palette.text.hint}`,
+        borderBottom: `1px dotted ${theme.palette.divider}`,
       },
     },
     '& td': {
@@ -246,11 +143,9 @@ const styles = theme => ({
       color: theme.palette.text.primary,
     },
     '& td code': {
-      fontSize: 13,
       lineHeight: 1.6,
     },
     '& th': {
-      fontSize: 14,
       lineHeight: theme.typography.pxToRem(24),
       fontWeight: theme.typography.fontWeightMedium,
       color: theme.palette.text.primary,
@@ -275,8 +170,12 @@ const styles = theme => ({
         textDecoration: 'underline',
       },
     },
-    '& img': {
+    '& img, video': {
       maxWidth: '100%',
+    },
+    '& img': {
+      // Avoid layout jump
+      display: 'inline-block',
     },
     '& hr': {
       height: 1,
@@ -285,32 +184,46 @@ const styles = theme => ({
       flexShrink: 0,
       backgroundColor: theme.palette.divider,
     },
+    '& kbd': {
+      // Style taken from GitHub
+      padding: '2px 5px',
+      font: '11px Consolas,Liberation Mono,Menlo,monospace',
+      lineHeight: '10px',
+      color: '#444d56',
+      verticalAlign: 'middle',
+      backgroundColor: '#fafbfc',
+      border: '1px solid #d1d5da',
+      borderRadius: 3,
+      boxShadow: 'inset 0 -1px 0 #d1d5da',
+    },
   },
 });
+const useStyles = makeStyles(styles, { name: 'MarkdownElement', flip: false });
 
-function MarkdownElement(props) {
-  const { classes, className, text, ...other } = props;
+const MarkdownElement = React.forwardRef(function MarkdownElement(props, ref) {
+  const { className, renderedMarkdown, ...other } = props;
+  const classes = useStyles();
+  const more = {};
 
-  const userLanguage = useSelector(state => state.options.userLanguage);
+  if (typeof renderedMarkdown === 'string') {
+    // workaround for https://github.com/facebook/react/issues/17170
+    // otherwise we could just set `dangerouslySetInnerHTML={undefined}`
+    more.dangerouslySetInnerHTML = { __html: renderedMarkdown };
+  }
 
-  // eslint-disable-next-line no-underscore-dangle
-  global.__MARKED_USER_LANGUAGE__ = userLanguage;
-
-  /* eslint-disable react/no-danger */
   return (
     <div
       className={clsx(classes.root, 'markdown-body', className)}
-      dangerouslySetInnerHTML={{ __html: marked(text, markedOptions) }}
+      {...more}
       {...other}
+      ref={ref}
     />
   );
-  /* eslint-enable */
-}
+});
 
 MarkdownElement.propTypes = {
-  classes: PropTypes.object.isRequired,
   className: PropTypes.string,
-  text: PropTypes.string,
+  renderedMarkdown: PropTypes.string,
 };
 
-export default withStyles(styles, { flip: false })(MarkdownElement);
+export default MarkdownElement;

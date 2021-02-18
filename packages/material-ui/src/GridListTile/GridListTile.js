@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import debounce from '../utils/debounce';
@@ -39,7 +39,10 @@ const fit = (imgEl, classes) => {
     return;
   }
 
-  if (imgEl.width / imgEl.height > imgEl.parentNode.offsetWidth / imgEl.parentNode.offsetHeight) {
+  if (
+    imgEl.width / imgEl.height >
+    imgEl.parentElement.offsetWidth / imgEl.parentElement.offsetHeight
+  ) {
     imgEl.classList.remove(...classes.imgFullWidth.split(' '));
     imgEl.classList.add(...classes.imgFullHeight.split(' '));
   } else {
@@ -97,7 +100,7 @@ const GridListTile = React.forwardRef(function GridListTile(props, ref) {
   return (
     <Component className={clsx(classes.root, className)} ref={ref} {...other}>
       <div className={classes.tile}>
-        {React.Children.map(children, child => {
+        {React.Children.map(children, (child) => {
           if (!React.isValidElement(child)) {
             return null;
           }
@@ -137,9 +140,9 @@ GridListTile.propTypes = {
   cols: PropTypes.number,
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * Height of the tile in number of grid cells.
    */

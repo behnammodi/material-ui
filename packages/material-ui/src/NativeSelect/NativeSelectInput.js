@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { refType } from '@material-ui/utils';
@@ -35,7 +35,11 @@ const NativeSelectInput = React.forwardRef(function NativeSelectInput(props, ref
         {...other}
       />
       {props.multiple ? null : (
-        <IconComponent className={clsx(classes.icon, classes[`icon${capitalize(variant)}`])} />
+        <IconComponent
+          className={clsx(classes.icon, classes[`icon${capitalize(variant)}`], {
+            [classes.disabled]: disabled,
+          })}
+        />
       )}
     </React.Fragment>
   );
@@ -63,7 +67,7 @@ NativeSelectInput.propTypes = {
   /**
    * The icon that displays the arrow.
    */
-  IconComponent: PropTypes.elementType,
+  IconComponent: PropTypes.elementType.isRequired,
   /**
    * Use that prop to pass a ref to the native select element.
    * @deprecated

@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
 
-const BootstrapInput = withStyles(theme => ({
+const BootstrapInput = withStyles((theme) => ({
   root: {
     'label + &': {
       marginTop: theme.spacing(3),
@@ -42,11 +42,7 @@ const BootstrapInput = withStyles(theme => ({
   },
 }))(InputBase);
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
+const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
@@ -55,21 +51,23 @@ const useStyles = makeStyles(theme => ({
 export default function CustomizedSelects() {
   const classes = useStyles();
   const [age, setAge] = React.useState('');
-  const handleChange = event => {
+  const handleChange = (event) => {
     setAge(event.target.value);
   };
   return (
-    <form className={classes.root} autoComplete="off">
+    <div>
       <FormControl className={classes.margin}>
-        <InputLabel htmlFor="age-customized-input">Age</InputLabel>
-        <BootstrapInput id="age-customized-input" />
+        <InputLabel htmlFor="demo-customized-textbox">Age</InputLabel>
+        <BootstrapInput id="demo-customized-textbox" />
       </FormControl>
       <FormControl className={classes.margin}>
-        <InputLabel htmlFor="age-customized-select">Age</InputLabel>
+        <InputLabel id="demo-customized-select-label">Age</InputLabel>
         <Select
+          labelId="demo-customized-select-label"
+          id="demo-customized-select"
           value={age}
           onChange={handleChange}
-          input={<BootstrapInput name="age" id="age-customized-select" />}
+          input={<BootstrapInput />}
         >
           <MenuItem value="">
             <em>None</em>
@@ -80,18 +78,19 @@ export default function CustomizedSelects() {
         </Select>
       </FormControl>
       <FormControl className={classes.margin}>
-        <InputLabel htmlFor="age-customized-native-simple">Age</InputLabel>
+        <InputLabel htmlFor="demo-customized-select-native">Age</InputLabel>
         <NativeSelect
+          id="demo-customized-select-native"
           value={age}
           onChange={handleChange}
-          input={<BootstrapInput name="age" id="age-customized-native-simple" />}
+          input={<BootstrapInput />}
         >
-          <option value="" />
+          <option aria-label="None" value="" />
           <option value={10}>Ten</option>
           <option value={20}>Twenty</option>
           <option value={30}>Thirty</option>
         </NativeSelect>
       </FormControl>
-    </form>
+    </div>
   );
 }

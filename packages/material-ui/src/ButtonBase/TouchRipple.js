@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup } from 'react-transition-group';
 import clsx from 'clsx';
@@ -8,7 +8,7 @@ import Ripple from './Ripple';
 const DURATION = 550;
 export const DELAY_RIPPLE = 80;
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     overflow: 'hidden',
@@ -123,10 +123,10 @@ const TouchRipple = React.forwardRef(function TouchRipple(props, ref) {
   }, []);
 
   const startCommit = React.useCallback(
-    params => {
+    (params) => {
       const { pulsate, rippleX, rippleY, rippleSize, cb } = params;
 
-      setRipples(oldRipples => [
+      setRipples((oldRipples) => [
         ...oldRipples,
         <Ripple
           key={nextKey.current}
@@ -184,8 +184,7 @@ const TouchRipple = React.forwardRef(function TouchRipple(props, ref) {
         rippleX = Math.round(rect.width / 2);
         rippleY = Math.round(rect.height / 2);
       } else {
-        const clientX = event.clientX ? event.clientX : event.touches[0].clientX;
-        const clientY = event.clientY ? event.clientY : event.touches[0].clientY;
+        const { clientX, clientY } = event.touches ? event.touches[0] : event;
         rippleX = Math.round(clientX - rect.left);
         rippleY = Math.round(clientY - rect.top);
       }
@@ -207,17 +206,22 @@ const TouchRipple = React.forwardRef(function TouchRipple(props, ref) {
 
       // Touche devices
       if (event.touches) {
-        // Prepare the ripple effect.
-        startTimerCommit.current = () => {
-          startCommit({ pulsate, rippleX, rippleY, rippleSize, cb });
-        };
-        // Delay the execution of the ripple effect.
-        startTimer.current = setTimeout(() => {
-          if (startTimerCommit.current) {
-            startTimerCommit.current();
-            startTimerCommit.current = null;
-          }
-        }, DELAY_RIPPLE); // We have to make a tradeoff with this value.
+        // check that this isn't another touchstart due to multitouch
+        // otherwise we will only clear a single timer when unmounting while two
+        // are running
+        if (startTimerCommit.current === null) {
+          // Prepare the ripple effect.
+          startTimerCommit.current = () => {
+            startCommit({ pulsate, rippleX, rippleY, rippleSize, cb });
+          };
+          // Delay the execution of the ripple effect.
+          startTimer.current = setTimeout(() => {
+            if (startTimerCommit.current) {
+              startTimerCommit.current();
+              startTimerCommit.current = null;
+            }
+          }, DELAY_RIPPLE); // We have to make a tradeoff with this value.
+        }
       } else {
         startCommit({ pulsate, rippleX, rippleY, rippleSize, cb });
       }
@@ -246,7 +250,7 @@ const TouchRipple = React.forwardRef(function TouchRipple(props, ref) {
 
     startTimerCommit.current = null;
 
-    setRipples(oldRipples => {
+    setRipples((oldRipples) => {
       if (oldRipples.length > 0) {
         return oldRipples.slice(1);
       }
@@ -274,12 +278,6 @@ const TouchRipple = React.forwardRef(function TouchRipple(props, ref) {
   );
 });
 
-// TODO cleanup after https://github.com/reactjs/react-docgen/pull/378 is released
-function withMuiName(Component) {
-  Component.muiName = 'MuiTouchRipple';
-  return Component;
-}
-
 TouchRipple.propTypes = {
   /**
    * If `true`, the ripple starts at the center of the component
@@ -297,6 +295,4 @@ TouchRipple.propTypes = {
   className: PropTypes.string,
 };
 
-export default withStyles(styles, { flip: false, name: 'MuiTouchRipple' })(
-  withMuiName(React.memo(TouchRipple)),
-);
+export default withStyles(styles, { flip: false, name: 'MuiTouchRipple' })(React.memo(TouchRipple));

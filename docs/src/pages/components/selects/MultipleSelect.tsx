@@ -12,10 +12,6 @@ import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
@@ -88,17 +84,19 @@ export default function MultipleSelect() {
   };
 
   return (
-    <div className={classes.root}>
+    <div>
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="select-multiple">Name</InputLabel>
+        <InputLabel id="demo-mutiple-name-label">Name</InputLabel>
         <Select
+          labelId="demo-mutiple-name-label"
+          id="demo-mutiple-name"
           multiple
           value={personName}
           onChange={handleChange}
-          input={<Input id="select-multiple" />}
+          input={<Input />}
           MenuProps={MenuProps}
         >
-          {names.map(name => (
+          {names.map((name) => (
             <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
               {name}
             </MenuItem>
@@ -106,16 +104,18 @@ export default function MultipleSelect() {
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="select-multiple-checkbox">Tag</InputLabel>
+        <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
         <Select
+          labelId="demo-mutiple-checkbox-label"
+          id="demo-mutiple-checkbox"
           multiple
           value={personName}
           onChange={handleChange}
-          input={<Input id="select-multiple-checkbox" />}
-          renderValue={selected => (selected as string[]).join(', ')}
+          input={<Input />}
+          renderValue={(selected) => (selected as string[]).join(', ')}
           MenuProps={MenuProps}
         >
-          {names.map(name => (
+          {names.map((name) => (
             <MenuItem key={name} value={name}>
               <Checkbox checked={personName.indexOf(name) > -1} />
               <ListItemText primary={name} />
@@ -124,22 +124,24 @@ export default function MultipleSelect() {
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="select-multiple-chip">Chip</InputLabel>
+        <InputLabel id="demo-mutiple-chip-label">Chip</InputLabel>
         <Select
+          labelId="demo-mutiple-chip-label"
+          id="demo-mutiple-chip"
           multiple
           value={personName}
           onChange={handleChange}
           input={<Input id="select-multiple-chip" />}
-          renderValue={selected => (
+          renderValue={(selected) => (
             <div className={classes.chips}>
-              {(selected as string[]).map(value => (
+              {(selected as string[]).map((value) => (
                 <Chip key={value} label={value} className={classes.chip} />
               ))}
             </div>
           )}
           MenuProps={MenuProps}
         >
-          {names.map(name => (
+          {names.map((name) => (
             <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
               {name}
             </MenuItem>
@@ -152,8 +154,8 @@ export default function MultipleSelect() {
           displayEmpty
           value={personName}
           onChange={handleChange}
-          input={<Input id="select-multiple-placeholder" />}
-          renderValue={selected => {
+          input={<Input />}
+          renderValue={(selected) => {
             if ((selected as string[]).length === 0) {
               return <em>Placeholder</em>;
             }
@@ -161,11 +163,12 @@ export default function MultipleSelect() {
             return (selected as string[]).join(', ');
           }}
           MenuProps={MenuProps}
+          inputProps={{ 'aria-label': 'Without label' }}
         >
           <MenuItem disabled value="">
             <em>Placeholder</em>
           </MenuItem>
-          {names.map(name => (
+          {names.map((name) => (
             <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
               {name}
             </MenuItem>
@@ -185,7 +188,7 @@ export default function MultipleSelect() {
             id: 'select-multiple-native',
           }}
         >
-          {names.map(name => (
+          {names.map((name) => (
             <option key={name} value={name}>
               {name}
             </option>

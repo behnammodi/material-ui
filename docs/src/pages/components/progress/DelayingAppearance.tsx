@@ -35,7 +35,7 @@ export default function DelayingAppearance() {
   );
 
   const handleClickLoading = () => {
-    setLoading(prevLoading => !prevLoading);
+    setLoading((prevLoading) => !prevLoading);
   };
 
   const handleClickQuery = () => {
@@ -47,7 +47,7 @@ export default function DelayingAppearance() {
     }
 
     setQuery('progress');
-    timerRef.current = setTimeout(() => {
+    timerRef.current = window.setTimeout(() => {
       setQuery('success');
     }, 2000);
   };

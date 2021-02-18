@@ -1,12 +1,12 @@
-# Advanced
+# Дополнительные параметры
 
-<p class="description">This section covers more advanced usage of @material-ui/core/styles.</p>
+<p class="description">В этом разделе описывается более сложное использование @material-ui/core/styles.</p>
 
 ## Темизация
 
 Add a `ThemeProvider` to the top level of your app to pass a theme down the React component tree. Then, you can access the theme object in style functions.
 
-> This example creates a new theme. See the [theming section](/customization/theming) for how to customize the default Material-UI theme.
+> Этот пример создает объект темы для пользовательских компонентов. Если вы собираетесь использовать какие-либо компоненты Material-UI, вам необходимо использовать метод `createMuiTheme()` который обеспечивает более обширную структуру темы. Зайдите в раздел [темы](/customization/theming/), чтобы научиться создавать свою собственную Material-UI тему.
 
 ```jsx
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -29,11 +29,11 @@ function Theming() {
 
 ### Доступ к теме в компоненте
 
-You might need to access the theme variables inside your React components.
+Вы можете получить доступ к переменным темы внутри ваших React-компонент.
 
 #### `useTheme` hook
 
-For use in function components:
+Для использования в функциональных компонентах:
 
 ```jsx
 import { useTheme } from '@material-ui/core/styles';
@@ -48,7 +48,7 @@ function DeepChild() {
 
 #### `withTheme` HOC
 
-For use in class or function components:
+Для использования в классовых или функциональных компонентах:
 
 ```jsx
 import { withTheme } from '@material-ui/core/styles';
@@ -64,7 +64,7 @@ const DeepChild = withTheme(DeepChildRaw);
 
 ### Вложенные темы
 
-You can nest multiple theme providers. This can be really useful when dealing with different areas of your application that have distinct appearance from each other.
+Вы можете вкладывать несколько theme providers друг в друга. Это может быть очень полезно при работе с различными областями вашего приложения, которые отличаются друг от друга.
 
 ```jsx
 <ThemeProvider theme={outerTheme}>
@@ -88,7 +88,7 @@ You can nest multiple theme providers. This can be really useful when dealing wi
 </ThemeProvider>
 ```
 
-## Overriding styles - `classes` prop
+## Переопределение стилей - `classes` prop
 
 The `makeStyles` (hook generator) and `withStyles` (HOC) APIs allow the creation of multiple style rules per style sheet. Each style rule has its own class name. The class names are provided to the component with the `classes` variable. This is particularly useful when styling nested elements in a component.
 
@@ -166,9 +166,9 @@ function Parent() {
 
 ## JSS plugins
 
-JSS uses plugins to extend its core, allowing you to cherry-pick the features you need, and only pay the performance overhead for what you are using.
+JSS использует плагины для расширения своего ядра, позволяя вам выбирать нужные функции, и нести издержки производительности только за ту функциональность, которую вы используете.
 
-Not all the plugins are available in Material-UI by default. The following (which is a subset of [jss-preset-default](https://cssinjs.org/jss-preset-default/)) are included:
+Не все плагины доступны в Material-UI по умолчанию. Следующее плагины включены по умолчанию (они является частью [jss-preset-default](https://cssinjs.org/jss-preset-default/) ):
 
 - [jss-plugin-rule-value-function](https://cssinjs.org/jss-plugin-rule-value-function/)
 - [jss-plugin-global](https://cssinjs.org/jss-plugin-global/)
@@ -178,7 +178,7 @@ Not all the plugins are available in Material-UI by default. The following (whic
 - [jss-plugin-vendor-prefixer](https://cssinjs.org/jss-plugin-vendor-prefixer/)
 - [jss-plugin-props-sort](https://cssinjs.org/jss-plugin-props-sort/)
 
-Of course, you are free to use additional plugins. Here is an example with the [jss-rtl](https://github.com/alitaheri/jss-rtl) plugin.
+Of course, you are free to use additional plugins. Вот пример с плагином [jss-rtl](https://github.com/alitaheri/jss-rtl).
 
 ```jsx
 import { create } from 'jss';
@@ -189,20 +189,18 @@ const jss = create({
   plugins: [...jssPreset().plugins, rtl()],
 });
 
-function App() {
+export default function App() {
   return (
     <StylesProvider jss={jss}>
       ...
     </StylesProvider>
   );
 }
-
-export default App;
 ```
 
 ## String templates
 
-If you prefer CSS syntax over JSS, you can use the [jss-plugin-template](https://cssinjs.org/jss-plugin-template/) plugin.
+Если вы предпочитаете CSS-синтаксис над JSS, вы можете использовать плагин [jss-plugin-template](https://cssinjs.org/jss-plugin-template/).
 
 ```jsx
 const useStyles = makeStyles({
@@ -219,11 +217,11 @@ const useStyles = makeStyles({
 });
 ```
 
-Note that this doesn't support selectors, or nested rules.
+Обратите внимание, что это решение не поддерживает селекторы или вложенные правила.
 
 {{"demo": "pages/styles/advanced/StringTemplates.js"}}
 
-## CSS injection order
+## Порядок внедрения CSS
 
 > It's **really important** to understand how the CSS specificity is calculated by the browser, as it's one of the key elements to know when overriding styles. You are encouraged to read this MDN paragraph: [How is specificity calculated?](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity#How_is_specificity_calculated)
 
@@ -234,12 +232,18 @@ By default, the style tags are injected **last** in the `<head>` element of the 
 The `StylesProvider` component has an `injectFirst` prop to inject the style tags **first** in the head (less priority):
 
 ```jsx
-import { StylesProvider } from '@material-ui/core/styles';
+*/}
+</StylesProvider>
+      import { StylesProvider } from '@material-ui/core/styles';
 
 <StylesProvider injectFirst>
   {/* Your component tree.
-      Styled components can override Material-UI's styles. */}
+      */}
 </StylesProvider>
+      import { StylesProvider } from '@material-ui/core/styles';
+
+<StylesProvider injectFirst>
+  {/* Your component tree. Styled components can override Material-UI's styles.
 ```
 
 ### `makeStyles` / `withStyles` / `styled`
@@ -247,32 +251,19 @@ import { StylesProvider } from '@material-ui/core/styles';
 The injection of style tags happens in the **same order** as the `makeStyles` / `withStyles` / `styled` invocations. For instance the color red wins in this case:
 
 ```jsx
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { create } from 'jss';
+import { StylesProvider, jssPreset } from '@material-ui/core/styles';
+import rtl from 'jss-rtl'
 
-const useStylesBase = makeStyles({
-  root: {
-    color: 'blue', // 🔵
-  },
+const jss = create({
+  plugins: [...jssPreset().plugins, rtl()],
 });
 
-const useStyles = makeStyles({
-  root: {
-    color: 'red', // 🔴
-  },
-});
-
-export default function MyComponent() {
-  // Order doesn't matter
-  const classes = useStyles();
-  const classesBase = useStylesBase();
-
-  // Order doesn't matter
-  const className = clsx(classes.root, classesBase.root)
-
-  // color: red 🔴 wins.
-  return <div className={className} />;
-}
+export default function App() {
+  return (
+    <StylesProvider jss={jss}>
+      ...
+  However, the class names are often non-deterministic.
 ```
 
 The hook call order and the class name concatenation order **don't matter**.
@@ -302,11 +293,9 @@ const jss = create({
   insertionPoint: 'jss-insertion-point',
 });
 
-function App() {
+export default function App() {
   return <StylesProvider jss={jss}>...</StylesProvider>;
 }
-
-export default App;
 ```
 
 #### Other HTML elements
@@ -324,27 +313,6 @@ export default App;
 import { create } from 'jss';
 import { StylesProvider, jssPreset } from '@material-ui/core/styles';
 
-const jss = create({
-  ...jssPreset(),
-  // Define a custom insertion point that JSS will look for when injecting the styles into the DOM.
-  insertionPoint: document.getElementById('jss-insertion-point'),
-});
-
-function App() {
-  return <StylesProvider jss={jss}>...</StylesProvider>;
-}
-
-export default App;
-```
-
-#### JS createComment
-
-codesandbox.io prevents access to the `<head>` element. To get around this issue, you can use the JavaScript `document.createComment()` API:
-
-```jsx
-import { create } from 'jss';
-import { StylesProvider, jssPreset } from '@material-ui/core/styles';
-
 const styleNode = document.createComment('jss-insertion-point');
 document.head.insertBefore(styleNode, document.head.firstChild);
 
@@ -354,11 +322,34 @@ const jss = create({
   insertionPoint: 'jss-insertion-point',
 });
 
-function App() {
+export default function App() {
   return <StylesProvider jss={jss}>...</StylesProvider>;
 }
+```
 
-export default App;
+#### JS createComment
+
+codesandbox.io prevents access to the `<head>` element. To get around this issue, you can use the JavaScript `document.createComment()` API:
+
+```jsx
+import { create } from 'jss';
+import { StylesProvider, jssPreset } from '@material-ui/core/styles';
+import rtl from 'jss-rtl'
+
+const jss = create({
+  plugins: [...jssPreset().plugins, rtl()],
+});
+
+export default function App() {
+  return (
+    <StylesProvider jss={jss}>
+      ...
+  insertionPoint: 'jss-insertion-point',
+});
+
+export default function App() {
+  return <StylesProvider jss={jss}>...</StylesProvider>;
+}
 ```
 
 ## Server-side rendering
@@ -407,7 +398,7 @@ Refer to [this example project](https://github.com/mui-org/material-ui/blob/mast
 
 The class names are generated by [the class name generator](/styles/api/#creategenerateclassname-options-class-name-generator).
 
-### Default
+### По-умолчанию
 
 By default, the class names generated by `@material-ui/core/styles` are **non-deterministic**; you can't rely on them to stay the same. Let's take the following style as an example:
 

@@ -1,12 +1,14 @@
-# 边距
+# Borders 边框
 
-<p class="description">使用边框实用程序快速设置元素的边框和边框半径的样式。 非常适合图像，按钮或任何其他元素。</p>
+<p class="description">使用边框的辅助功能，您能够快速设置元素的边框和边框圆角（border-radius）的样式。 这非常适合图像，按钮或任何其他元素。</p>
 
-## 描边
+## 边框
 
-使用边框实用程序添加或删除元素的边框。 选择所有边框或一次一个。
+使用边框的辅助功能来添加或删除一个元素的边框。 选择所有边框或一次选择一个。
 
-### 添加剂
+### 添加
+
+{{"demo": "pages/system/borders/BorderAdditive.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box border={1}>…
@@ -16,9 +18,9 @@
 <Box borderLeft={1}>…
 ```
 
-{{"demo": "pages/system/borders/BorderAdditive.js"}}
+### 相减
 
-### 减法
+{{"demo": "pages/system/borders/BorderSubtractive.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box border={0}>…
@@ -28,9 +30,9 @@
 <Box borderLeft={0}>…
 ```
 
-{{"demo": "pages/system/borders/BorderSubtractive.js"}}
+## 边框颜色
 
-## 描边颜色
+{{"demo": "pages/system/borders/BorderColor.js", "defaultCodeOpen": false}}
 
 ```jsx
 <Box borderColor="primary.main">…
@@ -40,9 +42,9 @@
 <Box borderColor="text.primary">…
 ```
 
-{{"demo": "pages/system/borders/BorderColor.js"}}
+## Border-radius
 
-## 边界半径
+{{"demo": "pages/system/borders/BorderRadius.js", "defaultCodeOpen": false}}
 
 ```jsx
 <Box borderRadius="50%">…
@@ -50,20 +52,18 @@
 <Box borderRadius={16}>…
 ```
 
-{{"demo": "pages/system/borders/BorderRadius.js"}}
-
 ## API
 
 ```js
 import { borders } from '@material-ui/system';
 ```
 
-| 导入名称           | Prop           | CSS 属性          | Theme key                                                        |
+| 导入名称           | 属性             | CSS 属性          | Theme key                                                        |
 |:-------------- |:-------------- |:--------------- |:---------------------------------------------------------------- |
 | `border`       | `border`       | `border`        | `borders`                                                        |
 | `borderTop`    | `borderTop`    | `border-top`    | `borders`                                                        |
 | `borderLeft`   | `borderLeft`   | `border-left`   | `borders`                                                        |
 | `borderRight`  | `borderRight`  | `border-right`  | `borders`                                                        |
 | `borderBottom` | `borderBottom` | `border-bottom` | `borders`                                                        |
-| `borderColor`  | `borderColor`  | `border-color`  | [`palette`](/customization/default-theme/?expend-path=$.palette) |
-| `borderRadius` | `borderRadius` | `border-radius` | [`shape`](/customization/default-theme/?expend-path=$.shape)     |
+| `borderColor`  | `borderColor`  | `border-color`  | [`palette`](/customization/default-theme/?expand-path=$.palette) |
+| `borderRadius` | `borderRadius` | `border-radius` | [`shape`](/customization/default-theme/?expand-path=$.shape)     |

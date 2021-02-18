@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Skeleton from '@material-ui/lab/Skeleton';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 345,
     margin: theme.spacing(2),
@@ -30,7 +30,7 @@ function Media(props) {
       <CardHeader
         avatar={
           loading ? (
-            <Skeleton variant="circle" width={40} height={40} />
+            <Skeleton animation="wave" variant="circle" width={40} height={40} />
           ) : (
             <Avatar
               alt="Ted talk"
@@ -45,11 +45,17 @@ function Media(props) {
             </IconButton>
           )
         }
-        title={loading ? <Skeleton height={6} width="80%" /> : 'Ted'}
-        subheader={loading ? <Skeleton height={6} width="40%" /> : '5 hours ago'}
+        title={
+          loading ? (
+            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} />
+          ) : (
+            'Ted'
+          )
+        }
+        subheader={loading ? <Skeleton animation="wave" height={10} width="40%" /> : '5 hours ago'}
       />
       {loading ? (
-        <Skeleton variant="rect" className={classes.media} />
+        <Skeleton animation="wave" variant="rect" className={classes.media} />
       ) : (
         <CardMedia
           className={classes.media}
@@ -61,8 +67,8 @@ function Media(props) {
       <CardContent>
         {loading ? (
           <React.Fragment>
-            <Skeleton height={6} />
-            <Skeleton height={6} width="80%" />
+            <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+            <Skeleton animation="wave" height={10} width="80%" />
           </React.Fragment>
         ) : (
           <Typography variant="body2" color="textSecondary" component="p">

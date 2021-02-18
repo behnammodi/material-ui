@@ -1,11 +1,15 @@
-import React from 'react';
+import * as React from 'react';
+import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import MuiError from '@material-ui/utils/macros/MuiError.macro';
+import ownerDocument from '../utils/ownerDocument';
 import capitalize from '../utils/capitalize';
 import { refType } from '@material-ui/utils';
 import Menu from '../Menu/Menu';
 import { isFilled } from '../InputBase/utils';
 import useForkRef from '../utils/useForkRef';
+import useControlled from '../utils/useControlled';
 
 function areEqualValues(a, b) {
   if (typeof b === 'object' && b !== null) {
@@ -24,15 +28,18 @@ function isEmpty(display) {
  */
 const SelectInput = React.forwardRef(function SelectInput(props, ref) {
   const {
+    'aria-label': ariaLabel,
     autoFocus,
     autoWidth,
     children,
     classes,
     className,
+    defaultValue,
     disabled,
     displayEmpty,
     IconComponent,
     inputRef: inputRefProp,
+    labelId,
     MenuProps = {},
     multiple,
     name,
@@ -44,15 +51,20 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     open: openProp,
     readOnly,
     renderValue,
-    required,
-    SelectDisplayProps,
+    SelectDisplayProps = {},
     tabIndex: tabIndexProp,
     // catching `type` from Input which makes no sense for SelectInput
     type,
-    value,
+    value: valueProp,
     variant = 'standard',
     ...other
   } = props;
+
+  const [value, setValue] = useControlled({
+    controlled: valueProp,
+    default: defaultValue,
+    name: 'Select',
+  });
 
   const inputRef = React.useRef(null);
   const [displayNode, setDisplayNode] = React.useState(null);
@@ -79,16 +91,32 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     }
   }, [autoFocus, displayNode]);
 
+  React.useEffect(() => {
+    if (displayNode) {
+      const label = ownerDocument(displayNode).getElementById(labelId);
+      if (label) {
+        const handler = () => {
+          if (getSelection().isCollapsed) {
+            displayNode.focus();
+          }
+        };
+        label.addEventListener('click', handler);
+        return () => {
+          label.removeEventListener('click', handler);
+        };
+      }
+    }
+
+    return undefined;
+  }, [labelId, displayNode]);
+
   const update = (open, event) => {
     if (open) {
       if (onOpen) {
         onOpen(event);
       }
-    } else {
-      displayNode.focus();
-      if (onClose) {
-        onClose(event);
-      }
+    } else if (onClose) {
+      onClose(event);
     }
 
     if (!isOpenControlled) {
@@ -97,41 +125,78 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     }
   };
 
-  const handleClick = event => {
+  const handleMouseDown = (event) => {
+    // Ignore everything but left-click
+    if (event.button !== 0) {
+      return;
+    }
+    // Hijack the default focus behavior.
+    event.preventDefault();
+    displayNode.focus();
+
     update(true, event);
   };
 
-  const handleClose = event => {
+  const handleClose = (event) => {
     update(false, event);
   };
 
-  const handleItemClick = child => event => {
-    if (!multiple) {
-      update(false, event);
+  const childrenArray = React.Children.toArray(children);
+
+  // Support autofill.
+  const handleChange = (event) => {
+    const index = childrenArray.map((child) => child.props.value).indexOf(event.target.value);
+
+    if (index === -1) {
+      return;
     }
 
+    const child = childrenArray[index];
+    setValue(child.props.value);
+
     if (onChange) {
-      let newValue;
-
-      if (multiple) {
-        newValue = Array.isArray(value) ? [...value] : [];
-        const itemIndex = value.indexOf(child.props.value);
-        if (itemIndex === -1) {
-          newValue.push(child.props.value);
-        } else {
-          newValue.splice(itemIndex, 1);
-        }
-      } else {
-        newValue = child.props.value;
-      }
-
-      event.persist();
-      event.target = { value: newValue, name };
       onChange(event, child);
     }
   };
 
-  const handleKeyDown = event => {
+  const handleItemClick = (child) => (event) => {
+    if (!multiple) {
+      update(false, event);
+    }
+
+    let newValue;
+
+    if (multiple) {
+      newValue = Array.isArray(value) ? value.slice() : [];
+      const itemIndex = value.indexOf(child.props.value);
+      if (itemIndex === -1) {
+        newValue.push(child.props.value);
+      } else {
+        newValue.splice(itemIndex, 1);
+      }
+    } else {
+      newValue = child.props.value;
+    }
+
+    if (child.props.onClick) {
+      child.props.onClick(event);
+    }
+
+    if (value === newValue) {
+      return;
+    }
+
+    setValue(newValue);
+
+    if (onChange) {
+      event.persist();
+      // Preact support, target is read only property on a native event.
+      Object.defineProperty(event, 'target', { writable: true, value: { value: newValue, name } });
+      onChange(event, child);
+    }
+  };
+
+  const handleKeyDown = (event) => {
     if (!readOnly) {
       const validKeys = [
         ' ',
@@ -151,11 +216,12 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
 
   const open = displayNode !== null && (isOpenControlled ? openProp : openState);
 
-  const handleBlur = event => {
+  const handleBlur = (event) => {
     // if open event.stopImmediatePropagation
     if (!open && onBlur) {
       event.persist();
-      event.target = { value, name };
+      // Preact support, target is read only property on a native event.
+      Object.defineProperty(event, 'target', { writable: true, value: { value, name } });
       onBlur(event);
     }
   };
@@ -169,7 +235,7 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
   let foundMatch = false;
 
   // No need to display any value if the field is empty.
-  if (isFilled(props) || displayEmpty) {
+  if (isFilled({ value }) || displayEmpty) {
     if (renderValue) {
       display = renderValue(value);
     } else {
@@ -177,16 +243,16 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     }
   }
 
-  const items = React.Children.map(children, child => {
+  const items = childrenArray.map((child) => {
     if (!React.isValidElement(child)) {
       return null;
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      if (child.type === React.Fragment) {
+      if (isFragment(child)) {
         console.error(
           [
-            "Material-UI: the Select component doesn't accept a Fragment as a child.",
+            "Material-UI: The Select component doesn't accept a Fragment as a child.",
             'Consider providing an array instead.',
           ].join('\n'),
         );
@@ -197,13 +263,13 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
 
     if (multiple) {
       if (!Array.isArray(value)) {
-        throw new Error(
-          'Material-UI: the `value` prop must be an array ' +
+        throw new MuiError(
+          'Material-UI: The `value` prop must be an array ' +
             'when using the `Select` component with `multiple`.',
         );
       }
 
-      selected = value.some(v => areEqualValues(v, child.props.value));
+      selected = value.some((v) => areEqualValues(v, child.props.value));
       if (selected && computeDisplay) {
         displayMultiple.push(child.props.children);
       }
@@ -221,6 +287,18 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     return React.cloneElement(child, {
       'aria-selected': selected ? 'true' : undefined,
       onClick: handleItemClick(child),
+      onKeyUp: (event) => {
+        if (event.key === ' ') {
+          // otherwise our MenuItems dispatches a click event
+          // it's not behavior of the native <option> and causes
+          // the select to close immediately since we open on space keydown
+          event.preventDefault();
+        }
+
+        if (child.props.onKeyUp) {
+          child.props.onKeyUp(event);
+        }
+      },
       role: 'option',
       selected,
       value: undefined, // The value is most likely not a valid HTML attribute.
@@ -232,18 +310,23 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
       if (!foundMatch && !multiple && value !== '') {
-        const values = React.Children.toArray(children).map(child => child.props.value);
+        const values = childrenArray.map((child) => child.props.value);
         console.warn(
           [
-            `Material-UI: you have provided an out-of-range value \`${value}\` for the select ${
+            `Material-UI: You have provided an out-of-range value \`${value}\` for the select ${
               name ? `(name="${name}") ` : ''
             }component.`,
             "Consider providing a value that matches one of the available options or ''.",
-            `The available values are ${values.join(', ') || '""'}.`,
+            `The available values are ${
+              values
+                .filter((x) => x != null)
+                .map((x) => `\`${x}\``)
+                .join(', ') || '""'
+            }.`,
           ].join('\n'),
         );
       }
-    }, [foundMatch, children, multiple, name, value]);
+    }, [foundMatch, childrenArray, multiple, name, value]);
   }
 
   if (computeDisplay) {
@@ -264,6 +347,8 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     tabIndex = disabled ? null : 0;
   }
 
+  const buttonId = SelectDisplayProps.id || (name ? `mui-component-select-${name}` : undefined);
+
   return (
     <React.Fragment>
       <div
@@ -278,19 +363,20 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
           className,
         )}
         ref={setDisplayNode}
-        data-mui-test="SelectDisplay"
         tabIndex={tabIndex}
         role="button"
+        aria-disabled={disabled ? 'true' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="listbox"
-        aria-owns={open ? `menu-${name || ''}` : undefined}
+        aria-label={ariaLabel}
+        aria-labelledby={[labelId, buttonId].filter(Boolean).join(' ') || undefined}
         onKeyDown={handleKeyDown}
-        onClick={disabled || readOnly ? null : handleClick}
+        onMouseDown={disabled || readOnly ? null : handleMouseDown}
         onBlur={handleBlur}
         onFocus={onFocus}
-        // The id can help with end-to-end testing automation.
-        id={name ? `select-${name}` : undefined}
         {...SelectDisplayProps}
+        // The id is required for proper a11y
+        id={buttonId}
       >
         {/* So the vertical align positioning algorithm kicks in. */}
         {isEmpty(display) ? (
@@ -304,11 +390,19 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
         value={Array.isArray(value) ? value.join(',') : value}
         name={name}
         ref={inputRef}
-        type="hidden"
+        aria-hidden
+        onChange={handleChange}
+        tabIndex={-1}
+        className={classes.nativeInput}
         autoFocus={autoFocus}
         {...other}
       />
-      <IconComponent className={clsx(classes.icon, classes[`icon${capitalize(variant)}`])} />
+      <IconComponent
+        className={clsx(classes.icon, classes[`icon${capitalize(variant)}`], {
+          [classes.iconOpen]: open,
+          [classes.disabled]: disabled,
+        })}
+      />
       <Menu
         id={`menu-${name || ''}`}
         anchorEl={displayNode}
@@ -316,6 +410,7 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
         onClose={handleClose}
         {...MenuProps}
         MenuListProps={{
+          'aria-labelledby': labelId,
           role: 'listbox',
           disableListWrap: true,
           ...MenuProps.MenuListProps,
@@ -338,9 +433,13 @@ SelectInput.propTypes = {
   /**
    * @ignore
    */
+  'aria-label': PropTypes.string,
+  /**
+   * @ignore
+   */
   autoFocus: PropTypes.bool,
   /**
-   * If true, the width of the popover will automatically be set according to the items inside the
+   * If `true`, the width of the popover will automatically be set according to the items inside the
    * menu, otherwise it will be at least the width of the select input.
    */
   autoWidth: PropTypes.bool,
@@ -359,6 +458,10 @@ SelectInput.propTypes = {
    */
   className: PropTypes.string,
   /**
+   * The default element value. Use when the component is not controlled.
+   */
+  defaultValue: PropTypes.any,
+  /**
    * If `true`, the select will be disabled.
    */
   disabled: PropTypes.bool,
@@ -376,11 +479,16 @@ SelectInput.propTypes = {
    */
   inputRef: refType,
   /**
+   * The ID of an element that acts as an additional label. The Select will
+   * be labelled by the additional label and the selected value.
+   */
+  labelId: PropTypes.string,
+  /**
    * Props applied to the [`Menu`](/api/menu/) element.
    */
   MenuProps: PropTypes.object,
   /**
-   * If true, `value` must be an array and the menu will support multiple selections.
+   * If `true`, `value` must be an array and the menu will support multiple selections.
    */
   multiple: PropTypes.bool,
   /**
@@ -428,14 +536,10 @@ SelectInput.propTypes = {
   /**
    * Render the selected value.
    *
-   * @param {*} value The `value` provided to the component.
-   * @returns {ReactElement}
+   * @param {any} value The `value` provided to the component.
+   * @returns {ReactNode}
    */
   renderValue: PropTypes.func,
-  /**
-   * @ignore
-   */
-  required: PropTypes.bool,
   /**
    * Props applied to the clickable div element.
    */
@@ -451,7 +555,7 @@ SelectInput.propTypes = {
   /**
    * The input value.
    */
-  value: PropTypes.any.isRequired,
+  value: PropTypes.any,
   /**
    * The variant to use.
    */

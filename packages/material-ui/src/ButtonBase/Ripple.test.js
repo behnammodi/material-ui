@@ -1,5 +1,5 @@
-import React from 'react';
-import { assert, expect } from 'chai';
+import * as React from 'react';
+import { expect } from 'chai';
 import { spy, useFakeTimers } from 'sinon';
 import { getClasses } from '@material-ui/core/test-utils';
 import { createClientRender } from 'test/utils/createClientRender';
@@ -8,7 +8,7 @@ import Ripple from './Ripple';
 
 describe('<Ripple />', () => {
   let classes;
-  const render = createClientRender({ strict: true });
+  const render = createClientRender();
 
   before(() => {
     classes = getClasses(<TouchRipple />);
@@ -116,16 +116,16 @@ describe('<Ripple />', () => {
     it('handleExit should trigger a timer', () => {
       wrapper.setProps({ in: false });
       clock.tick(549);
-      assert.strictEqual(callbackSpy.callCount, 0);
+      expect(callbackSpy.callCount).to.equal(0);
       clock.tick(1);
-      assert.strictEqual(callbackSpy.callCount, 1);
+      expect(callbackSpy.callCount).to.equal(1);
     });
 
     it('unmount should defuse the handleExit timer', () => {
       wrapper.setProps({ in: false });
       wrapper.unmount();
       clock.tick(550);
-      assert.strictEqual(callbackSpy.callCount, 0);
+      expect(callbackSpy.callCount).to.equal(0);
     });
   });
 });

@@ -1,8 +1,12 @@
-# Shadows
+# Sombras
 
-<p class="description">Add or remove shadows to elements with box-shadow utilities.</p>
+<p class="description">Añade o elimina sombras de elementos con las propiedades de box-shawdow.</p>
 
 ## Ejemplo
+
+Los asistentes te permiten controlar la profundidad relativa, o la distancia entre dos superficies a lo largo del eje-z. Por defecto, hay 25 niveles de elevación.
+
+{{"demo": "pages/system/shadows/Demo.js", "defaultCodeOpen": false, "bg": true}}
 
 ```jsx
 <Box boxShadow={0}>…
@@ -10,8 +14,6 @@
 <Box boxShadow={2}>…
 <Box boxShadow={3}>…
 ```
-
-{{"demo": "pages/system/shadows/Demo.js"}}
 
 ## API
 

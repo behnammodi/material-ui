@@ -3,7 +3,7 @@ title: Radio Button React-Komponente
 components: Radio, RadioGroup, FormControl, FormLabel, FormControlLabel
 ---
 
-# Optionsfelder (Radio Buttons)
+# Auswahlfeld
 
 <p class="description">Optionsfelder ermöglichen die Auswahl einer einzelnen Option aus einem Set.</p>
 
@@ -11,21 +11,31 @@ Verwenden Sie die [Optionsfelder](https://material.io/design/components/selectio
 
 Bei Optionsschaltflächen sollte die am häufigsten verwendete Option standardmäßig ausgewählt sein.
 
+## RadioGroup
+
 `RadioGroup` ist ein hilfreicher Wrapper zur Gruppierung von `Optionsfelder` Komponenten, der eine einfachere API und den richtigen Zugriff der Tastatur auf die Gruppe bietet.
 
 {{"demo": "pages/components/radio-buttons/RadioButtonsGroup.js"}}
 
-## Alleinstehende Schaltflächen
+To lay out the buttons horizontally, set the `row` prop: `<RadioGroup row />`.
 
-Ein `Optionsfeld` kann auch ohne Wrapper einzeln verwendet werden.
+## Standalone radio buttons
+
+`Radio` can also be used standalone, without the RadioGroup wrapper.
 
 {{"demo": "pages/components/radio-buttons/RadioButtons.js"}}
 
 ## Etikettenplatzierung
 
-Sie können die Platzierung des Etiketts ändern:
+You can change the placement of the label with the `FormControlLabel` component's `labelPlacement` prop:
 
-{{"demo": "pages/components/radio-buttons/FormControlLabelPosition.js"}}
+{{"demo": "pages/components/radio-buttons/FormControlLabelPlacement.js"}}
+
+## Show error
+
+In general, radio buttons should have a value selected by default. If this is not the case, you can display an error if no value is selected when the form is submitted:
+
+{{"demo": "pages/components/radio-buttons/ErrorRadios.js"}}
 
 ## Customized radios
 

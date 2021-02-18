@@ -1,9 +1,9 @@
 ---
-title: Select React component
+title: React Select component
 components: Select, NativeSelect
 ---
 
-# Selects
+# Liste à choix simple
 
 <p class="description">Select components are used for collecting user provided information from a list of options.</p>
 
@@ -13,11 +13,21 @@ Menus are positioned over their emitting elements such that the currently select
 
 {{"demo": "pages/components/selects/SimpleSelect.js"}}
 
+## Advanced features
+
+The Select component is meant to be interchangeable with a native `<select>` element.
+
+If you are looking for more advanced features, like combobox, multiselect, autocomplete, async or creatable support, head to the [`Autocomplete` component](/components/autocomplete/). C'est censé être une version améliorée de la "react-select" et de "downshift".
+
 ## Native Select
 
 As the user experience can be improved on mobile using the native select of the platform, we allow such pattern.
 
 {{"demo": "pages/components/selects/NativeSelects.js"}}
+
+## Text Fields (Champs de texte)
+
+Le composant d'encapsulation `TextField` est un contrôle de formulaire complet comprenant une étiquette, une entrée et un texte d'aide. The first step is to style the `InputBase` component.
 
 ## Customized selects
 
@@ -26,6 +36,8 @@ Here are some examples of customizing the component. Vous pouvez en savoir plus 
 The first step is to style the `InputBase` component. Once it's styled, you can either use it directly as a text field or provide it to the select `input` property to have a `select` field.
 
 {{"demo": "pages/components/selects/CustomizedSelects.js"}}
+
+🎨 Si vous cherchez de l'inspiration, vous pouvez consulter les [exemples de personnalisation de MUI Treasury](https://mui-treasury.com/styles/select).
 
 ## Multiple Select
 
@@ -45,6 +57,39 @@ Bien que cela soit découragé par la spécification Material Design, vous pouve
 
 {{"demo": "pages/components/selects/DialogSelect.js"}}
 
-## Text Fields (Champs de texte)
+## Grouping
 
-Le composant d'encapsulation `TextField` est un contrôle de formulaire complet comprenant une étiquette, une entrée et un texte d'aide. You can find an example with the select mode [in this section](/components/text-fields/#textfield).
+Display categories with the `ListSubheader` component or the native `<optgroup>` element.
+
+{{"demo": "pages/components/selects/GroupedSelect.js"}}
+
+## Accessibilité
+
+To properly label your `Select` input you need an extra element with an `id` that contains a label. That `id` needs to match the `labelId` of the `Select` e.g.
+
+```jsx
+<InputLabel id="label">Age</InputLabel>
+<Select labelId="label" id="select" value="20">
+  <MenuItem value="10">Ten</MenuItem>
+  <MenuItem value="20">Twenty</MenuItem>
+</Select>
+```
+
+Alternatively a `TextField` with an `id` and `label` creates the proper markup and ids for you:
+
+```jsx
+<TextField id="select" label="Age" value="20" select>
+  <MenuItem value="10">Ten</MenuItem>
+  <MenuItem value="20">Twenty</MenuItem>
+</TextField>
+```
+
+For a [native select](#native-select), you should mention a label by giving the value of the `id` attribute of the select element to the `InputLabel`'s `htmlFor` attribute:
+
+```jsx
+<InputLabel htmlFor="select">Age</InputLabel>
+<NativeSelect id="select">
+  <option value="10">Ten</option>
+  <option value="20">Twenty</option>
+</NativeSelect>
+```

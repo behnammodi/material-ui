@@ -15,14 +15,14 @@ const useStyles = makeStyles({
   },
 });
 
-function Languages() {
+export default function Languages() {
   const classes = useStyles();
 
   return (
     <Paper className={classes.root}>
       <Table>
         <TableBody>
-          {LANGUAGES_LABEL.map(language => (
+          {LANGUAGES_LABEL.map((language) => (
             <TableRow key={language.code}>
               <TableCell>
                 <Typography variant="body2">{language.text}</Typography>
@@ -44,5 +44,3 @@ function Languages() {
     </Paper>
   );
 }
-
-export default Languages;

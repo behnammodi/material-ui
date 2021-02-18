@@ -1,11 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import formControlState from '../FormControl/formControlState';
 import useFormControl from '../FormControl/useFormControl';
+import capitalize from '../utils/capitalize';
 import withStyles from '../styles/withStyles';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     color: theme.palette.text.secondary,
@@ -13,13 +14,19 @@ export const styles = theme => ({
     lineHeight: 1,
     padding: 0,
     '&$focused': {
-      color: theme.palette.primary[theme.palette.type === 'light' ? 'dark' : 'light'],
+      color: theme.palette.primary.main,
     },
     '&$disabled': {
       color: theme.palette.text.disabled,
     },
     '&$error': {
       color: theme.palette.error.main,
+    },
+  },
+  /* Styles applied to the root element if the color is secondary. */
+  colorSecondary: {
+    '&$focused': {
+      color: theme.palette.secondary.main,
     },
   },
   /* Pseudo-class applied to the root element if `focused={true}`. */
@@ -44,7 +51,8 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
   const {
     children,
     classes,
-    className: classNameProp,
+    className,
+    color,
     component: Component = 'label',
     disabled,
     error,
@@ -58,13 +66,14 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
   const fcs = formControlState({
     props,
     muiFormControl,
-    states: ['required', 'focused', 'disabled', 'error', 'filled'],
+    states: ['color', 'required', 'focused', 'disabled', 'error', 'filled'],
   });
 
   return (
     <Component
       className={clsx(
         classes.root,
+        classes[`color${capitalize(fcs.color || 'primary')}`],
         {
           [classes.disabled]: fcs.disabled,
           [classes.error]: fcs.error,
@@ -72,7 +81,7 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
           [classes.focused]: fcs.focused,
           [classes.required]: fcs.required,
         },
-        classNameProp,
+        className,
       )}
       ref={ref}
       {...other}
@@ -80,6 +89,7 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
       {children}
       {fcs.required && (
         <span
+          aria-hidden
           className={clsx(classes.asterisk, {
             [classes.error]: fcs.error,
           })}
@@ -92,6 +102,10 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
 });
 
 FormLabel.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * The content of the component.
    */
@@ -100,16 +114,20 @@ FormLabel.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
   className: PropTypes.string,
   /**
-   * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * The color of the component. It supports those theme colors that make sense for this component.
    */
-  component: PropTypes.elementType,
+  color: PropTypes.oneOf(['primary', 'secondary']),
+  /**
+   * The component used for the root node.
+   * Either a string to use a HTML element or a component.
+   */
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * If `true`, the label should be displayed in a disabled state.
    */

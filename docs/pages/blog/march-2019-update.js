@@ -1,7 +1,15 @@
 import React from 'react';
-import MarkdownDocs from 'docs/src/modules/components/MarkdownDocs';
-import markdown from './march-2019-update.md';
+import TopLayoutBlog from 'docs/src/modules/components/TopLayoutBlog';
+import { prepareMarkdown } from 'docs/src/modules/utils/parseMarkdown';
 
-export default function Page() {
-  return <MarkdownDocs markdown={markdown} blog disableAd disableToc disableEdit />;
+const pageFilename = 'blog/march-2019-update';
+const requireRaw = require.context('!raw-loader!./', false, /march-2019-update\.md$/);
+
+export default function Page({ docs }) {
+  return <TopLayoutBlog docs={docs} />;
 }
+
+Page.getInitialProps = () => {
+  const { demos, docs } = prepareMarkdown({ pageFilename, requireRaw });
+  return { demos, docs };
+};

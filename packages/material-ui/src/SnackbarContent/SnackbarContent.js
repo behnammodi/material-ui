@@ -1,18 +1,18 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
 import Paper from '../Paper';
-import Typography from '../Typography';
 import { emphasize } from '../styles/colorManipulator';
 
-export const styles = theme => {
+export const styles = (theme) => {
   const emphasis = theme.palette.type === 'light' ? 0.8 : 0.98;
   const backgroundColor = emphasize(theme.palette.background.default, emphasis);
 
   return {
     /* Styles applied to the root element. */
     root: {
+      ...theme.typography.body2,
       color: theme.palette.getContrastText(backgroundColor),
       backgroundColor,
       display: 'flex',
@@ -46,12 +46,6 @@ const SnackbarContent = React.forwardRef(function SnackbarContent(props, ref) {
 
   return (
     <Paper
-      component={Typography}
-      variant="body2"
-      variantMapping={{
-        body1: 'div',
-        body2: 'div',
-      }}
       role={role}
       square
       elevation={6}
@@ -66,15 +60,19 @@ const SnackbarContent = React.forwardRef(function SnackbarContent(props, ref) {
 });
 
 SnackbarContent.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
-   * The action to display.
+   * The action to display. It renders after the message, at the end of the snackbar.
    */
   action: PropTypes.node,
   /**
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
@@ -84,10 +82,9 @@ SnackbarContent.propTypes = {
    */
   message: PropTypes.node,
   /**
-   * The role of the SnackbarContent. If the Snackbar requires focus
-   * to be closed, the `alertdialog` role should be used instead.
+   * The ARIA role attribute of the element.
    */
-  role: PropTypes.oneOf(['alert', 'alertdialog']),
+  role: PropTypes.string,
 };
 
 export default withStyles(styles, { name: 'MuiSnackbarContent' })(SnackbarContent);

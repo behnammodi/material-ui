@@ -1,5 +1,5 @@
 ---
-title: Composant React Fil d'Ariane
+title: React Breadcrumbs component
 components: Breadcrumbs, Link, Typography
 ---
 
@@ -10,6 +10,12 @@ components: Breadcrumbs, Link, Typography
 ## Fil d'Ariane simple
 
 {{"demo": "pages/components/breadcrumbs/SimpleBreadcrumbs.js"}}
+
+## Dernier fil d'Ariane actif
+
+Garder le dernier fil d'ariane interactif.
+
+{{"demo": "pages/components/breadcrumbs/ActiveLastBreadcrumb.js"}}
 
 ## Séparateur personnalisé
 
@@ -31,15 +37,15 @@ Voici un exemple de personnalisation du composant. Vous pouvez en savoir plus da
 
 {{"demo": "pages/components/breadcrumbs/CustomizedBreadcrumbs.js"}}
 
-## Integration with react-router
+## Intégration avec react-router
 
-{{"demo": "pages/components/breadcrumbs/RouterBreadcrumbs.js"}}
+{{"demo": "pages/components/breadcrumbs/RouterBreadcrumbs.js", "bg": true}}
 
 ## Accessibilité
 
 (WAI-ARIA: https://www.w3.org/TR/wai-aria-practices/#breadcrumb)
 
-Be sure to add a `aria-label` description on the `Breadcrumbs` component.
+Assurez-vous d'ajouter l'attribut `aria-label` sur le composant `Breadcrumbs`.
 
 L'accessibilité de ce composant repose sur les points suivants :
 

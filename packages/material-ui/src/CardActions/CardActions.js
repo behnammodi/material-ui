@@ -1,8 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
-import '../Button'; // So we don't have any override priority issue.
 
 export const styles = {
   /* Styles applied to the root element. */
@@ -13,7 +12,7 @@ export const styles = {
   },
   /* Styles applied to the root element if `disableSpacing={false}`. */
   spacing: {
-    '& > * + *': {
+    '& > :not(:first-child)': {
       marginLeft: 8,
     },
   },
@@ -32,6 +31,10 @@ const CardActions = React.forwardRef(function CardActions(props, ref) {
 });
 
 CardActions.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * The content of the component.
    */
@@ -40,7 +43,7 @@ CardActions.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */

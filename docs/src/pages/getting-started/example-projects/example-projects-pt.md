@@ -20,25 +20,46 @@ O código-fonte deste site de documentação também está incluído no reposit�
 
 ## Projetos de exemplo mais avançados
 
-Se você deseja começar com um exemplo mais completo e real, pode dar uma olhada nos [modelos gratuitos](/getting-started/templates/) ou [temas premium & modelos](https://themes.material-ui.com/) ou:
+Se você quer começar com um exemplo mais completo e do mundo real, você pode dar uma olhada nos [temas premium & templates](https://material-ui.com/store/?utm_source=docs&utm_medium=referral&utm_campaign=example-projects-store) ou:
 
-- [React Most Wanted](https://github.com/TarikHuber/react-most-wanted), which includes:
+### Grátis
+
+- [React Most Wanted](https://github.com/TarikHuber/react-most-wanted):
     
-  - Created with Create React App
-  - Custom Create React App script to start a new project with just a single CLI command
-  - Build for Firebase including Authentication using the official Firebase Web Auth UI
-  - Routing with React Router including error handling (404) and lazy loading
-  - All PWA features included (SW, Notifications, deffered installation prompt and more)
-  - Optimized and scalable performance (all ~100 points on Lighthouse)
-- [React + Material-UI + Firebase](https://github.com/Phoqe/react-material-ui-firebase):
+  - Criado com o Create React App
+  - Script customizado de Create React App para iniciar um novo projeto com somente um único comando CLI
+  - Construído para Firebase incluindo autenticação usando a oficial Firebase Web Auth UI
+  - Roteamento com React Router, incluindo manipulação de erros (404) e carregamento tardio
+  - Todos os recursos PWA incluídos (SW, Notificações, prompt de instalação diferido e muito mais)
+  - Desempenho otimizado e escalável (todos ~100 pontos em Lighthouse)
+- [RMUIF](https://github.com/phoqe/rmuif):
     
-  - Bootstrapped com Create React App, porém, também funcionará em seus boilerplates
-  - Construído sobre o Firebase com Autenticação, Cloud Firestore, Cloud Functions, Armazenamento e Monitoramento de Desempenho funcionando desde o início
-  - Encaminhamento robusto com o React Router, incluindo tratamento de erros
-  - Extensive mobile support with full-screen dialogs and react-swipeable-views for tabs
-- [Material Sense](https://github.com/alexanmtz/material-sense), que inclui:
+  - Bootstrapped com Create React App, as mesmas ferramentas de trabalho de get-go
+  - Construído sobre o Firebase com todos os seus produtos para a web incluído
+  - Roteamento robusto com React Router, incluindo rotas protegidas e manipulação de erros
+  - Suporte móvel extensivo com diálogos de tela cheia e react-swipeable-views para abas
+  - Monitoramento de aplicativos entre plataformas com foco no relatório de erros com Sentry
+- [Material Sense](https://github.com/alexanmtz/material-sense):
     
   - Gráfico usando recharts
   - React Router incluído com um exemplo de navegação
   - Um contêiner docker com um servidor Nginx para compilação de produção
   - Criado com o Create React App
+- [React SaaS Template](https://github.com/dunky11/react-saas-template):
+    
+  - Criado com o Create React App
+  - Apresentando uma página inicial, um blog, uma área para login/registro e um painel de administração
+  - Totalmente roteado usando react-router
+  - De forma tardia, carrega componentes para aumentar o desempenho
+  - Componentes para estatísticas, texto com suporte a emoji, upload de imagens e muito mais...
+
+### Pago
+
+- [ScaffoldHub](https://scaffoldhub.io/?partner=1):
+    
+  - Crie o seu aplicativo completo com esta ferramenta online
+  - Escolha o seu framework e biblioteca (React & Material-UI!)
+  - Escolha seu banco de dados (SQL, MongoDB ou Firestore)
+  - Modele seu banco de dados e aplicativo com uma interface intuitiva
+  - Gere sua aplicação, incluindo um scaffolded de backend completo
+  - Pré-visualize seu aplicativo online, e baixe o código gerado

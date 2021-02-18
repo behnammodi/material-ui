@@ -3,85 +3,113 @@ title: Text Field コンポーネント
 components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, InputBase, InputLabel, OutlinedInput, TextField
 ---
 
-# Text Fields
+# Text Field (テキストフィールド)
 
 <p class="description">Text fieldを使用すると、ユーザーはテキストを入力および編集できます。</p>
 
-[テキストフィールド](https://material. io/design/components/text-fields. html) 使用すると、ユーザーはUIにテキストを入力できます。 通常、フォームとダイアログに表示されます。
+[テキストフィールド](https://material.io/design/components/text-fields.html) 使用すると、ユーザーはUIにテキストを入力できます。 通常、フォームとダイアログに表示されます。 通常、フォームとダイアログに表示されます。 通常、フォームとダイアログに表示されます。 通常、フォームとダイアログに表示されます。 通常、フォームとダイアログに表示されます。
 
 ## TextField
 
 `TextField` ラッパーコンポーネントは、ラベル、入力、およびヘルプテキストを含む完全なフォームコントロールです。
 
-{{"demo": "pages/components/text-fields/TextFields.js"}}
+It supports standard, outlined and filled styling.
 
-> **Note:** ：このバージョンのテキストフィールドについては、[Material Design guidelines](https://material.io/)では説明されていませんが、Material-UIでは引き続きサポートされます。
+{{"demo": "pages/components/text-fields/BasicTextFields.js"}}
 
-## アウトライン (Outlined)
+**Note:** The standard variant of the `TextField` is no longer documented in the [Material Design guidelines](https://material.io/) ([here's why](https://medium.com/google-design/the-evolution-of-material-designs-text-fields-603688b3fe03)), but Material-UI will continue to support it.
 
-`TextField` はアウトラインスタイルをサポートします。
+## Form props
 
-{{"demo": "pages/components/text-fields/OutlinedTextFields.js"}}
+as well as a `helperText` which is used to give context about a field’s input, such as how the input will be used. Standard form attributes are supported e.g. `required`, `disabled`, `type`, etc.
 
-## Filled
+{{"demo": "pages/components/text-fields/FormPropsTextFields.js"}}
 
-`TextField` はアウトラインスタイルをサポートします。
+## Validation
 
-{{"demo": "pages/components/text-fields/FilledTextFields.js"}}
+The `error` prop toggles the error state, the `helperText` prop can then be used to provide feedback to the user about the error.
 
-## コンポーネント
+{{"demo": "pages/components/text-fields/ValidationTextFields.js"}}
 
-`TextField ` は小さなコンポーネントから構成されています。（ [`FormControl`](/api/form-control/)、 [`Input`](/api/input/)、 [`FilledInput`](/api/filled-input/)、 [`InputLabel`](/api/input-label/)、 [`OutlinedInput`](/api/outlined-input/)、 や [`FormHelperText`](/api/form-helper-text/)など ）また、フォーム入力を大幅にカスタマイズするために直接活用できます。
+## Multiline
 
-いくつかのネイティブHTML入力プロパティが `TextField` コンポーネントにないことに気づいたかもしれません。 これは故意です。 コンポーネントは最も使用されているプロパティの面倒を見ます、そしてそれは以下のデモで示される基本的なコンポーネントを使うことはユーザー次第です。 それでも、あなたは使用することができます `inputProps` （及び `InputProps`、 `InputLabelProps` あなたには、いくつかの決まり文句を避けたい場合はプロパティ）。
+The `multiline` prop transforms the text field into a [textarea](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) or a [TextareaAutosize](/components/textarea-autosize/).
 
-{{"demo": "pages/components/text-fields/ComposedTextField.js"}}
+{{"demo": "pages/components/text-fields/MultilineTextFields.js"}}
 
-## Inputs
+## Select (選択)
 
-{{"demo": "pages/components/text-fields/Inputs.js"}}
+The `select` prop makes the text field use the [Select](/components/selects/) component internally.
 
-## カスタマイズされた入力 (Customized inputs)
+{{"demo": "pages/components/text-fields/SelectTextFields.js"}}
 
-コンポーネントのカスタマイズの例を次に示します。 詳細については、 [オーバーライドのドキュメントページ](/customization/components/)を参照してください。
+## Icons
 
-{{"demo": "pages/components/text-fields/CustomizedInputs.js"}}
-
-カスタマイズはCSSにとどまりません。コンポジションを使用してカスタムコンポーネントを作成し、アプリに独特の雰囲気を与えることができます。 以下は、Googleマップに触発された [`InputBase`](/api/input-base/) コンポーネントを使用した例です。
-
-{{"demo": "pages/components/text-fields/CustomizedInputBase.js"}}
-
-## 入力装飾 (Input Adornments)
-
-`Input` は `InputAdornment `提供を許可します。 これらは、入力に接頭辞、接尾辞、またはアクションを追加するために使用できます。 たとえば、アイコンボタンを使用してパスワードを表示または非表示にすることができます。
-
-{{"demo": "pages/components/text-fields/InputAdornments.js"}}
-
-### アイコン付き
-
-アイコンは、先頭または末尾として指定できます。
+There are multiple ways to display an icon with a text field.
 
 {{"demo": "pages/components/text-fields/InputWithIcon.js"}}
 
-### Filled Input Adornments
+### 入力装飾 (Input Adornments)
 
-{{"demo": "pages/components/text-fields/FilledInputAdornments.js"}}
+The main way is with an `InputAdornment`. たとえば、アイコンボタンを使用してパスワードを表示または非表示にすることができます。 たとえば、アイコンボタンを使用してパスワードを表示または非表示にすることができます。 たとえば、アイコンボタンを使用してパスワードを表示または非表示にすることができます。 たとえば、アイコンボタンを使用してパスワードを表示または非表示にすることができます。 This can be used to add a prefix, a suffix or an action to an input.
 
-### Outlined Input Adornments
+{{"demo": "pages/components/text-fields/InputAdornments.js"}}
 
-{{"demo": "pages/components/text-fields/OutlinedInputAdornments.js"}}
+## サイズ
+
+Fancy smaller inputs? `size`propを使用します。
+
+{{"demo": "pages/components/text-fields/TextFieldSizes.js"}}
 
 ## レイアウト
 
-` TextField `、` FormControl `を使用すると、` margin `を指定して入力の縦方向の間隔を変更できます。 `none`（デフォルト）を使用すると`FormControl`に余白は適用されませんが、 `dense`と `normal`は他のスタイルを仕様に合わせて変更します。
+`dense` and `normal` alter other styles to meet the specification. `margin` prop can be used to alter the vertical spacing of inputs. Using `none` (default) will not apply margins to the `FormControl`, whereas `dense` and `normal` will.
 
-{{"demo": "pages/components/text-fields/TextFieldMargins.js"}}
+`fullWidth` can be used to make the input take up the full width of its container.
 
-## 制限
+{{"demo": "pages/components/text-fields/LayoutTextFields.js"}}
+
+## Uncontrolled vs Controlled
+
+The component can be controlled or uncontrolled.
+
+{{"demo": "pages/components/text-fields/StateTextFields.js"}}
+
+## コンポーネント
+
+`TextField` は小さなコンポーネントから構成されています。（ [`FormControl`](/api/form-control/)、 [`Input`](/api/input/)、 [`FilledInput`](/api/filled-input/)、 [`InputLabel`](/api/input-label/)、 [`OutlinedInput`](/api/outlined-input/)、 や [`FormHelperText`](/api/form-helper-text/)など ）また、フォーム入力を大幅にカスタマイズするために直接活用できます。
+
+いくつかのネイティブHTML入力プロパティが `TextField` コンポーネントにないことに気づいたかもしれません。 これは故意です。 コンポーネントは最も使用されているプロパティの面倒を見ます、そしてそれは以下のデモで示される基本的なコンポーネントを使うことはユーザー次第です。 それでも、あなたは使用することができます `inputProps` （及び `InputProps`、 `InputLabelProps` あなたには、いくつかの決まり文句を避けたい場合はプロパティ）。 これは故意です。 コンポーネントは最も使用されているプロパティの面倒を見ます、そしてそれは以下のデモで示される基本的なコンポーネントを使うことはユーザー次第です。 それでも、あなたは使用することができます `inputProps` （及び `InputProps`、 `InputLabelProps` あなたには、いくつかの決まり文句を避けたい場合はプロパティ）。 これは故意です。 コンポーネントは最も使用されているプロパティの面倒を見ます、そしてそれは以下のデモで示される基本的なコンポーネントを使うことはユーザー次第です。 それでも、あなたは使用することができます `inputProps` （及び `InputProps`、 `InputLabelProps` あなたには、いくつかの決まり文句を避けたい場合はプロパティ）。 これは故意です。 コンポーネントは最も使用されているプロパティの面倒を見ます、そしてそれは以下のデモで示される基本的なコンポーネントを使うことはユーザー次第です。 それでも、あなたは使用することができます `inputProps` （及び `InputProps`、 `InputLabelProps` あなたには、いくつかの決まり文句を避けたい場合はプロパティ）。
+
+{{"demo": "pages/components/text-fields/ComposedTextField.js"}}
+
+## 入力
+
+{{"demo": "pages/components/text-fields/Inputs.js"}}
+
+## カラー
+
+The `color` prop changes the highlight color of the text field when focused.
+
+{{"demo": "pages/components/text-fields/ColorTextFields.js"}}
+
+## カスタマイズされた入力 (Customized inputs)
+
+コンポーネントのカスタマイズの例を次に示します。 コンポーネントのカスタマイズの例を次に示します。 コンポーネントのカスタマイズの例を次に示します。 コンポーネントのカスタマイズの例を次に示します。 詳細については、 [オーバーライドのドキュメントページ](/customization/components/)を参照してください。
+
+{{"demo": "pages/components/text-fields/CustomizedInputs.js"}}
+
+カスタマイズはCSSにとどまりません。コンポジションを使用してカスタムコンポーネントを作成し、アプリに独特の雰囲気を与えることができます。 カスタマイズはCSSにとどまりません。コンポジションを使用してカスタムコンポーネントを作成し、アプリに独特の雰囲気を与えることができます。 以下は、Googleマップに触発された [`InputBase`](/api/input-base/) コンポーネントを使用した例です。
+
+{{"demo": "pages/components/text-fields/CustomizedInputBase.js", "bg": true}}
+
+🎨 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/styles/text-field).
+
+## 制限事項
 
 ### シュリンク
 
-入力ラベルの「shrink」状態は必ずしも正しくありません。 入力が何かを表示しているとすぐに入力ラベルは縮小するはずです。 状況によっては、「shrink」状態（数値入力、日時入力、ストライプ入力）を判別できません。 重複があるかもしれません。
+入力ラベルの「shrink」状態は必ずしも正しくありません。 入力が何かを表示しているとすぐに入力ラベルは縮小するはずです。 状況によっては、「shrink」状態（数値入力、日時入力、ストライプ入力）を判別できません。 重複があるかもしれません。 入力が何かを表示しているとすぐに入力ラベルは縮小するはずです。 状況によっては、「shrink」状態（数値入力、日時入力、ストライプ入力）を判別できません。 重複があるかもしれません。 入力が何かを表示しているとすぐに入力ラベルは縮小するはずです。 状況によっては、「shrink」状態（数値入力、日時入力、ストライプ入力）を判別できません。 重複があるかもしれません。
 
 ![シュリンク](/static/images/text-fields/shrink.png)
 
@@ -99,17 +127,17 @@ components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, Inp
 
 ### フローティングラベル
 
-フローティングラベルは絶対位置に配置され、ページのレイアウトには影響しません。 正しく表示するには、入力がラベルよりも大きいことを確認する必要があります。
+フローティングラベルは絶対位置に配置され、ページのレイアウトには影響しません。 正しく表示するには、入力がラベルよりも大きいことを確認する必要があります。 正しく表示するには、入力がラベルよりも大きいことを確認する必要があります。 正しく表示するには、入力がラベルよりも大きいことを確認する必要があります。 正しく表示するには、入力がラベルよりも大きいことを確認する必要があります。 正しく表示するには、入力がラベルよりも大きいことを確認する必要があります。
 
 ## サードパーティの入力ライブラリとの統合
 
-サードパーティのライブラリを使って入力をフォーマットすることができます。 `inputComponent` プロパティを使用して、 `<input>` 要素のカスタム実装を提供する必要があります。
+サードパーティのライブラリを使って入力をフォーマットすることができます。 指定された入力コンポーネントは、 `inputRef` プロパティを処理する必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。 指定された入力コンポーネントは、 `inputRef` プロパティを処理する必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。
 
-次のデモでは、[react-text-mask](https://github.com/text-mask/text-mask) と[react-number-format](https://github.com/s-yadav/react-number-format)ライブラリを使用します。 同じ概念を [（たとえば、react-stripe-element)に適用することもできます](https://github.com/mui-org/material-ui/issues/16037)。
+次のデモでは、[react-text-mask](https://github.com/text-mask/text-mask) と[react-number-format](https://github.com/s-yadav/react-number-format)ライブラリを使用します。 同じ概念を [（たとえば、react-stripe-element)に適用することもできます](https://github.com/mui-org/material-ui/issues/16037)。 同じ概念を [（たとえば、react-stripe-element)に適用することもできます](https://github.com/mui-org/material-ui/issues/16037)。 同じ概念を [（たとえば、react-stripe-element)に適用することもできます](https://github.com/mui-org/material-ui/issues/16037)。 同じ概念を [（たとえば、react-stripe-element)に適用することもできます](https://github.com/mui-org/material-ui/issues/16037)。 同じ概念を [（たとえば、react-stripe-element)に適用することもできます](https://github.com/mui-org/material-ui/issues/16037)。
 
 {{"demo": "pages/components/text-fields/FormattedInputs.js"}}
 
-指定された入力コンポーネントは、 `inputRef` プロパティを処理する必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。
+指定された入力コンポーネントは、 `inputRef` プロパティを処理する必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。 このプロパティは、次のインターフェイスを実装する値で呼び出す必要があります。
 
 ```ts
 interface InputElement {
@@ -145,7 +173,7 @@ function MyInputComponent(props) {
 
 ## アクセシビリティ
 
-テキストフィールドにアクセスできるようにするには **、入力をラベルおよびヘルパーテキストにリンクする必要があります**。 基礎となるDOMノードにはこの構造が必要です。
+テキストフィールドにアクセスできるようにするには **、入力をラベルおよびヘルパーテキストにリンクする必要があります**。 The underlying DOM nodes should have this structure: The underlying DOM nodes should have this structure: The underlying DOM nodes should have this structure: The underlying DOM nodes should have this structure: The underlying DOM nodes should have this structure:
 
 ```jsx
 <div class="form-control">
@@ -166,10 +194,10 @@ function MyInputComponent(props) {
 </FormControl>
 ```
 
-## Complementary projects
+## 補完プロジェクト
 
-より高度なユースケースのためにあなたは利用することができるかもしれません：
+より高度な使用例では、以下を利用できます。
 
-- [formik-material-ui](https://github.com/stackworx/formik-material-ui) Bindings for using Material-UI with formik.
-- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) A set of wrapper components to facilitate using Material UI with Redux Form.
-- [final-form-material-ui](https://github.com/Deadly0/final-form-material-ui) Final FormでMaterial UIを使いやすくするためのラッパーコンポーネントのセット。
+- [formik-material-ui](https://github.com/stackworx/formik-material-ui) Bindings for using Material-UI with [formik](https://jaredpalmer.com/formik).
+- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) Bindings for using Material-UI with [Redux Form](https://redux-form.com/).
+- [mui-rff](https://github.com/lookfirst/mui-rff) Bindings for using Material-UI with [React Final Form](https://final-form.org/react).

@@ -7,12 +7,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-// We don't have a typescript version of MarkdownElement
-// tslint:disable-next-line: ban-ts-ignore
-// @ts-ignore
-import MarkdownElement from 'docs/src/modules/components/MarkdownElement';
+import HighlightedCode from 'docs/src/modules/components/HighlightedCode';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -35,15 +32,13 @@ export default function InteractiveGrid() {
   const [justify, setJustify] = React.useState('center');
   const [alignItems, setAlignItems] = React.useState('center');
 
-  const code = `
-\`\`\`jsx
+  const jsx = `
 <Grid
   container
   direction="${direction}"
   justify="${justify}"
   alignItems="${alignItems}"
 >
-\`\`\`
 `;
 
   return (
@@ -57,7 +52,7 @@ export default function InteractiveGrid() {
           direction={direction}
           justify={justify}
         >
-          {[0, 1, 2].map(value => (
+          {[0, 1, 2].map((value) => (
             <Grid key={value} item>
               <Paper
                 className={classes.paper}
@@ -80,7 +75,7 @@ export default function InteractiveGrid() {
                   name="direction"
                   aria-label="direction"
                   value={direction}
-                  onChange={event => {
+                  onChange={(event) => {
                     setDirection(event.target.value);
                   }}
                 >
@@ -103,7 +98,7 @@ export default function InteractiveGrid() {
                   name="justify"
                   aria-label="justify"
                   value={justify}
-                  onChange={event => {
+                  onChange={(event) => {
                     setJustify(event.target.value);
                   }}
                 >
@@ -128,7 +123,7 @@ export default function InteractiveGrid() {
                   name="alignItems"
                   aria-label="align items"
                   value={alignItems}
-                  onChange={event => {
+                  onChange={(event) => {
                     setAlignItems(event.target.value);
                   }}
                 >
@@ -144,7 +139,7 @@ export default function InteractiveGrid() {
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <MarkdownElement text={code} />
+        <HighlightedCode code={jsx} language="jsx" />
       </Grid>
     </Grid>
   );

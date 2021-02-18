@@ -1,24 +1,21 @@
 /* eslint-disable react/no-danger */
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import marked from 'marked';
 import throttle from 'lodash/throttle';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import textToHash from 'docs/src/modules/utils/textToHash';
 import Link from 'docs/src/modules/components/Link';
+import PageContext from 'docs/src/modules/components/PageContext';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     top: 70,
     // Fix IE 11 position sticky issue.
     marginTop: 70,
     width: 175,
     flexShrink: 0,
-    order: 2,
     position: 'sticky',
     height: 'calc(100vh - 70px)',
     overflowY: 'auto',
@@ -30,27 +27,25 @@ const useStyles = makeStyles(theme => ({
   },
   contents: {
     marginTop: theme.spacing(2),
-    paddingLeft: theme.spacing(1.5),
+    paddingLeft: theme.spacing(1),
   },
   ul: {
     padding: 0,
     margin: 0,
-    listStyleType: 'none',
+    listStyle: 'none',
   },
   item: {
-    fontSize: 13,
-    padding: theme.spacing(0.5, 0, 0.5, 1),
-    borderLeft: '4px solid transparent',
-    boxSizing: 'content-box',
+    fontSize: '.8125rem',
+    padding: theme.spacing(0.5, 0, 0.5, `${Math.max(0, theme.spacing(1) - 3)}px`),
+    borderLeft: `3px solid transparent`,
+    boxSizing: 'border-box',
     '&:hover': {
-      borderLeft: `4px solid ${
-        theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[900]
-      }`,
+      borderLeftColor:
+        theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[900],
     },
     '&$active,&:active': {
-      borderLeft: `4px solid ${
-        theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[800]
-      }`,
+      borderLeftColor:
+        theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[800],
     },
   },
   secondaryItem: {
@@ -59,62 +54,26 @@ const useStyles = makeStyles(theme => ({
   active: {},
 }));
 
-const renderer = new marked.Renderer();
+// TODO: these nodes are mutable sources. Use createMutableSource once it's stable
+function getItemsClient(headings) {
+  const itemsWithNode = [];
 
-function setRenderer(itemsCollector, unique) {
-  renderer.heading = (text2, level) => {
-    const text = text2
-      .replace(
-        /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
-        '',
-      ) // remove emojis
-      .replace(/<\/?[^>]+(>|$)/g, ''); // remove HTML
-
-    if (level === 2) {
-      itemsCollector.current.push({
-        text,
-        level,
-        hash: textToHash(text, unique),
-        children: [],
-      });
-    } else if (level === 3) {
-      if (!itemsCollector.current[itemsCollector.current.length - 1]) {
-        throw new Error(`Missing parent level for: ${text}`);
-      }
-
-      itemsCollector.current[itemsCollector.current.length - 1].children.push({
-        text,
-        level,
-        hash: textToHash(text, unique),
-      });
-    }
-  };
-}
-
-function getItemsServer(contents, itemsCollector) {
-  marked(contents.join(''), { renderer });
-  return itemsCollector.current;
-}
-
-function getItemsClient(items) {
-  const itemsClient = [];
-
-  items.forEach(item2 => {
-    itemsClient.push({
-      ...item2,
-      node: document.getElementById(item2.hash),
+  headings.forEach((item) => {
+    itemsWithNode.push({
+      ...item,
+      node: document.getElementById(item.hash),
     });
 
-    if (item2.children.length > 0) {
-      item2.children.forEach(item3 => {
-        itemsClient.push({
-          ...item3,
-          node: document.getElementById(item3.hash),
+    if (item.children.length > 0) {
+      item.children.forEach((subitem) => {
+        itemsWithNode.push({
+          ...subitem,
+          node: document.getElementById(subitem.hash),
         });
       });
     }
   });
-  return itemsClient;
+  return itemsWithNode;
 }
 
 const noop = () => {};
@@ -139,21 +98,16 @@ function useThrottledOnScroll(callback, delay) {
 }
 
 export default function AppTableOfContents(props) {
-  const { contents } = props;
+  const { items } = props;
   const classes = useStyles();
-  const t = useSelector(state => state.options.t);
+  const t = useSelector((state) => state.options.t);
 
-  const itemsServer = React.useMemo(() => {
-    const itemsCollectorRef = { current: [] };
-    setRenderer(itemsCollectorRef, {});
-    return getItemsServer(contents, itemsCollectorRef);
-  }, [contents]);
-
-  const itemsClientRef = React.useRef([]);
+  const itemsWithNodeRef = React.useRef([]);
   React.useEffect(() => {
-    itemsClientRef.current = getItemsClient(itemsServer);
-  }, [itemsServer]);
+    itemsWithNodeRef.current = getItemsClient(items);
+  }, [items]);
 
+  const { activePage } = React.useContext(PageContext);
   const [activeState, setActiveState] = React.useState(null);
   const clickedRef = React.useRef(false);
   const unsetClickedRef = React.useRef(null);
@@ -164,14 +118,14 @@ export default function AppTableOfContents(props) {
     }
 
     let active;
-    for (let i = itemsClientRef.current.length - 1; i >= 0; i -= 1) {
+    for (let i = itemsWithNodeRef.current.length - 1; i >= 0; i -= 1) {
       // No hash if we're near the top of the page
       if (document.documentElement.scrollTop < 200) {
         active = { hash: null };
         break;
       }
 
-      const item = itemsClientRef.current[i];
+      const item = itemsWithNodeRef.current[i];
 
       if (process.env.NODE_ENV !== 'production') {
         if (!item.node) {
@@ -195,9 +149,21 @@ export default function AppTableOfContents(props) {
   }, [activeState]);
 
   // Corresponds to 10 frames at 60 Hz
-  useThrottledOnScroll(itemsServer.length > 0 ? findActiveIndex : null, 166);
+  useThrottledOnScroll(items.length > 0 ? findActiveIndex : null, 166);
 
-  const handleClick = hash => () => {
+  const handleClick = (hash) => (event) => {
+    // Ignore click for new tab/new window behavior
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 || // ignore everything but left-click
+      event.metaKey ||
+      event.ctrlKey ||
+      event.altKey ||
+      event.shiftKey
+    ) {
+      return;
+    }
+
     // Used to disable findActiveIndex if the page scrolls due to a click
     clickedRef.current = true;
     unsetClickedRef.current = setTimeout(() => {
@@ -220,7 +186,7 @@ export default function AppTableOfContents(props) {
     <Link
       display="block"
       color={activeState === item.hash ? 'textPrimary' : 'textSecondary'}
-      href={`#${item.hash}`}
+      href={`${activePage.pathname}#${item.hash}`}
       underline="none"
       onClick={handleClick(item.hash)}
       className={clsx(
@@ -235,19 +201,19 @@ export default function AppTableOfContents(props) {
 
   return (
     <nav className={classes.root} aria-label={t('pageTOC')}>
-      {itemsServer.length > 0 ? (
+      {items.length > 0 ? (
         <React.Fragment>
           <Typography gutterBottom className={classes.contents}>
             {t('tableOfContents')}
           </Typography>
           <Typography component="ul" className={classes.ul}>
-            {itemsServer.map(item2 => (
-              <li key={item2.text}>
-                {itemLink(item2)}
-                {item2.children.length > 0 ? (
+            {items.map((item) => (
+              <li key={item.text}>
+                {itemLink(item)}
+                {item.children.length > 0 ? (
                   <ul className={classes.ul}>
-                    {item2.children.map(item3 => (
-                      <li key={item3.text}>{itemLink(item3, true)}</li>
+                    {item.children.map((subitem) => (
+                      <li key={subitem.text}>{itemLink(subitem, true)}</li>
                     ))}
                   </ul>
                 ) : null}
@@ -261,5 +227,5 @@ export default function AppTableOfContents(props) {
 }
 
 AppTableOfContents.propTypes = {
-  contents: PropTypes.array.isRequired,
+  items: PropTypes.array.isRequired,
 };

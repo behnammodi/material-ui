@@ -1,19 +1,19 @@
-import React from 'react';
+import * as React from 'react';
 import { expect } from 'chai';
 import { spy } from 'sinon';
-import { createMount, getClasses } from '@material-ui/core/test-utils';
+import { getClasses } from '@material-ui/core/test-utils';
+import createMount from 'test/utils/createMount';
 import describeConformance from '@material-ui/core/test-utils/describeConformance';
 import { createClientRender } from 'test/utils/createClientRender';
 import ToggleButtonGroup from './ToggleButtonGroup';
 import ToggleButton from '../ToggleButton';
 
 describe('<ToggleButtonGroup />', () => {
-  let mount;
+  const mount = createMount();
   let classes;
-  const render = createClientRender({ strict: true });
+  const render = createClientRender();
 
   before(() => {
-    mount = createMount({ strict: true });
     classes = getClasses(
       <ToggleButtonGroup>
         <ToggleButton value="hello" />
@@ -22,7 +22,6 @@ describe('<ToggleButtonGroup />', () => {
   });
 
   describeConformance(<ToggleButtonGroup />, () => ({
-    after: () => mount.cleanUp(),
     classes,
     inheritComponent: 'div',
     mount,
@@ -34,6 +33,16 @@ describe('<ToggleButtonGroup />', () => {
     const { getByLabelText } = render(<ToggleButtonGroup aria-label="my group" />);
 
     expect(getByLabelText('my group')).to.have.attribute('role', 'group');
+  });
+
+  it('can render group orientation vertically', () => {
+    const { getByRole } = render(
+      <ToggleButtonGroup orientation="vertical">
+        <ToggleButton value="one">1</ToggleButton>
+      </ToggleButtonGroup>,
+    );
+    expect(getByRole('group')).to.have.class('MuiToggleButtonGroup-vertical');
+    expect(getByRole('button')).to.have.class('MuiToggleButtonGroup-groupedVertical');
   });
 
   describe('exclusive', () => {
@@ -68,8 +77,9 @@ describe('<ToggleButtonGroup />', () => {
         </ToggleButtonGroup>,
       );
 
-      expect(getAllByRole('button')[0]).to.have.attribute('aria-pressed', 'true');
-      expect(getAllByRole('button')[1]).to.have.attribute('aria-pressed', 'false');
+      const buttons = getAllByRole('button');
+      expect(buttons[0]).to.have.attribute('aria-pressed', 'true');
+      expect(buttons[1]).to.have.attribute('aria-pressed', 'false');
     });
   });
 

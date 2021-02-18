@@ -19,7 +19,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
-const styles = theme => ({
+const styles = (theme) => ({
   secondaryBar: {
     zIndex: 0,
   },
@@ -68,7 +68,7 @@ function Header(props) {
               </Link>
             </Grid>
             <Grid item>
-              <Tooltip title="Alerts • No alters">
+              <Tooltip title="Alerts • No alerts">
                 <IconButton color="inherit">
                   <NotificationsIcon />
                 </IconButton>

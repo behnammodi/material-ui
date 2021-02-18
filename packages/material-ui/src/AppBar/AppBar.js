@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
 import capitalize from '../utils/capitalize';
 import Paper from '../Paper';
 
-export const styles = theme => {
+export const styles = (theme) => {
   const backgroundColorDefault =
     theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900];
 
@@ -25,6 +25,10 @@ export const styles = theme => {
       top: 0,
       left: 'auto',
       right: 0,
+      '@media print': {
+        // Prevent the app bar to be visible on each printed page.
+        position: 'absolute',
+      },
     },
     /* Styles applied to the root element if `position="absolute"`. */
     positionAbsolute: {
@@ -44,7 +48,6 @@ export const styles = theme => {
     /* Styles applied to the root element if `position="static"`. */
     positionStatic: {
       position: 'static',
-      transform: 'translateZ(0)', // Make sure we can see the elevation.
     },
     /* Styles applied to the root element if `position="relative"`. */
     positionRelative: {
@@ -65,6 +68,15 @@ export const styles = theme => {
       backgroundColor: theme.palette.secondary.main,
       color: theme.palette.secondary.contrastText,
     },
+    /* Styles applied to the root element if `color="inherit"`. */
+    colorInherit: {
+      color: 'inherit',
+    },
+    /* Styles applied to the root element if `color="transparent"`. */
+    colorTransparent: {
+      backgroundColor: 'transparent',
+      color: 'inherit',
+    },
   };
 };
 
@@ -79,8 +91,8 @@ const AppBar = React.forwardRef(function AppBar(props, ref) {
       className={clsx(
         classes.root,
         classes[`position${capitalize(position)}`],
+        classes[`color${capitalize(color)}`],
         {
-          [classes[`color${capitalize(color)}`]]: color !== 'inherit',
           'mui-fixed': position === 'fixed', // Useful for the Dialog
         },
         className,
@@ -112,7 +124,7 @@ AppBar.propTypes = {
   /**
    * The color of the component. It supports those theme colors that make sense for this component.
    */
-  color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary']),
+  color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary', 'transparent']),
   /**
    * The positioning type. The behavior of the different options is described
    * [in the MDN web docs](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning).

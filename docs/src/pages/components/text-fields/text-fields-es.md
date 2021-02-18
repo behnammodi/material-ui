@@ -3,31 +3,77 @@ title: Componente de React Text Field
 components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, InputBase, InputLabel, OutlinedInput, TextField
 ---
 
-# Campos de texto
+# Text Field (campo de texto)
 
 <p class="description">Los campos de texto permiten a los usuarios ingresar y editar texto.</p>
 
-[Text fields](https://material.io/design/components/text-fields.html) allow users to enter text into a UI. They typically appear in forms and dialogs.
+[Text fields](https://material.io/design/components/text-fields.html) permiten al usuario ingresar un texto en una UI. Generalmente se encuentran en formularios y diálogos.
 
 ## TextField
 
 El componente `TextField` es un control de formulario completo, incluyendo una etiqueta, el campo de texto y texto de ayuda.
 
-{{"demo": "pages/components/text-fields/TextFields.js"}}
+Soporta estilos "Standard", "Outlined" y "Filled".
 
-> **Note:** This version of the text field is no longer documented in the [Material Design guidelines](https://material.io/), but Material-UI will continue to support it.
+{{"demo": "pages/components/text-fields/BasicTextFields.js"}}
 
-## Delineado
+**Nota:** La variante estándar de `TextField` no esta mas documentada en [guía Material Design](https://material.io/) ([Aquí esta el por que](https://medium.com/google-design/the-evolution-of-material-designs-text-fields-603688b3fe03)), pero Material-UI continuara soportándolo.
 
-El componente `TextField` soporta estilos con contorno delineado.
+## Propiedades del Form
 
-{{"demo": "pages/components/text-fields/OutlinedTextFields.js"}}
+Para ello, hay que proporcionar una implementación personalizada del elemento `<input>` con el atributo `inputComponent`. Se pueden utilizar librerías externas para formatear un campo de texto.
 
-## Relleno
+{{"demo": "pages/components/text-fields/FormPropsTextFields.js"}}
 
-El componente `TextField` soporta estilos con relleno.
+## Validación 
 
-{{"demo": "pages/components/text-fields/FilledTextFields.js"}}
+The `error` prop toggles the error state, the `helperText` prop can then be used to provide feedback to the user about the error.
+
+{{"demo": "pages/components/text-fields/ValidationTextFields.js"}}
+
+## Multiline
+
+The `multiline` prop transforms the text field into a [textarea](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) or a [TextareaAutosize](/components/textarea-autosize/).
+
+{{"demo": "pages/components/text-fields/MultilineTextFields.js"}}
+
+## Selección
+
+The `select` prop makes the text field use the [Select](/components/selects/) component internally.
+
+{{"demo": "pages/components/text-fields/SelectTextFields.js"}}
+
+## Iconos
+
+There are multiple ways to display an icon with a text field.
+
+{{"demo": "pages/components/text-fields/InputWithIcon.js"}}
+
+### Adornos de campos de texto
+
+The main way is with an `InputAdornment`. Por ejemplo, puedes usar un botón de icono para esconder o revelar una contraseña. This can be used to add a prefix, a suffix or an action to an input.
+
+{{"demo": "pages/components/text-fields/InputAdornments.js"}}
+
+## Tamaños
+
+Fancy smaller inputs? Use the `size` prop.
+
+{{"demo": "pages/components/text-fields/TextFieldSizes.js"}}
+
+## Disposición
+
+`dense` and `normal` alter other styles to meet the specification. `margin` prop can be used to alter the vertical spacing of inputs. Using `none` (default) will not apply margins to the `FormControl`, whereas `dense` and `normal` will.
+
+`fullWidth` can be used to make the input take up the full width of its container.
+
+{{"demo": "pages/components/text-fields/LayoutTextFields.js"}}
+
+## Uncontrolled vs Controlled
+
+The component can be controlled or uncontrolled.
+
+{{"demo": "pages/components/text-fields/StateTextFields.js"}}
 
 ## Componentes
 
@@ -41,6 +87,12 @@ Puede que también hayas notado que algunas propiedades nativas de input HTML no
 
 {{"demo": "pages/components/text-fields/Inputs.js"}}
 
+## Color
+
+The `color` prop changes the highlight color of the text field when focused.
+
+{{"demo": "pages/components/text-fields/ColorTextFields.js"}}
+
 ## Inputs personalizados
 
 Here are some examples of customizing the component. You can learn more about this in the [overrides documentation page](/customization/components/).
@@ -49,33 +101,9 @@ Here are some examples of customizing the component. You can learn more about th
 
 La personalización no se limita a usar CSS, también puedes usar una composición de componentes personalizados para darle a tu aplicación un estilo único. A continuación sigue un ejemplo del uso del componente [`InputBase`](/api/input-base/), inspirado por Google Maps.
 
-{{"demo": "pages/components/text-fields/CustomizedInputBase.js"}}
+{{"demo": "pages/components/text-fields/CustomizedInputBase.js", "bg": true}}
 
-## Adornos de campos de texto
-
-`Input` permite el uso de `InputAdornment`. Este elemento se puede usar para agregar un prefijo, un sufijo o una acción a un campo de texto. Por ejemplo, puedes usar un botón de icono para esconder o revelar una contraseña.
-
-{{"demo": "pages/components/text-fields/InputAdornments.js"}}
-
-### Con icono
-
-Iconos se pueden poner en frente o detrás del campo de texto.
-
-{{"demo": "pages/components/text-fields/InputWithIcon.js"}}
-
-### Adornos de campos de texto rellenos
-
-{{"demo": "pages/components/text-fields/FilledInputAdornments.js"}}
-
-### Adornos de campos de texto delineados
-
-{{"demo": "pages/components/text-fields/OutlinedInputAdornments.js"}}
-
-## Diseño
-
-`TextField`, `FormControl` permiten la especificación del `margin` para cambiar el espacio vertical de los campos de texto. Usar `none` (valor por defecto) no aplicará márgenes al `FormControl`, mientras que `dense` y `normal` cambiarán otros estilos para estar de acuerdo con la especificación.
-
-{{"demo": "pages/components/text-fields/TextFieldMargins.js"}}
+🎨 Si buscas un poco de inspiración, puedes visitar [MUI Treasury's ejemplos de customizacion](https://mui-treasury.com/styles/text-field).
 
 ## Limitaciones
 
@@ -109,7 +137,7 @@ El siguiente demo utiliza las librerías [react-text-mask](https://github.com/te
 
 {{"demo": "pages/components/text-fields/FormattedInputs.js"}}
 
-The provided input component should handle the `inputRef` property. The property should be called with a value that implements the following interface:
+El componente del campo de texto proporcionado debe manejar el atributo `inputRef`. The property should be called with a value that implements the following interface:
 
 ```ts
 interface InputElement {
@@ -145,7 +173,7 @@ function MyInputComponent(props) {
 
 ## Accesibilidad
 
-In order for the text field to be accessible, **the input should be linked to the label and the helper text**. The underlying DOM nodes should have this structure.
+In order for the text field to be accessible, **the input should be linked to the label and the helper text**. The underlying DOM nodes should have this structure:
 
 ```jsx
 <div class="form-control">
@@ -168,8 +196,8 @@ In order for the text field to be accessible, **the input should be linked to th
 
 ## Proyectos relacionados
 
-Para usos más avanzados tal vez puedas sacarle partido a:
+Para usos más avanzados tal vez puedas aprovercharte de:
 
-- [formik-material-ui](https://github.com/stackworx/formik-material-ui) Bindings for using Material-UI with formik.
-- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) A set of wrapper components to facilitate using Material UI with Redux Form.
-- [final-form-material-u](https://github.com/Deadly0/final-form-material-ui) Un conjunto de componentes contenedor para facilitar el uso de Material-UI junto a Final Form.
+- [formik-material-ui](https://github.com/stackworx/formik-material-ui) Bindings for using Material-UI with [formik](https://jaredpalmer.com/formik).
+- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) Bindings for using Material-UI with [Redux Form](https://redux-form.com/).
+- [mui-rff](https://github.com/lookfirst/mui-rff) Bindings for using Material-UI with [React Final Form](https://final-form.org/react).

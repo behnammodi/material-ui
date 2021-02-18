@@ -6,11 +6,19 @@ import TableCell from '@material-ui/core/TableCell';
 import Paper from '@material-ui/core/Paper';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 
-const styles = theme => ({
+const styles = (theme) => ({
   flexContainer: {
     display: 'flex',
     alignItems: 'center',
     boxSizing: 'border-box',
+  },
+  table: {
+    // temporary right-to-left patch, waiting for
+    // https://github.com/bvaughn/react-virtualized/issues/454
+    '& .ReactVirtualized__Table__headerRow': {
+      flip: false,
+      paddingRight: theme.direction === 'rtl' ? '0 !important' : undefined,
+    },
   },
   tableRow: {
     cursor: 'pointer',
@@ -84,7 +92,11 @@ class MuiVirtualizedTable extends React.PureComponent {
             height={height}
             width={width}
             rowHeight={rowHeight}
+            gridStyle={{
+              direction: 'inherit',
+            }}
             headerHeight={headerHeight}
+            className={classes.table}
             {...tableProps}
             rowClassName={this.getRowClassName}
           >
@@ -92,7 +104,7 @@ class MuiVirtualizedTable extends React.PureComponent {
               return (
                 <Column
                   key={dataKey}
-                  headerRenderer={headerProps =>
+                  headerRenderer={(headerProps) =>
                     this.headerRenderer({
                       ...headerProps,
                       columnIndex: index,

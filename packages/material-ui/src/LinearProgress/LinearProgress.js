@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import capitalize from '../utils/capitalize';
@@ -8,8 +8,8 @@ import useTheme from '../styles/useTheme';
 
 const TRANSITION_DURATION = 4; // seconds
 
-export const styles = theme => {
-  const getColor = color =>
+export const styles = (theme) => {
+  const getColor = (color) =>
     theme.palette.type === 'light' ? lighten(color, 0.62) : darken(color, 0.5);
 
   const backgroundPrimary = getColor(theme.palette.primary.main);
@@ -21,8 +21,11 @@ export const styles = theme => {
       position: 'relative',
       overflow: 'hidden',
       height: 4,
+      '@media print': {
+        colorAdjust: 'exact',
+      },
     },
-    /* Styles applied to the root and bar2 element if `color="primary"`; bar2 if `variant-"buffer"`. */
+    /* Styles applied to the root and bar2 element if `color="primary"`; bar2 if `variant="buffer"`. */
     colorPrimary: {
       backgroundColor: backgroundPrimary,
     },
@@ -54,13 +57,13 @@ export const styles = theme => {
     dashedColorPrimary: {
       backgroundImage: `radial-gradient(${backgroundPrimary} 0%, ${backgroundPrimary} 16%, transparent 42%)`,
       backgroundSize: '10px 10px',
-      backgroundPosition: '0px -23px',
+      backgroundPosition: '0 -23px',
     },
     /* Styles applied to the additional bar element if `variant="buffer"` and `color="secondary"`. */
     dashedColorSecondary: {
       backgroundImage: `radial-gradient(${backgroundSecondary} 0%, ${backgroundSecondary} 16%, transparent 42%)`,
       backgroundSize: '10px 10px',
-      backgroundPosition: '0px -23px',
+      backgroundPosition: '0 -23px',
     },
     /* Styles applied to the layered bar1 and bar2 elements. */
     bar: {
@@ -97,8 +100,7 @@ export const styles = theme => {
     /* Styles applied to the bar2 element if `variant="indeterminate or query"`. */
     bar2Indeterminate: {
       width: 'auto',
-      animation: '$indeterminate2 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite',
-      animationDelay: '1.15s',
+      animation: '$indeterminate2 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite',
     },
     /* Styles applied to the bar2 element if `variant="buffer"`. */
     bar2Buffer: {
@@ -143,11 +145,11 @@ export const styles = theme => {
     '@keyframes buffer': {
       '0%': {
         opacity: 1,
-        backgroundPosition: '0px -23px',
+        backgroundPosition: '0 -23px',
       },
       '50%': {
         opacity: 0,
-        backgroundPosition: '0px -23px',
+        backgroundPosition: '0 -23px',
       },
       '100%': {
         opacity: 1,
@@ -167,7 +169,7 @@ export const styles = theme => {
 const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
   const {
     classes,
-    className: classNameProp,
+    className,
     color = 'primary',
     value,
     valueBuffer,
@@ -182,6 +184,8 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
   if (variant === 'determinate' || variant === 'buffer') {
     if (value !== undefined) {
       rootProps['aria-valuenow'] = Math.round(value);
+      rootProps['aria-valuemin'] = 0;
+      rootProps['aria-valuemax'] = 100;
       let transform = value - 100;
       if (theme.direction === 'rtl') {
         transform = -transform;
@@ -189,7 +193,7 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
       inlineStyles.bar1.transform = `translateX(${transform}%)`;
     } else if (process.env.NODE_ENV !== 'production') {
       console.error(
-        'Material-UI: you need to provide a value prop ' +
+        'Material-UI: You need to provide a value prop ' +
           'when using the determinate or buffer variant of LinearProgress .',
       );
     }
@@ -203,7 +207,7 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
       inlineStyles.bar2.transform = `translateX(${transform}%)`;
     } else if (process.env.NODE_ENV !== 'production') {
       console.error(
-        'Material-UI: you need to provide a valueBuffer prop ' +
+        'Material-UI: You need to provide a valueBuffer prop ' +
           'when using the buffer variant of LinearProgress.',
       );
     }
@@ -220,7 +224,7 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
           [classes.buffer]: variant === 'buffer',
           [classes.query]: variant === 'query',
         },
-        classNameProp,
+        className,
       )}
       role="progressbar"
       {...rootProps}
@@ -254,11 +258,15 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
 });
 
 LinearProgress.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
@@ -281,7 +289,7 @@ LinearProgress.propTypes = {
    * The variant to use.
    * Use indeterminate or query when there is no progress value.
    */
-  variant: PropTypes.oneOf(['determinate', 'indeterminate', 'buffer', 'query']),
+  variant: PropTypes.oneOf(['buffer', 'determinate', 'indeterminate', 'query']),
 };
 
 export default withStyles(styles, { name: 'MuiLinearProgress' })(LinearProgress);

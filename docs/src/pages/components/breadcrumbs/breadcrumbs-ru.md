@@ -1,5 +1,5 @@
 ---
-title: Breadcrumbs
+title: Компонент React Breadcrumbs
 components: Breadcrumbs, Link, Typography
 ---
 
@@ -10,6 +10,12 @@ components: Breadcrumbs, Link, Typography
 ## Простые хлебные крошки
 
 {{"demo": "pages/components/breadcrumbs/SimpleBreadcrumbs.js"}}
+
+## Active last breadcrumb
+
+Keep the last breadcrumb interactive.
+
+{{"demo": "pages/components/breadcrumbs/ActiveLastBreadcrumb.js"}}
 
 ## Пользовательский разделитель
 
@@ -33,7 +39,7 @@ components: Breadcrumbs, Link, Typography
 
 ## Интеграция с react-router
 
-{{"demo": "pages/components/breadcrumbs/RouterBreadcrumbs.js"}}
+{{"demo": "pages/components/breadcrumbs/RouterBreadcrumbs.js", "bg": true}}
 
 ## Доступность
 

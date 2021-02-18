@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { refType } from '@material-ui/utils';
 import InputBase from '../InputBase';
 import withStyles from '../styles/withStyles';
 
-export const styles = theme => {
+export const styles = (theme) => {
   const light = theme.palette.type === 'light';
   const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
 
@@ -24,10 +24,16 @@ export const styles = theme => {
     focused: {},
     /* Styles applied to the root element if `disabled={true}`. */
     disabled: {},
+    /* Styles applied to the root element if color secondary. */
+    colorSecondary: {
+      '&$underline:after': {
+        borderBottomColor: theme.palette.secondary.main,
+      },
+    },
     /* Styles applied to the root element if `disableUnderline={false}`. */
     underline: {
       '&:after': {
-        borderBottom: `2px solid ${theme.palette.primary[light ? 'dark' : 'light']}`,
+        borderBottom: `2px solid ${theme.palette.primary.main}`,
         left: 0,
         bottom: 0,
         // Doing the other way around crash on IE 11 "''" https://github.com/cssinjs/jss/issues/242
@@ -72,8 +78,10 @@ export const styles = theme => {
         borderBottomStyle: 'dotted',
       },
     },
-    /* Styles applied to the root element if `error={true}`. */
+    /* Pseudo-class applied to the root element if `error={true}`. */
     error: {},
+    /* Styles applied to the `input` element if `margin="dense"`. */
+    marginDense: {},
     /* Styles applied to the root element if `multiline={true}`. */
     multiline: {},
     /* Styles applied to the root element if `fullWidth={true}`. */
@@ -120,6 +128,10 @@ const Input = React.forwardRef(function Input(props, ref) {
 });
 
 Input.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * This prop helps users to fill forms faster, especially on mobile devices.
    * The name can be confusing, as it's more like an autofill.
@@ -134,11 +146,11 @@ Input.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
-   * The CSS class name of the wrapper element.
+   * The color of the component. It supports those theme colors that make sense for this component.
    */
-  className: PropTypes.string,
+  color: PropTypes.oneOf(['primary', 'secondary']),
   /**
    * The default `input` element value. Use when the component is not controlled.
    */
@@ -169,8 +181,8 @@ Input.propTypes = {
    */
   id: PropTypes.string,
   /**
-   * The component used for the native input.
-   * Either a string to use a DOM element or a component.
+   * The component used for the `input` element.
+   * Either a string to use a HTML element or a component.
    */
   inputComponent: PropTypes.elementType,
   /**
@@ -217,11 +229,11 @@ Input.propTypes = {
   /**
    * Number of rows to display when multiline option is set to true.
    */
-  rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
    * Maximum number of rows to display when multiline option is set to true.
    */
-  rowsMax: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  rowsMax: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
    * Start `InputAdornment` for this component.
    */

@@ -1,5 +1,4 @@
 import React from 'react';
-import { isWidthUp } from '@material-ui/core/withWidth';
 
 import {
   withStyles,
@@ -30,10 +29,10 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
-  ExpansionPanelActions,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  ExpansionPanel,
+  AccordionActions,
+  AccordionDetails,
+  AccordionSummary,
+  Accordion,
   GridListTile,
   GridList,
   CircularProgress,
@@ -58,6 +57,7 @@ import {
   Grow,
   TableFooter,
   withWidth,
+  isWidthUp,
   Zoom,
   ClickAwayListener,
   ListSubheader,

@@ -6,7 +6,7 @@ Examples in this guide use [global methods from Mocha](https://mochajs.org/api/g
 
 ## Internal
 
-Material-UI has a wide **a wide range** of tests so we can iterate with confidence on the components, for instance, the visual regression tests provided by [Argos-CI](https://www.argos-ci.com/mui-org/material-ui) have proven to be really helpful. To learn more about the internal tests, you can have a look at the [README](https://github.com/mui-org/material-ui/blob/master/test/README.md).
+Material-UI has **a wide range** of tests so we can iterate with confidence on the components, for instance, the visual regression tests provided by [Argos-CI](https://www.argos-ci.com/mui-org/material-ui) have proven to be really helpful. Material-UI has **a wide range** of tests so we can iterate with confidence on the components, for instance, the visual regression tests provided by [Argos-CI](https://www.argos-ci.com/mui-org/material-ui) have proven to be really helpful.
 
 ## Userspace
 
@@ -38,7 +38,7 @@ Generate an enhanced mount function with the needed context. Please refer to the
 
 #### Аргументы
 
-1. `options` (*Object* [optional]) 
+1. `варианты` (*объекта* [optional]) 
   - `options.mount` (*Function* [optional]): The mount function to enhance, it uses **enzyme by default**.
   - The other keys are forwarded to the options argument of `enzyme.mount()`.
 
@@ -83,7 +83,7 @@ Generate an enhanced shallow function with the needed context. Please refer to t
 
 #### Аргументы
 
-1. `options` (*Object* [optional]) 
+1. `варианты` (*объекта* [optional]) 
   - `options.shallow` (*Function* [optional]): The shallow function to enhance, it uses **enzyme by default**.
   - `options.untilSelector` (*String* [optional]): Recursively shallow renders the children until it can find the provided selector. It's useful to drill down higher-order components.
   - `options.dive` (*Boolean* [optional]): Shallow function renders the one non-DOM child of the current wrapper, and returns a wrapper around the result.
@@ -117,7 +117,7 @@ Generate a render to string function with the needed context. Please refer to th
 
 #### Аргументы
 
-1. `options` (*Object* [optional]) 
+1. `варианты` (*объекта* [optional]) 
   - `options.render` (*Function* [optional]): The render function to enhance, it uses **enzyme by default**.
   - The other keys are forwarded to the options argument of `enzyme.render()`.
 

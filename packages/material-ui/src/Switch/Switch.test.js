@@ -1,17 +1,18 @@
-import React from 'react';
+import * as React from 'react';
 import { expect } from 'chai';
-import { createMount, getClasses } from '@material-ui/core/test-utils';
+import { getClasses } from '@material-ui/core/test-utils';
+import createMount from 'test/utils/createMount';
 import describeConformance from '../test-utils/describeConformance';
 import { createClientRender, fireEvent } from 'test/utils/createClientRender';
+import FormControl from '../FormControl';
 import Switch from './Switch';
 
 describe('<Switch />', () => {
-  let mount;
+  const mount = createMount();
   let classes;
-  const render = createClientRender({ strict: true });
+  const render = createClientRender();
 
   before(() => {
-    mount = createMount({ strict: true });
     classes = getClasses(<Switch />);
   });
 
@@ -19,7 +20,6 @@ describe('<Switch />', () => {
     mount,
     only: ['refForwarding'],
     refInstanceof: window.HTMLSpanElement,
-    after: () => mount.cleanUp(),
   }));
 
   /* TODO Switch violates root component
@@ -42,7 +42,7 @@ describe('<Switch />', () => {
       <Switch classes={{ thumb: 'thumb', switchBase: 'switch-base' }} />,
     );
 
-    expect(container.querySelector('.switch-base .thumb')).to.be.ok;
+    expect(container.querySelector('.switch-base .thumb')).not.to.equal(null);
   });
 
   it('should render the track as the 2nd child', () => {
@@ -86,5 +86,51 @@ describe('<Switch />', () => {
     fireEvent.change(getByRole('checkbox'), { target: { checked: '' } });
 
     expect(getByRole('checkbox')).to.have.property('checked', false);
+  });
+
+  describe('with FormControl', () => {
+    describe('enabled', () => {
+      it('should not have the disabled class', () => {
+        const { getByRole } = render(
+          <FormControl>
+            <Switch />
+          </FormControl>,
+        );
+
+        expect(getByRole('checkbox')).not.to.have.attribute('disabled');
+      });
+
+      it('should be overridden by props', () => {
+        const { getByRole } = render(
+          <FormControl>
+            <Switch disabled />
+          </FormControl>,
+        );
+
+        expect(getByRole('checkbox')).to.have.attribute('disabled');
+      });
+    });
+
+    describe('disabled', () => {
+      it('should have the disabled class', () => {
+        const { getByRole } = render(
+          <FormControl disabled>
+            <Switch />
+          </FormControl>,
+        );
+
+        expect(getByRole('checkbox')).to.have.attribute('disabled');
+      });
+
+      it('should be overridden by props', () => {
+        const { getByRole } = render(
+          <FormControl disabled>
+            <Switch disabled={false} />
+          </FormControl>,
+        );
+
+        expect(getByRole('checkbox')).not.to.have.attribute('disabled');
+      });
+    });
   });
 });

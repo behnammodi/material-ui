@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import debounce from '../utils/debounce';
 
@@ -12,7 +12,7 @@ const styles = {
 
 /**
  * @ignore - internal component.
- * The component is originates from https://github.com/STORIS/react-scrollbar-size.
+ * The component originates from https://github.com/STORIS/react-scrollbar-size.
  * It has been moved into the core in order to minimize the bundle size.
  */
 export default function ScrollbarSize(props) {
@@ -35,7 +35,6 @@ export default function ScrollbarSize(props) {
     });
 
     window.addEventListener('resize', handleResize);
-
     return () => {
       handleResize.clear();
       window.removeEventListener('resize', handleResize);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ServerStyleSheets } from '@material-ui/styles';
-import Document, { Head, Main, NextScript } from 'next/document';
-import { Router as Router2 } from 'next/router';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { rewriteUrlForNextExport } from 'next/dist/next-server/lib/router/rewrite-url-for-export';
 import { LANGUAGES_SSR } from 'docs/src/modules/constants';
 import { pathnameToLanguage } from 'docs/src/modules/utils/helpers';
 import { themeColor } from 'docs/src/modules/components/ThemeContext';
@@ -33,13 +33,8 @@ export default class MyDocument extends Document {
     const { canonical, userLanguage } = this.props;
 
     return (
-      <html lang={userLanguage}>
+      <Html lang={userLanguage}>
         <Head>
-          {/* Use minimum-scale=1 to enable GPU rasterization. */}
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          />
           {/*
             manifest.json provides metadata used when your web app is added to the
             homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
@@ -53,20 +48,20 @@ export default class MyDocument extends Document {
           {/* SEO */}
           <link
             rel="canonical"
-            href={`https://material-ui.com${Router2._rewriteUrlForNextExport(
+            href={`https://material-ui.com${rewriteUrlForNextExport(
               `${userLanguage === 'en' ? '' : `/${userLanguage}`}${canonical}`,
             )}`}
           />
           <link
             rel="alternate"
-            href={`https://material-ui.com${Router2._rewriteUrlForNextExport(canonical)}`}
+            href={`https://material-ui.com${rewriteUrlForNextExport(canonical)}`}
             hrefLang="x-default"
           />
-          {LANGUAGES_SSR.map(userLanguage2 => (
+          {LANGUAGES_SSR.map((userLanguage2) => (
             <link
               key={userLanguage2}
               rel="alternate"
-              href={`https://material-ui.com${Router2._rewriteUrlForNextExport(
+              href={`https://material-ui.com${rewriteUrlForNextExport(
                 `${userLanguage2 === 'en' ? '' : `/${userLanguage2}`}${canonical}`,
               )}`}
               hrefLang={userLanguage2}
@@ -97,12 +92,12 @@ export default class MyDocument extends Document {
           />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }
 
-MyDocument.getInitialProps = async ctx => {
+MyDocument.getInitialProps = async (ctx) => {
   // Resolution order
   //
   // On the server:
@@ -126,7 +121,7 @@ MyDocument.getInitialProps = async ctx => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: App => props => sheets.collect(<App {...props} />),
+      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
 
   const initialProps = await Document.getInitialProps(ctx);
@@ -143,12 +138,14 @@ MyDocument.getInitialProps = async ctx => {
     ...initialProps,
     canonical: pathnameToLanguage(ctx.req.url).canonical,
     userLanguage: ctx.query.userLanguage || 'en',
-    styles: (
+    styles: [
+      ...React.Children.toArray(initialProps.styles),
       <style
         id="jss-server-side"
+        key="jss-server-side"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: css }}
-      />
-    ),
+      />,
+    ],
   };
 };

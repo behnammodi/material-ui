@@ -1,41 +1,55 @@
 # Paleta
 
-<p class="description">The palette enables you to modify the color of the components to suit your brand.</p>
+<p class="description">La paleta le permite modificar el color de los componentes para adaptarse a su marca.</p>
 
-## Intentions
+## Palette colors
 
-A color intention is a mapping of a palette to a given intention within your application.
+A color intention is a mapping of a palette color to a given intention within your application. The theme exposes the following palette colors (accessible under `theme.palette.`):
 
-The theme exposes the following color intentions:
+- *primary* - used to represent primary interface elements for a user. It's the color displayed most frequently across your app's screens and components.
+- *secondary* - used to represent secondary interface elements for a user. It provides more ways to accent and distinguish your product. Having it is optional.
+- *error* - used to represent interface elements that the user should be made aware of.
+- *warning* - used to represent potentially dangerous actions or important messages.
+- *info* - used to present information to the user that is neutral and not necessarily important.
+- *success* - used to indicate the successful completion of an action that user triggered.
 
-- primary - used to represent primary interface elements for a user.
-- secondary - used to represent secondary interface elements for a user.
-- error - used to represent interface elements that the user should be made aware of.
+Si quieres aprender más sobre el color, puedes echar un vistazo a [la sección de color](/customization/color/).
 
-The default palette uses the shades prefixed with `A` (`A200`, etc.) for the secondary intention, and the un-prefixed shades for the other intentions.
+## Default values
 
-If you want to learn more about color, you can check out [the color section](/customization/color/).
+You can explore the default values of the palette using [the theme explorer](/customization/default-theme/?expand-path=$.palette) or by opening the dev tools console on this page (`window.theme.palette`).
 
-## Custom palette
+{{"demo": "pages/customization/palette/Intentions.js", "bg": "inline", "hideToolbar": true}}
 
-You may override the default palette values by including a `palette` object as part of your theme.
+La paleta predeterminada utiliza los tonos con prefijo `A` (`A200`, etc.) para los propósitos secundarios, y los tonos sin prefijo para las otras intenciones.
 
-If any of the [`palette.primary`](/customization/default-theme/?expend-path=$.palette.primary), [`palette.secondary`](/customization/default-theme/?expend-path=$.palette.secondary) or [`palette.error`](/customization/default-theme/?expend-path=$.palette.error) 'intention' objects are provided, they will replace the defaults.
+## Personalización
 
-The intention value can either be a [color](/customization/color/) object, or an object with one or more of the keys specified by the following TypeScript interface:
+Puede anular los valores de la paleta por defecto incluyendo un objeto de paleta como parte de su tema. If any of the:
+
+- [`palette.primary`](/customization/default-theme/?expand-path=$.palette.primary)
+- [`palette.secondary`](/customization/default-theme/?expand-path=$.palette.secondary)
+- [`palette.error`](/customization/default-theme/?expand-path=$.palette.error)
+- [`palette.warning`](/customization/default-theme/?expand-path=$.palette.warning)
+- [`palette.info`](/customization/default-theme/?expand-path=$.palette.info)
+- [`palette.success`](/customization/default-theme/?expand-path=$.palette.success)
+
+palette color objects are provided, they will replace the defaults.
+
+The palette color value can either be a [color](/customization/color/#2014-material-design-color-palettes) object, or an object with one or more of the keys specified by the following TypeScript interface:
 
 ```ts
-interface PaletteIntention {
+interface PaletteColor {
   light?: string;
   main: string;
   dark?: string;
   contrastText?: string;
-};
+}
 ```
 
-**Using a color object**
+### Utilizando un objeto de color
 
-The simplest way to customize an intention is to import one or more of the provided colors and apply them to a palette intention:
+La forma más sencilla de personalizar un propósito de color es importar uno o más de los colores proporcionados y aplicarlos a una intención de paleta:
 
 ```js
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -48,59 +62,9 @@ const theme = createMuiTheme({
 });
 ```
 
-If the intention key receives a color object as in the example above, the following mapping is used to populate the required keys:
+### Proporcionando los colores directamente
 
-```js
-palette: {
-  primary: {
-    light: palette.primary[300],
-    main: palette.primary[500],
-    dark: palette.primary[700],
-    contrastText: getContrastText(palette.primary[500]),
-  },
-  secondary: {
-    light: palette.secondary.A200,
-    main: palette.secondary.A400,
-    dark: palette.secondary.A700,
-    contrastText: getContrastText(palette.secondary.A400),
-  },
-  error: {
-    light: palette.error[300],
-    main: palette.error[500],
-    dark: palette.error[700],
-    contrastText: getContrastText(palette.error[500]),
-  },
-},
-```
-
-This example illustrates how you could recreate the default palette values:
-
-```js
-import { createMuiTheme } from '@material-ui/core/styles';
-import indigo from '@material-ui/core/colors/indigo';
-import pink from '@material-ui/core/colors/pink';
-import red from '@material-ui/core/colors/red';
-
-// All the following keys are optional, as default values are provided.
-const theme = createMuiTheme({
-  palette: {
-    primary: indigo,
-    secondary: pink,
-    error: red,
-    // Used by `getContrastText()` to maximize the contrast between the background and
-    // the text.
-    contrastThreshold: 3,
-    // Used to shift a color's luminance by approximately
-    // two indexes within its tonal palette.
-    // E.g., shift from Red 500 to Red 300 or Red 700.
-    tonalOffset: 0.2,
-  },
-});
-```
-
-**Providing the colors directly**
-
-If you wish to provide more customized colors, you can either create your own color object, or directly supply colors to some or all of the intention's keys:
+Si desea proporcionar colores más personalizados, puede crear su propio objeto de color, o directamente proporciona colores a algunas o todas las claves del propósito de color:
 
 ```js
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -119,49 +83,109 @@ const theme = createMuiTheme({
       // dark: will be calculated from palette.secondary.main,
       contrastText: '#ffcc00',
     },
-    // error: will use the default color
+    // Used by `getContrastText()` to maximize the contrast between
+    // the background and the text.
+    tonalOffset: 0.2,
+  },
+});
+    contrastThreshold: 3,
+    // Used by the functions below to shift a color's luminance by approximately
+    // two indexes within its tonal palette.
+    tonalOffset: 0.2,
+  },
+});
+    contrastThreshold: 3,
+    // Used by the functions below to shift a color's luminance by approximately
+    // two indexes within its tonal palette.
+    // E.g., shift from Red 500 to Red 300 or Red 700.
+```
+
+Como en el ejemplo anterior, si el objeto de propósito de color contiene colores personalizados usando cualquiera de las claves "main", "light", "dark" o "contrastText", se mapean de la siguiente manera:
+
+- Si las claves "dark" y / o "light" son omitidas, su valor/es serán calculados desde "main", de acuerdo al valor de "tonalOffset".
+- Si "contrastText" es omitido, su valor será calculado para contrastar con "main", de acuerdo al valor de "contrastThreshold".
+
+Tanto el valor de "tonalOffset" como el de "contrastThreshold" pueden ser personalizados según sea necesario. The "tonalOffset" value can either be a number between 0 and 1, which will apply to both light and dark variants, or an object with light and dark variants specified by the following TypeScript type:
+
+```ts
+type PaletteTonalOffset = number | {
+  light: number;
+  dark: number;
+};
+```
+
+A higher value for "tonalOffset" will make calculated values for "light" lighter, and "dark" darker. A higher value for "contrastThreshold" increases the point at which a background color is considered light, and given a dark "contrastText".
+
+Note that "contrastThreshold" follows a non-linear curve.
+
+### Ejemplo
+
+{{"demo": "pages/customization/palette/Palette.js", "defaultCodeOpen": true}}
+
+### Adding new colors
+
+You can add new colors inside and outside the palette of the theme as follow:
+
+```js
+import { createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  status: {
+    danger: '#e53e3e',
+  },
+  palette: {
+    neutral: {
+      main: '#5c6ac4',
+    },
   },
 });
 ```
 
-As in the example above, if the intention object contains custom colors using any of the `main`, `light`, `dark` or `contrastText` keys, these map as follows:
+If you are using TypeScript, you would also need to use [module augmentation](/guides/typescript/#customization-of-theme) for the theme to accept the above values.
 
-- If the `dark` and / or `light` keys are omitted, their value(s) will be calculated from `main`, according to the `tonalOffset` value.
+```ts
+declare module '@material-ui/core/styles/createMuiTheme' {
+  interface Theme {
+    status: {
+      danger: React.CSSProperties['color'],
+    }
+  }
+  interface ThemeOptions {
+    status: {
+      danger: React.CSSProperties['color']
+    }
+  }
+}
 
-- If `contrastText` is omitted, its value will be calculated to contrast with `main`, according to the`contrastThreshold` value.
+declare module "@material-ui/core/styles/createPalette" {
+  interface Palette {
+    neutral: Palette['primary'];
+  }
+  interface PaletteOptions {
+    neutral: PaletteOptions['primary'];
+  }
+}
+```
 
-Both the `tonalOffset` and `contrastThreshold` values may be customized as needed. A higher value for `tonalOffset` will make calculated values for `light` lighter, and `dark` darker. A higher value for `contrastThreshold` increases the point at which a background color is considered light, and given a dark `contrastText`.
+## Picking colors
 
-Note that `contrastThreshold` follows a non-linear curve.
+Need inspiration? The Material Design team has built an [palette configuration tool](/customization/color/#picking-colors) to help you.
 
-## Ejemplo
+## Dark mode
 
-{{"demo": "pages/customization/palette/Palette.js"}}
-
-## Herramienta de color
-
-Need inspiration? The Material Design team has built an awesome [palette configuration tool](/customization/color/#color-tool) to help you.
-
-## Type (light /dark theme)
-
-Material-UI comes with two theme variants, light (the default) and dark.
-
-You can make the theme dark by setting `type` to `dark`. While it's only a single property value change, internally it modifies the value of the following keys:
-
-- `palette.text`
-- `palette.divider`
-- `palette.background`
-- `palette.action`
+Material-UI comes with two palette types, light (the default) and dark. You can make the theme dark by setting `type: 'dark'`. While it's only a single property value change, internally it modifies several palette values.
 
 ```js
-const theme = createMuiTheme({
+const darkTheme = createMuiTheme({
   palette: {
     type: 'dark',
   },
 });
 ```
 
-{{"demo": "pages/customization/palette/DarkTheme.js"}}
+The colors modified by the palette type are the following:
+
+{{"demo": "pages/customization/palette/DarkTheme.js", "bg": "inline", "hideToolbar": true}}
 
 ### User preference
 
@@ -174,7 +198,8 @@ For instance, you can enable the dark mode automatically:
 ```jsx
 import React from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -191,12 +216,9 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline/>
       <Routes />
     </ThemeProvider>
   );
 }
 ```
-
-## Default values
-
-You can explore the default values of the palette using [the theme explorer](/customization/default-theme/?expend-path=$.palette) or by opening the dev tools console on this page (`window.theme.palette`).

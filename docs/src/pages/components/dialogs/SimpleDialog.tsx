@@ -43,7 +43,7 @@ function SimpleDialog(props: SimpleDialogProps) {
     <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
       <List>
-        {emails.map(email => (
+        {emails.map((email) => (
           <ListItem button onClick={() => handleListItemClick(email)} key={email}>
             <ListItemAvatar>
               <Avatar className={classes.avatar}>
@@ -53,13 +53,13 @@ function SimpleDialog(props: SimpleDialogProps) {
             <ListItemText primary={email} />
           </ListItem>
         ))}
-        <ListItem button onClick={() => handleListItemClick('addAccount')}>
+        <ListItem autoFocus button onClick={() => handleListItemClick('addAccount')}>
           <ListItemAvatar>
             <Avatar>
               <AddIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary="add account" />
+          <ListItemText primary="Add account" />
         </ListItem>
       </List>
     </Dialog>

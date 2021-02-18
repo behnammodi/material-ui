@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-
 // https://github.com/trentm/node-bunyan#levels
 const logTypes = {
   // Detail on regular operation.
@@ -75,7 +74,7 @@ function fastAndSafeJsonStringify(object) {
 }
 
 function logMethod(process, console, type) {
-  return object => {
+  return (object) => {
     const { name, msg, force = false } = object;
     let formatedMsg = msg;
 

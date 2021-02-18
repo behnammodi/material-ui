@@ -1,10 +1,10 @@
 ---
-title: Box React component
+title: Компонент React Box
 ---
 
 # Box
 
-<p class="description">Box компонент используется как обертка компонента для большинства CSS utility.</p>
+<p class="description">Box компонент используется как обертка компонента для большинства используемых CSS свойств.</p>
 
 The Box component packages [all the style functions](/system/basics/#all-inclusive) that are exposed in `@material-ui/system`. It's created using the [`styled()`](/styles/api/#styled-style-function-component) function of `@material-ui/core/styles`.
 
@@ -14,7 +14,7 @@ The Box component packages [all the style functions](/system/basics/#all-inclusi
 
 ## Переопределение Material-UI компонентов
 
-Box компонент оборачивает ваш компонент. Создает новый DOM элемент, `<div>` по умолчанию, но может быть изменен `component` свойством. Давайте предположим вы хотите использовать`<span>` взамен:
+Box компонент оборачивает ваш компонент. Он создает новый DOM элемент, это `<div>` по умолчанию, хотя это можно изменить свойством `component`. Например если вы хотите использовать`<span>` взамен:
 
 ```jsx
 <Box component="span" m={1}>
@@ -28,7 +28,7 @@ Box компонент оборачивает ваш компонент. Соз�
 
 1. Использовать [`React.cloneElement()`](https://reactjs.org/docs/react-api.html#cloneelement)
 
-The Box component has a `clone` property to enable the usage of the clone element method of React.
+Компонент Box имеет свойство `clone`, которое позволяет использовать метод clone element из React.
 
 ```jsx
 <Box color="text.primary" clone>
@@ -36,13 +36,13 @@ The Box component has a `clone` property to enable the usage of the clone elemen
 </Box>
 ```
 
-2. Use render props
+2. Используйте render свойства
 
 The Box children accepts a render props function. You can pull out the `className`.
 
 ```jsx
 <Box color="text.primary">
-  {props => <Button {...props} />}
+  {props => <Button {...props} />}
 </Box>
 ```
 
@@ -54,7 +54,7 @@ The Box children accepts a render props function. You can pull out the `classNam
 import Box from '@material-ui/core/Box';
 ```
 
-| Name                                                    | Type                                                                                                              | Default                                 | Description                                                                                           |
+| Имя                                                     | Тип                                                                                                               | По-умолчанию                            | Описание                                                                                              |
 |:------------------------------------------------------- |:----------------------------------------------------------------------------------------------------------------- |:--------------------------------------- |:----------------------------------------------------------------------------------------------------- |
 | <span class="prop-name required">children&nbsp;*</span> | <span class="prop-type">union:&nbsp;node&nbsp;&#124;<br />&nbsp;func<br /></span>                                 |                                         | Box render function or node.                                                                          |
 | <span class="prop-name">clone</span>                    | <span class="prop-type">bool</span>                                                                               | <span class="prop-default">false</span> | If `true`, the box will recycle its children DOM element. It's using `React.cloneElement` internally. |

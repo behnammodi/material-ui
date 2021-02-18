@@ -1,9 +1,9 @@
 ---
-title: Button コンポーネント
-components: Button, ButtonGroup, Fab, IconButton, ButtonBase, Zoom
+title: React Button component
+components: Button, IconButton, ButtonBase
 ---
 
-# Button
+# Button (ボタン)
 
 <p class="description">Buttonを使用すると、ユーザーは1回のタップでアクションを実行したり選択したりできます。</p>
 
@@ -17,11 +17,13 @@ components: Button, ButtonGroup, Fab, IconButton, ButtonBase, Zoom
 
 ## Contained Buttons
 
-[Contained button](https://material.io/design/components/buttons.html#contained-button)は、力強く、強調と塗りつぶしによって区別されるようなボタンです。 アプリケーションの初歩的なアクションが含まれます。
-
-一番最後のデモは、アップロード用のボタンの例になっています。
+[Contained buttons](https://material.io/design/components/buttons.html#contained-button) are high-emphasis, distinguished by their use of elevation and fill. アプリ内で強調すべきアクションを含みます。
 
 {{"demo": "pages/components/buttons/ContainedButtons.js"}}
+
+`disableElevation`でシャドウを取り除けます。
+
+{{"demo": "pages/components/buttons/DisableElevation.js"}}
 
 ## Text Buttons
 
@@ -30,49 +32,31 @@ components: Button, ButtonGroup, Fab, IconButton, ButtonBase, Zoom
 - Dialog
 - Card
 
-Cardの中でText Buttonを用いることで、Cardの内容に重点を置くことができます。
+Cardでは、テキストボタンを使用することでCardの内容に重点を置くことができます。
 
 {{"demo": "pages/components/buttons/TextButtons.js"}}
 
 ## Outlined Buttons
 
-[Outlined buttons](https://material.io/design/components/buttons.html#outlined-button) are medium-emphasis buttons. 重要なアクションを含みますが、アプリ内では最も重要ではない、といった場合に使われます。
+[Outlined buttons](https://material.io/design/components/buttons.html#outlined-button) は少し強調されたボタンです。 重要ではあるが、一番ではないアクションを含みます。 重要ではあるが、一番ではないアクションを含みます。 重要ではあるが、一番ではないアクションを含みます。
 
-### 代替手段
-
-Outlined buttonは、Contained buttonと比べると強調が弱く、 Text buttonと比べると強調の強いボタンです。
+Outlined buttonは、Contained buttonより弱く、 Text buttonよりは強い強調をします。
 
 {{"demo": "pages/components/buttons/OutlinedButtons.js"}}
 
-## Grouped Buttons
+## Handling clicks
 
-ButtonGroupコンポーネントは、アウトラインボタン（デフォルト）または含まれているボタンをグループ化するために使用できます。
+全てのコンポーネントは `onClick`を受け付けます。これはルートのDOM要素に適用されます。
 
-{{"demo": "pages/components/buttons/GroupedButtons.js"}}
+```jsx
+<Button onClick={() => { alert('clicked') }}>クリックして!</Button>
+```
 
-## Split Button
+ドキュメントでは(多すぎるので)ネイティブpropsに関しては [言及していない](/guides/api/#native-properties)ことに注意してください。
 
-ButtonGroupは分割ボタンの作成にも使用できます。 この例のようにドロップダウンでボタンの動作を変更することも、関連する動作をすぐに起動するために使用することもできます。
+## Upload button
 
-{{"demo": "pages/components/buttons/SplitButton.js"}}
-
-## Floating Action Buttons
-
-[floating action button](https://material.io/design/components/buttons-floating-action-button.html)(FAB) は画面上でもっとも重要で一般的なアクションを実行する際に使用します。 FABは画面の構成要素の中で最前面に配置され、一般的に円形で中央にアイコンが配置されます。 FABには次の二つのタイプがあります: regular extended
-
-FABを使用するのは、それが画面の主なアクションを提示するための最も適切な方法である場合だけにしてください。
-
-最も一般的なアクションを表すには、画面ごとに1つのフローティングアクションボタンのみをお勧めします。
-
-{{"demo": "pages/components/buttons/FloatingActionButtons.js"}}
-
-デフォルトでは、フローティングアクションボタンは、拡大する素材として画面上にアニメーション表示されます。
-
-複数の横方向の画面（タブ付き画面など）にまたがるフローティングアクションボタンは、一時的に消えてから、アクションが変わると再表示されます。
-
-これを実現するにはズームトランジションを使用できます。 終了アニメーションと入力アニメーションの両方が同時にトリガーされるため、新しいフローティングアクションボタンのアニメーションが開始される前に終了するように` enterDelay `を使用します。
-
-{{"demo": "pages/components/buttons/FloatingActionButtonZoom.js"}}
+{{"demo": "pages/components/buttons/UploadButtons.js"}}
 
 ## サイズ
 
@@ -80,37 +64,37 @@ FABを使用するのは、それが画面の主なアクションを提示す�
 
 {{"demo": "pages/components/buttons/ButtonSizes.js"}}
 
-## アイコンとラベルの付いたButton
+## Buttons with icons and label
 
-プレーンテキストよりもロゴを認識しやすいため、アプリケーションのUXを向上させるために特定のボタンのアイコンを表示したい場合があります。 たとえば、削除ボタンがある場合は、ゴミ箱アイコンでラベルを付けることができます。
+ロゴはプレーンテキストよりも認識しやすいため、ボタンにアイコンを追加してアプリケーションのUXを強化したい場合があります。 たとえば、削除ボタンにごみ箱アイコンを付けるような場合です。 たとえば、削除ボタンにごみ箱アイコンを付けるような場合です。 たとえば、削除ボタンにごみ箱アイコンを付けるような場合です。 たとえば、削除ボタンにごみ箱アイコンを付けるような場合です。 たとえば、削除ボタンにごみ箱アイコンを付けるような場合です。
 
 {{"demo": "pages/components/buttons/IconLabelButtons.js"}}
 
 ## Icon Buttons
 
-アイコンボタンは通常、アプリバーとツールバーにあります。
+アイコンだけのボタンは、App BarやToolbarでよく使われます。
 
-アイコンは、アイテムへの星の追加や削除など、単一の選択肢を選択または選択解除できるトグルボタンにも適しています。
+アイコンは、アイテムを一つ選択したり、アイテムに星を追加または削除するなど選択/解除できるトグルボタンにも適しています。
 
 {{"demo": "pages/components/buttons/IconButtons.js"}}
 
 ## カスタムButton
 
-コンポーネントのカスタマイズの例を次に示します。 詳細については、 [オーバーライドのドキュメントページ](/customization/components/)を参照してください。
+コンポーネントのカスタマイズの例を次に示します。 コンポーネントのカスタマイズ例を次に示します。 コンポーネントのカスタマイズ例を次に示します。 詳細については、 [オーバーライドのドキュメントページ](/customization/components/)を参照してください。
 
-{{"demo": "pages/components/buttons/CustomizedButtons.js"}}
+{{"demo": "pages/components/buttons/CustomizedButtons.js", "defaultCodeOpen": false}}
 
-👑 インスピレーションを求めているなら, [MUI Treasury's customization examples](https://mui-treasury.com/components/button)を確認できます。
+🎨 インスピレーションを求めている場合は、 [MUI Treasury's customization examples](https://mui-treasury.com/styles/button) を確認すると良いでしょう。
 
 ## 複雑なButton
 
-テキストボタン、包含ボタン、フローティングアクションボタン、およびアイコンボタンは、同じコンポーネント（ `ButtonBase`上に構築されています。 この低レベルのコンポーネントを利用してカスタムインタラクションを構築できます。
+テキストボタン、コンテインボタン、フローティングアクションボタン、アイコンボタンは、同じコンポーネント(`ButtonBase`) を元に作成されています。 この元のコンポーネントを利用して独自のインタラクションを構築できます。 この元のコンポーネントを利用して独自のインタラクションを構築できます。
 
-{{"demo": "pages/components/buttons/ButtonBases.js"}}
+{{"demo": "pages/components/buttons/ButtonBase.js"}}
 
 ## サードパーティ製ルーティングライブラリ
 
-一般的な使用例の1つは、ボタンを使用して新しいページへのナビゲーションを開始することです。 `ButtonBase` コンポーネントは、このユースケースを処理するためのプロパティを提供します 。 108/5000 ただし、特定のフォーカスについては` ButtonBase `には提供されているDOMノードが必要です。 これは、refをコンポーネントに添付し、 コンポーネントがこのrefを基になるDOMノードに転送することを期待することによって実現されます。 Given that many of the interactive components rely on `ButtonBase`, you should be able to take advantage of it everywhere.
+一般的な使用例の1つは、ボタンを使用して新しいページへのナビゲーションを発火することです。 `ButtonBase` コンポーネントは、このユースケースを扱うためのプロパティを提供します 。 ただし、特定のフォーカスについては` ButtonBase `には提供されているコンポーネントのDOMノードが必要です。 コンポーネントにrefを添付し、コンポーネントが基のDOMノードにrefを継承することを期待して成り立っています。 多くのインタラクティブなコンポーネントが `ButtonBase` に依存していることから、どこでもこの機能を使うことができるはずです。
 
 こちらは [react-routerとの統合例](/guides/composition/#button).
 
@@ -118,30 +102,32 @@ FABを使用するのは、それが画面の主なアクションを提示す�
 
 ### Cursor not-allowed
 
-The ButtonBase component sets `pointer-events: none;` on disabled buttons. which prevents the appearance of a disabled cursor.
+ButtonBaseコンポーネントは無効化時に、 `pointer-events: none;` としています。無効化されたカーソルが出現することを抑制するためです。
 
-If you wish to use `not-allowed`, you have two options:
+`not-allowed`を意図的に使用したい場合、２つの選択肢があります。
 
-1. **CSS only**. You can remove the pointer events style on the disabled state of the `<button>` element:
+1. **CSS だけ**. `<button>` エレメントの無効化時のポインターイベントを削除できます:
 
-```css
-.MuiButtonBase-root:disabled {
-  cursor: not-allowed;
-  pointer-events: auto;
-}
-```
+  ```css
+  .MuiButtonBase-root:disabled {
+    cursor: not-allowed;
+    pointer-events: auto;
+  }
+  ```
 
-However:
+ただし:
 
-- You should add `pointer-events: none;` back when you need to display [tooltips on disabled elements](/components/tooltips/#disabled-elements)
-- The cursor won't change if you render something other than a button element, for instance, a link `<a>` element.
+- [tooltips を無効化したエレメント](/components/tooltips/#disabled-elements)で表示する必要がある時、 `pointer-events: none;` に戻す必要があります。
+- ボタン要素以外をレンダリングする時、カーソルが変更されない時がある。例えば、link `<a>`要素。
 
-2. **DOM change**. You can wrap the button:
+2. **DOM 変更**. Buttonコンポーネントを囲う。
 
-```jsx
-<span style={{ cursor: "not-allowed" }}>
-  <Button component={Link} disabled>disabled</Button>
-</span>
-```
+  ```jsx
+  <span style={{ cursor: 'not-allowed' }}>
+    <Button component={Link} disabled>
+      disabled
+    </Button>
+  </span>
+  ```
 
-This has the advantage of supporting any element, for instance, a link `<a>` element.
+どのような要素でも対応できるメリットがあります。例えば、link `<a>` 要素。

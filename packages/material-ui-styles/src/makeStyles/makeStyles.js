@@ -109,7 +109,8 @@ function attach({ state, theme, stylesOptions, stylesCreator, name }, props) {
       ...options,
     });
 
-    dynamicSheet.update(props).attach();
+    dynamicSheet.update(props);
+    dynamicSheet.attach();
 
     state.dynamicSheet = dynamicSheet;
     state.classes = mergeClasses({
@@ -181,7 +182,7 @@ function useSynchronousEffect(func, values) {
   );
 }
 
-function makeStyles(stylesOrCreator, options = {}) {
+export default function makeStyles(stylesOrCreator, options = {}) {
   const {
     // alias for classNamePrefix, if provided will listen to theme (required for theme.overrides)
     name,
@@ -200,7 +201,7 @@ function makeStyles(stylesOrCreator, options = {}) {
     classNamePrefix,
   };
 
-  return (props = {}) => {
+  const useStyles = (props = {}) => {
     const theme = useTheme() || defaultTheme;
     const stylesOptions = {
       ...React.useContext(StylesContext),
@@ -235,8 +236,14 @@ function makeStyles(stylesOrCreator, options = {}) {
       shouldUpdate.current = true;
     });
 
-    return getClasses(instance.current, props.classes, Component);
-  };
-}
+    const classes = getClasses(instance.current, props.classes, Component);
+    if (process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      React.useDebugValue(classes);
+    }
 
-export default makeStyles;
+    return classes;
+  };
+
+  return useStyles;
+}

@@ -1,5 +1,5 @@
 ---
-title: Drawer React component
+title: React Drawer component
 components: Drawer, SwipeableDrawer
 ---
 
@@ -7,7 +7,7 @@ components: Drawer, SwipeableDrawer
 
 <p class="description">ナビゲーションドロワー(Drawer) を使用すると、App内の目的地にアクセスできます。サイドシートは、画面の左端または右端にアンカーされた補足コンテンツを含むサーフェスです。</p>
 
-<a href=「https://material.io/design/components/navigation-drawer.html」>ナビゲーション・ドロワー</a>(または「サイドバー」)は、目的地へのアクセスとアカウントの切り替えなどのアプリケーション機能を提供します。 これらは、画面上で永続的に表示することも、ナビゲーション・メニュー・アイコンで制御することもできます。
+[ナビゲーション・ドロワー](https://material.io/design/components/navigation-drawer.html)(または「サイドバー」)は、目的地へのアクセスとアカウントの切り替えなどのアプリケーション機能を提供します。 これらは、画面上で永続的に表示することも、ナビゲーション・メニュー・アイコンで制御することもできます。
 
 [サイドシート](https://material.io/design/components/sheets-side.html) は、主にタブレットやデスクトップで使用される補助サーフェスです。
 
@@ -19,7 +19,7 @@ components: Drawer, SwipeableDrawer
 
 {{"demo": "pages/components/drawers/TemporaryDrawer.js"}}
 
-## スワイプできる　テンポラリードロワー
+### Swipeable
 
 `SwipeableDrawer` コンポーネントを使用すると、引き出しをスワイプ可能にできます。
 
@@ -29,7 +29,7 @@ components: Drawer, SwipeableDrawer
 
 このドキュメントのWebサイトでは、コンポーネントの操作性を最適化するために、次のプロパティが使用されています。
 
-- iOSはハイエンドデバイスでホストされています。 The backdrop transition can be enabled without dropping frames. 性能は十分良いでしょう。
+- iOSはハイエンドデバイスでホストされています。 iOSはハイエンドデバイスでホストされています。 The backdrop transition can be enabled without dropping frames. 性能は十分良いでしょう。
 - iOS has a "swipe to go back" feature that interferes with the discovery feature, so discovery has to be disabled.
 
 ```jsx

@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     position: 'relative',
@@ -30,23 +30,27 @@ export const styles = theme => ({
 const Toolbar = React.forwardRef(function Toolbar(props, ref) {
   const {
     classes,
-    className: classNameProp,
+    className,
     component: Component = 'div',
     disableGutters = false,
     variant = 'regular',
     ...other
   } = props;
 
-  const className = clsx(
-    classes.root,
-    classes[variant],
-    {
-      [classes.gutters]: !disableGutters,
-    },
-    classNameProp,
+  return (
+    <Component
+      className={clsx(
+        classes.root,
+        classes[variant],
+        {
+          [classes.gutters]: !disableGutters,
+        },
+        className,
+      )}
+      ref={ref}
+      {...other}
+    />
   );
-
-  return <Component className={className} ref={ref} {...other} />;
 });
 
 Toolbar.propTypes = {
@@ -65,9 +69,9 @@ Toolbar.propTypes = {
   className: PropTypes.string,
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * If `true`, disables gutter padding.
    */

@@ -1,13 +1,13 @@
 ---
-title: バッジReactコンポーネント
+title: React バッジコンポーネント
 components: Badge
 ---
 
-# バッジ
+# Badge バッジ
 
 <p class="description">バッジは、その子供の右上に小さなバッジを生成します。</p>
 
-## 簡単なバッジ
+## 基本的なバッジ
 
 プライマリー色とセカンダリーを使用した、テキストを含むバッジの例。 バッジが子要素に適用されます。
 
@@ -15,7 +15,7 @@ components: Badge
 
 ## Customized badges （カスタマイズされたバッジ）
 
-コンポーネントのカスタマイズの例を次に示します。 詳細については、 [オーバーライドドキュメントページ](/customization/components/)ご覧ください。
+コンポーネントのカスタマイズ例を次に示します。 コンポーネントのカスタマイズ例を次に示します。 コンポーネントのカスタマイズ例を次に示します。 コンポーネントのカスタマイズ例を次に示します。 詳細については、 [オーバーライドドキュメントページ](/customization/components/)ご覧ください。
 
 {{"demo": "pages/components/badges/CustomizedBadges.js"}}
 
@@ -23,9 +23,11 @@ components: Badge
 
 バッジの可視性は、 `invisible` プロパティを使用して制御できます。
 
-BadgeContentが0の場合、バッジは自動的に非表示になります。 `showZero` プロパティでこれをオーバーライドできます。
-
 {{"demo": "pages/components/badges/BadgeVisibility.js"}}
+
+BadgeContentが0の場合、バッジは自動的に非表示になります。 BadgeContentが0の場合、バッジは自動的に非表示になります。 `showZero` プロパティでこれをオーバーライドできます。
+
+{{"demo": "pages/components/badges/ShowZeroBadge.js"}}
 
 ## 最大値
 
@@ -35,7 +37,7 @@ BadgeContentが0の場合、バッジは自動的に非表示になります。 
 
 ## ドットバッジ
 
-`dot`プロパティは、バッジを小さなドットに変更します。 これは、何かが変更されたことをカウントせずに通知するために使用できます。
+`dot`プロパティは、バッジを小さなドットに変更します。 これは、何かが変更されたことをカウントせずに通知するために使用できます。 これは、何かが変更されたことをカウントせずに通知するために使用できます。 これは、何かが変更されたことをカウントせずに通知するために使用できます。 これは、何かが変更されたことをカウントせずに通知するために使用できます。
 
 {{"demo": "pages/components/badges/DotBadge.js"}}
 
@@ -47,6 +49,6 @@ BadgeContentが0の場合、バッジは自動的に非表示になります。 
 
 ## バッジの配置
 
-`horizontalAlignment` および `verticalAlignment` プロパティを使用して、ラップされた要素の任意のコーナーにバッジを移動できます。
+`anchorOrigin` プロパティを使用して、バッジをラップされた要素の隅に移動できます。
 
-{{"demo": "pages/components/badges/DotBadge.js"}}
+{{"demo": "pages/components/badges/BadgeAlignment.js", "hideToolbar": true}}

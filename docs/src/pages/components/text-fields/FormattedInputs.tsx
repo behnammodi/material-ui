@@ -9,12 +9,10 @@ import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    formControl: {
-      margin: theme.spacing(1),
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
     },
   }),
 );
@@ -41,7 +39,8 @@ function TextMaskCustom(props: TextMaskCustomProps) {
 
 interface NumberFormatCustomProps {
   inputRef: (instance: NumberFormat | null) => void;
-  onChange: (event: { target: { value: string } }) => void;
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
 }
 
 function NumberFormatCustom(props: NumberFormatCustomProps) {
@@ -51,9 +50,10 @@ function NumberFormatCustom(props: NumberFormatCustomProps) {
     <NumberFormat
       {...other}
       getInputRef={inputRef}
-      onValueChange={values => {
+      onValueChange={(values) => {
         onChange({
           target: {
+            name: props.name,
             value: values.value,
           },
         });
@@ -77,29 +77,30 @@ export default function FormattedInputs() {
     numberformat: '1320',
   });
 
-  const handleChange = (name: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({
       ...values,
-      [name]: event.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 
   return (
-    <div className={classes.container}>
-      <FormControl className={classes.formControl}>
+    <div className={classes.root}>
+      <FormControl>
         <InputLabel htmlFor="formatted-text-mask-input">react-text-mask</InputLabel>
         <Input
           value={values.textmask}
-          onChange={handleChange('textmask')}
+          onChange={handleChange}
+          name="textmask"
           id="formatted-text-mask-input"
           inputComponent={TextMaskCustom as any}
         />
       </FormControl>
       <TextField
-        className={classes.formControl}
         label="react-number-format"
         value={values.numberformat}
-        onChange={handleChange('numberformat')}
+        onChange={handleChange}
+        name="numberformat"
         id="formatted-numberformat-input"
         InputProps={{
           inputComponent: NumberFormatCustom as any,

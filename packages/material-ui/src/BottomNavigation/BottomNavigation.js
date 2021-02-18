@@ -1,9 +1,10 @@
-import React from 'react';
+import * as React from 'react';
+import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     display: 'flex',
@@ -33,10 +34,10 @@ const BottomNavigation = React.forwardRef(function BottomNavigation(props, ref) 
         }
 
         if (process.env.NODE_ENV !== 'production') {
-          if (child.type === React.Fragment) {
+          if (isFragment(child)) {
             console.error(
               [
-                "Material-UI: the BottomNavigation component doesn't accept a Fragment as a child.",
+                "Material-UI: The BottomNavigation component doesn't accept a Fragment as a child.",
                 'Consider providing an array instead.',
               ].join('\n'),
             );
@@ -76,14 +77,14 @@ BottomNavigation.propTypes = {
   className: PropTypes.string,
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * Callback fired when the value changes.
    *
-   * @param {object} event The event source of the callback
-   * @param {any} value We default to the index of the child
+   * @param {object} event The event source of the callback.
+   * @param {any} value We default to the index of the child.
    */
   onChange: PropTypes.func,
   /**

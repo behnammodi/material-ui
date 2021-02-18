@@ -5,6 +5,7 @@ const CODE_VARIANTS = {
 
 const ACTION_TYPES = {
   OPTIONS_CHANGE: 'OPTIONS_CHANGE',
+  NOTIFICATIONS_CHANGE: 'NOTIFICATIONS_CHANGE',
 };
 
 // Valid languages to server-side render in production
@@ -14,7 +15,7 @@ const LANGUAGES = ['en', 'zh', 'ru', 'pt', 'es', 'fr', 'de', 'ja', 'aa'];
 const LANGUAGES_SSR = ['en', 'zh', 'ru', 'pt', 'es'];
 
 // Work in progress
-const LANGUAGES_IN_PROGRESS = [...LANGUAGES];
+const LANGUAGES_IN_PROGRESS = LANGUAGES.slice();
 
 // Valid languages to use in production
 const LANGUAGES_LABEL = [
@@ -52,6 +53,10 @@ const LANGUAGES_LABEL = [
   },
 ];
 
+const SOURCE_CODE_ROOT_URL =
+  process.env.SOURCE_CODE_ROOT_URL || 'https://github.com/mui-org/material-ui/blob/master';
+const SOURCE_CODE_REPO = process.env.SOURCE_CODE_REPO || 'https://github.com/mui-org/material-ui';
+
 module.exports = {
   CODE_VARIANTS,
   ACTION_TYPES,
@@ -59,4 +64,6 @@ module.exports = {
   LANGUAGES_SSR,
   LANGUAGES_LABEL,
   LANGUAGES_IN_PROGRESS,
+  SOURCE_CODE_ROOT_URL,
+  SOURCE_CODE_REPO,
 };

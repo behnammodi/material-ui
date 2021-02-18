@@ -11,7 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -24,50 +24,50 @@ const useStyles = makeStyles(theme => ({
 
 export default function DialogSelect() {
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    open: false,
-    age: '',
-  });
+  const [open, setOpen] = React.useState(false);
+  const [age, setAge] = React.useState('');
 
-  const handleChange = name => event => {
-    setState({ ...state, [name]: Number(event.target.value) || '' });
+  const handleChange = (event) => {
+    setAge(Number(event.target.value) || '');
   };
 
   const handleClickOpen = () => {
-    setState({ ...state, open: true });
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setState({ ...state, open: false });
+    setOpen(false);
   };
 
   return (
     <div>
       <Button onClick={handleClickOpen}>Open select dialog</Button>
-      <Dialog disableBackdropClick disableEscapeKeyDown open={state.open} onClose={handleClose}>
+      <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Fill the form</DialogTitle>
         <DialogContent>
           <form className={classes.container}>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-native-simple">Age</InputLabel>
+              <InputLabel htmlFor="demo-dialog-native">Age</InputLabel>
               <Select
                 native
-                value={state.age}
-                onChange={handleChange('age')}
-                input={<Input id="age-native-simple" />}
+                value={age}
+                onChange={handleChange}
+                input={<Input id="demo-dialog-native" />}
               >
-                <option value="" />
+                <option aria-label="None" value="" />
                 <option value={10}>Ten</option>
                 <option value={20}>Twenty</option>
                 <option value={30}>Thirty</option>
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-simple">Age</InputLabel>
+              <InputLabel id="demo-dialog-select-label">Age</InputLabel>
               <Select
-                value={state.age}
-                onChange={handleChange('age')}
-                input={<Input id="age-simple" />}
+                labelId="demo-dialog-select-label"
+                id="demo-dialog-select"
+                value={age}
+                onChange={handleChange}
+                input={<Input />}
               >
                 <MenuItem value="">
                   <em>None</em>

@@ -70,7 +70,7 @@ yarn add @material-ui/styles
 
 ### Stile
 
-- ⚠️ Material-UI depends on JSS v10. JSS v10 is not backward compatible with v9. Make sure JSS v9 is not installed in your environment. (Removing `react-jss` from your `package.json` can help). The StylesProvider component replaces the JssProvider one.
+- ⚠️ Material-UI depends on JSS v10. JSS v10 is not backward compatible with v9. Make sure JSS v9 is not installed in your environment. The StylesProvider component replaces the JssProvider one. (Removing `react-jss` from your `package.json` can help).
 - Remove the first option argument of `withTheme()`. (The first argument was a placeholder for a potential future option that never arose.)
   
     It matches the [emotion API](https://emotion.sh/docs/introduction) and the [styled-components API](https://www.styled-components.com).
@@ -79,6 +79,14 @@ yarn add @material-ui/styles
   -const DeepChild = withTheme()(DeepChildRaw);
   +const DeepChild = withTheme(DeepChildRaw);
   ```
+
+- Rename `convertHexToRGB` to `hexToRgb`.
+
+  ```diff
+  -import { convertHexToRgb } from '@material-ui/core/styles/colorManipulator';
+  +import { hexToRgb } from '@material-ui/core/styles';
+  ```
+
 - Scope the [keyframes API](https://cssinjs.org/jss-syntax/#keyframes-animation). Sie sollten die folgenden Änderungen in Ihrer Codebase anwenden.
   It helps isolating the animation logic:
 
@@ -206,7 +214,7 @@ This change is explained in more detail in the [TypeScript guide](/guides/typesc
   
     This also applies to `BottomNavigationAction`, `Button`, `CardActionArea`, `Checkbox`, `ExpansionPanelSummary`, `Fab`, `IconButton`, `MenuItem`, `Radio`, `StepButton`, `Tab`, `TableSortLabel` as well as `ListItem` if the `button` prop is true.
 
-### Card
+### Card (karte)
 
 - [CardActions] Rename the `disableActionSpacing` prop to `disableSpacing`.
 - [CardActions] Remove the `disableActionSpacing` CSS class.
@@ -235,9 +243,10 @@ This change is explained in more detail in the [TypeScript guide](/guides/typesc
 ### ExpansionPanel
 
 - [ExpansionPanelActions] Rename the `action` CSS class to `spacing`.
-- [ExpansionPanel] Increase the CSS specificity of the `disabled` style rule.
+- [ExpansionPanel] Increase the CSS specificity of the `disabled` and `expanded` style rules.
+- [ExpansionPanel] Rename the `CollapseProps` prop to `TransitionProps`.
 
-### List
+### List (liste)
 
 - [List] Rework the list components to match the specification:
   
@@ -397,7 +406,7 @@ This change is explained in more detail in the [TypeScript guide](/guides/typesc
   +<Typography variantMapping={variantMapping}>
   ```
 
-- [Typography] Ändern der Standardvariante von `body2` auf `body1`. Eine Schriftgröße von 16px ist eine bessere Standardeinstellung als 14px. Bootstrap, material.io, and even the documentation use 16px as a default font size. 14px wie Ant Design es verständlicherweise benutzt, da chinesische Benutzer ein anderes Alphabet haben. 12px is recommended as the default font size for Japanese.
+- [Typography] Ändern der Standardvariante von `body2` auf `body1`. Eine Schriftgröße von 16px ist eine bessere Standardeinstellung als 14px. 14px wie Ant Design es verständlicherweise benutzt, da chinesische Benutzer ein anderes Alphabet haben. Bootstrap, material.io, and even the documentation use 16px as a default font size. 12px is recommended as the default font size for Japanese.
 - [Typography] Entfernen der Standardfarbe aus den Typografievarianten. Die Farbe sollte die meiste Zeit erben. Dies ist das Standardverhalten des Webs.
 - [Typography] Rename `color="default"` to `color="initial"` following the logic of [this thread](https://github.com/mui-org/material-ui/issues/13028). The usage of *default* should be avoided, it lacks semantic.
 

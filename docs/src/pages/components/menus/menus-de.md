@@ -1,5 +1,5 @@
 ---
-title: Menü React-Komponente
+title: React Menu component
 components: Menu, MenuItem, MenuList, ClickAwayListener, Popover, Popper
 ---
 
@@ -31,7 +31,7 @@ Die Komponente `Menü` verwendet intern die Komponente `Popover`. Möglicherweis
 
 Die Hauptaufgabe der `MenuList` Komponente besteht darin, den Fokus festzulegen.
 
-{{"demo": "pages/components/menus/MenuListComposition.js"}}
+{{"demo": "pages/components/menus/MenuListComposition.js", "bg": true}}
 
 ## Menüs anpassen
 
@@ -40,6 +40,8 @@ Hier ist ein Beispiel zum Anpassen der Komponente. Mehr dazu erfahren Sie auf de
 {{"demo": "pages/components/menus/CustomizedMenus.js"}}
 
 The `MenuItem` is a wrapper around `ListItem` with some additional styles. You can use the same list composition features with the `MenuItem` component:
+
+🎨 Wenn Sie nach Inspiration suchen, sehen sie sich [MUI Treasury's Anpassungs-Beispiele](https://mui-treasury.com/styles/menu) an.
 
 ## Maximale-Höhe Menüs
 
@@ -51,13 +53,19 @@ Wenn die Höhe eines Menüs die Anzeige aller Menüelemente verhindert, kann das
 
 Es gibt [einen FlexBox bug](https://bugs.chromium.org/p/chromium/issues/detail?id=327437), das verhindert, dass `text-overflow: ellipsis` in einem FlexBox Layout funktioniert. Sie können die Komponente `Typography` mit `noWrap` benutzen, um dieses Problem zu umgehen:
 
-{{"demo": "pages/components/menus/TypographyMenu.js"}}
+{{"demo": "pages/components/menus/TypographyMenu.js", "bg": true}}
 
 ## Übergang ändern
 
 Verwenden Sie einen anderen Übergang.
 
 {{"demo": "pages/components/menus/FadeMenu.js"}}
+
+## Context menu
+
+Here is an example of a context menu. (Right click to open.)
+
+{{"demo": "pages/components/menus/ContextMenu.js"}}
 
 ## Ergänzende Projekte
 

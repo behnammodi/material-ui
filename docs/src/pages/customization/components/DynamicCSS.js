@@ -5,9 +5,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 // Like https://github.com/brunobertolini/styled-by
-const styledBy = (property, mapping) => props => mapping[props[property]];
+const styledBy = (property, mapping) => (props) => mapping[props[property]];
 
-const StyledButton = withStyles({
+const styles = {
   root: {
     background: styledBy('color', {
       default: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -23,12 +23,16 @@ const StyledButton = withStyles({
       blue: '0 3px 5px 2px rgba(33, 203, 243, .3)',
     }),
   },
-})(({ classes, color, ...other }) => <Button className={classes.root} {...other} />);
+};
+
+const StyledButton = withStyles(styles)(({ classes, color, ...other }) => (
+  <Button className={classes.root} {...other} />
+));
 
 export default function DynamicCSS() {
   const [color, setColor] = React.useState('default');
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setColor(event.target.checked ? 'blue' : 'default');
   };
 

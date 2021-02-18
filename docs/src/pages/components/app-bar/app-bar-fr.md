@@ -9,57 +9,103 @@ components: AppBar, Toolbar, Menu
 
 [La barre d'application](https://material.io/design/components/app-bars-top.html) de la page fournit le contenu et les actions liés à l'écran actuel. Il est utilisé pour la marque, les titres d'écran, la navigation et les actions.
 
-Il peut se transformer en une barre d’action contextuelle ou en tant que barre de navigation.
+Il peut être utilisé en tant que barre d'action contextuel ou en tant que barre de navigation.
 
-## Simple App Bar
+## Barre d'application simple
 
-{{"demo": "pages/components/app-bar/ButtonAppBar.js"}}
+{{"demo": "pages/components/app-bar/ButtonAppBar.js", "bg": true}}
 
-## App Bar with a primary search field
+## Barre d'application avec champ de recherche principal
 
-A primary searchbar.
+Une barre de recherche principale.
 
-{{"demo": "pages/components/app-bar/PrimarySearchAppBar.js"}}
+{{"demo": "pages/components/app-bar/PrimarySearchAppBar.js", "bg": true}}
 
-## App Bar with menu
+## Barre d'application avec menu
 
-{{"demo": "pages/components/app-bar/MenuAppBar.js"}}
+{{"demo": "pages/components/app-bar/MenuAppBar.js", "bg": true}}
 
-## App Bar with search field
+## Barre d'application avec champ de recherche
 
-A side searchbar.
+Une barre de recherche latérale.
 
-{{"demo": "pages/components/app-bar/SearchAppBar.js"}}
+{{"demo": "pages/components/app-bar/SearchAppBar.js", "bg": true}}
 
-## Dense (desktop only)
+## Dense (bureau uniquement)
 
-{{"demo": "pages/components/app-bar/DenseAppBar.js"}}
+{{"demo": "pages/components/app-bar/DenseAppBar.js", "bg": true}}
 
-## Bottom App Bar
+## Barre plus importante
 
-{{"demo": "pages/components/app-bar/BottomAppBar.js", "iframe": true, "maxWidth": 500}}
+Barre d'application étendu.
 
-## Scrolling
+{{"demo": "pages/components/app-bar/ProminentAppBar.js", "bg": true}}
 
-You can use the `useScrollTrigger()` hook to respond to user scroll actions.
+## Barre inférieure
+
+{{"demo": "pages/components/app-bar/BottomAppBar.js", "iframe": true, "maxWidth": 400}}
+
+## Emplacement fixe
+
+Quand vous rendez la barre d'application en position fixe, les dimensions de l'élément n'impact pas le reste de page. Cela peut rendre certaine partie de votre contenu invisible, caché derrière la barre d'application. Voici 3 solutions possible:
+
+1. Vous pouvez utiliser `position="sticky"` au lieu de `position="fixed"`. Sticky n'est pas supporter par IE 11.
+2. Vous pouvez rendre un deuxième composant `<Toolbar />` :
+
+```jsx
+function App() {
+  return (
+    <React.Fragment>
+      <AppBar position="fixed">
+        <Toolbar>{/* content */}</Toolbar>
+      </AppBar>
+      <Toolbar />
+    </React.Fragment>
+  );
+}
+```
+
+3. Vous pouvez utiliser `theme.mixins.toolbar` CSS:
+
+```jsx
+const useStyles = makeStyles(theme => ({
+  offset: theme.mixins.toolbar,
+}))
+
+function App() {
+  const classes = useStyles();
+  return (
+    <React.Fragment>
+      <AppBar position="fixed">
+        <Toolbar>{/* content */}</Toolbar>
+      </AppBar>
+      <div className={classes.offset} />
+    </React.Fragment>
+  )
+};
+```
+
+## Défilement
+
+Vous pouvez utiliser le `useScrollTrigger()` hook pour répondre au défilement déclencher par l'utilisateur.
 
 ### Barre d'application masquable
 
-The app bar hides on scroll down to leave more space for reading.
+La barre d'application est caché lorsque l'utilisateur défile vers le bas de page lui conférant plus d'espace de lecture.
 
-{{"demo": "pages/components/app-bar/HideAppBar.js", "iframe": true, "maxWidth": 500}}
+{{"demo": "pages/components/app-bar/HideAppBar.js", "iframe": true}}
 
 ### Barre d'application élevable
 
-The app bar elevates on scroll to communicate that the user is not at the top of the page.
+La barre d'application s'élève lorsque l'utilisateur fait défiler la page pour lui indiquer qu'il n'est plus au début de la page.
 
-{{"demo": "pages/components/app-bar/ElevateAppBar.js", "iframe": true, "maxWidth": 500}}
+{{"demo": "pages/components/app-bar/ElevateAppBar.js", "iframe": true}}
 
-### Back to top
+### Retour au sommet
 
-A floating action buttons appears on scroll to make it easy to get back to the top of the page.
+Au défilement un bouton d'action flottant apparaît pour faciliter le retour au sommet de la page.
 
-{{"demo": "pages/components/app-bar/BackToTop.js", "iframe": true, "maxWidth": 500}}
+{{"demo": "pages/components/app-bar/BackToTop.js", "iframe": true}}
 
 ### `useScrollTrigger([options]) => trigger`
 
@@ -73,7 +119,7 @@ A floating action buttons appears on scroll to make it easy to get back to the t
 
 #### Valeur de retour
 
-`trigger`: Does the scroll position match the criteria?
+`trigger`: Est-ce que la position de défilement respecte les critères ?
 
 #### Exemples
 

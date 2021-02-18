@@ -16,8 +16,8 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-const useStyles = makeStyles(theme => ({
-  card: {
+const useStyles = makeStyles((theme) => ({
+  root: {
     maxWidth: 345,
   },
   media: {
@@ -48,7 +48,7 @@ export default function RecipeReviewCard() {
   };
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.root}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>

@@ -1,8 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { expect } from 'chai';
 import { spy } from 'sinon';
-import { createMount, getClasses } from '@material-ui/core/test-utils';
+import { getClasses } from '@material-ui/core/test-utils';
+import createMount from 'test/utils/createMount';
 import describeConformance from '../test-utils/describeConformance';
 import { act, createClientRender, fireEvent } from 'test/utils/createClientRender';
 import consoleErrorMock from 'test/utils/consoleErrorMock';
@@ -15,11 +16,10 @@ import Select from '../Select';
 
 describe('<InputBase />', () => {
   let classes;
-  let mount;
-  const render = createClientRender({ strict: true });
+  const mount = createMount();
+  const render = createClientRender();
 
   before(() => {
-    mount = createMount({ strict: true });
     classes = getClasses(<InputBase />);
   });
 
@@ -29,7 +29,6 @@ describe('<InputBase />', () => {
     mount,
     refInstanceof: window.HTMLDivElement,
     skip: ['componentProp'],
-    after: () => mount.cleanUp(),
   }));
 
   it('should render an <input /> inside the div', () => {
@@ -47,12 +46,12 @@ describe('<InputBase />', () => {
     });
 
     it('should render an <textarea /> when passed the multiline and rows props', () => {
-      const { container } = render(<InputBase multiline rows="4" />);
+      const { container } = render(<InputBase multiline rows={4} />);
       expect(container.querySelectorAll('textarea')).to.have.lengthOf(1);
     });
 
     it('should forward the value to the TextareaAutosize', () => {
-      const wrapper = mount(<InputBase multiline rowsMax="4" value="" />);
+      const wrapper = mount(<InputBase multiline rowsMax={4} value="" />);
       expect(wrapper.find(TextareaAutosize).props()).to.have.property('value', '');
     });
   });
@@ -129,13 +128,13 @@ describe('<InputBase />', () => {
     });
     expect(handleFocus.callCount).to.equal(1);
 
-    fireEvent.keyDown(document.activeElement, { key: 'a' });
+    fireEvent.keyDown(input, { key: 'a' });
     expect(handleKeyDown.callCount).to.equal(1);
 
     fireEvent.change(input, { target: { value: 'a' } });
     expect(handleChange.callCount).to.equal(1);
 
-    fireEvent.keyUp(document.activeElement, { key: 'a' });
+    fireEvent.keyUp(input, { key: 'a' });
     expect(handleKeyUp.callCount).to.equal(1);
 
     act(() => {
@@ -185,11 +184,13 @@ describe('<InputBase />', () => {
         function MockedValue(props) {
           const { onChange } = props;
 
-          const handleChange = event => {
+          const handleChange = (event) => {
             onChange({ target: { value: event.target.value } });
           };
 
-          return <input onChange={handleChange} />;
+          // TODO: required because of a bug in aria-query
+          // remove `type` once https://github.com/A11yance/aria-query/pull/42 is merged
+          return <input onChange={handleChange} type="text" />;
         }
         MockedValue.propTypes = { onChange: PropTypes.func.isRequired };
 
@@ -439,14 +440,15 @@ describe('<InputBase />', () => {
         </FormControl>,
       );
       expect(getByTestId('label')).to.have.text('filled: false');
+      const textbox = getByRole('textbox');
 
-      fireEvent.change(getByRole('textbox'), { target: { value: 'material' } });
+      fireEvent.change(textbox, { target: { value: 'material' } });
       expect(getByTestId('label')).to.have.text('filled: true');
 
-      fireEvent.change(getByRole('textbox'), { target: { value: '0' } });
+      fireEvent.change(textbox, { target: { value: '0' } });
       expect(getByTestId('label')).to.have.text('filled: true');
 
-      fireEvent.change(getByRole('textbox'), { target: { value: '' } });
+      fireEvent.change(textbox, { target: { value: '' } });
       expect(getByTestId('label')).to.have.text('filled: false');
     });
 
@@ -497,8 +499,8 @@ describe('<InputBase />', () => {
         );
 
         expect(consoleErrorMock.callCount()).to.eq(1);
-        expect(consoleErrorMock.args()[0][0]).to.include(
-          'Material-UI: there are multiple InputBase components inside a FromControl.',
+        expect(consoleErrorMock.messages()[0]).to.include(
+          'Material-UI: There are multiple InputBase components inside a FormControl.',
         );
       });
 
@@ -523,7 +525,7 @@ describe('<InputBase />', () => {
                 <InputBase />
               ) : (
                 <Select native>
-                  <option value="" />
+                  <option value="">empty</option>
                 </Select>
               )}
               <button type="button" onClick={() => setFlag(!flag)}>
@@ -557,6 +559,43 @@ describe('<InputBase />', () => {
     });
   });
 
+  describe('prop: inputComponent with prop: inputProps', () => {
+    it('should call onChange inputProp callback with all params sent from custom inputComponent', () => {
+      const INPUT_VALUE = 'material';
+      const OUTPUT_VALUE = 'test';
+
+      function MyInputBase(props) {
+        const { inputRef, onChange, ...other } = props;
+
+        const handleChange = (e) => {
+          onChange(e.target.value, OUTPUT_VALUE);
+        };
+
+        return <input ref={inputRef} onChange={handleChange} {...other} />;
+      }
+
+      MyInputBase.propTypes = {
+        inputRef: PropTypes.func.isRequired,
+        onChange: PropTypes.func.isRequired,
+      };
+
+      let outputArguments;
+      function parentHandleChange(...args) {
+        outputArguments = args;
+      }
+
+      const { getByRole } = render(
+        <InputBase inputComponent={MyInputBase} inputProps={{ onChange: parentHandleChange }} />,
+      );
+      const textbox = getByRole('textbox');
+      fireEvent.change(textbox, { target: { value: INPUT_VALUE } });
+
+      expect(outputArguments.length).to.equal(2);
+      expect(outputArguments[0]).to.equal(INPUT_VALUE);
+      expect(outputArguments[1]).to.equal(OUTPUT_VALUE);
+    });
+  });
+
   describe('prop: startAdornment, prop: endAdornment', () => {
     it('should render adornment before input', () => {
       const { getByTestId } = render(
@@ -569,7 +608,7 @@ describe('<InputBase />', () => {
         />,
       );
 
-      expect(getByTestId('adornment')).to.be.ok;
+      expect(getByTestId('adornment')).not.to.equal(null);
     });
 
     it('should render adornment after input', () => {
@@ -583,7 +622,7 @@ describe('<InputBase />', () => {
         />,
       );
 
-      expect(getByTestId('adornment')).to.be.ok;
+      expect(getByTestId('adornment')).not.to.equal(null);
     });
 
     it('should allow a Select as an adornment', () => {

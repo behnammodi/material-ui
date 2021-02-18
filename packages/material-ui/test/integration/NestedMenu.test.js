@@ -1,11 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import { expect } from 'chai';
 import { createClientRender, within } from 'test/utils/createClientRender';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 function NestedMenu(props) {
-  // eslint-disable-next-line react/prop-types
   const { firstMenuOpen, secondMenuOpen } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const canBeOpen = Boolean(anchorEl);
@@ -51,14 +50,14 @@ describe('<NestedMenu> integration', () => {
     const { getByRole } = render(<NestedMenu firstMenuOpen />);
 
     expect(getByRole('menu')).to.have.id('first-menu');
-    expect(within(getByRole('menu')).getAllByRole('menuitem')[0]).to.be.focused;
+    expect(within(getByRole('menu')).getAllByRole('menuitem')[0]).toHaveFocus();
   });
 
   it('should focus the first item of the second menu when nothing has been selected', () => {
     const { getByRole } = render(<NestedMenu secondMenuOpen />);
 
     expect(getByRole('menu')).to.have.id('second-menu');
-    expect(within(getByRole('menu')).getAllByRole('menuitem')[0]).to.be.focused;
+    expect(within(getByRole('menu')).getAllByRole('menuitem')[0]).toHaveFocus();
   });
 
   it('should open the first menu after it was closed', () => {
@@ -68,7 +67,7 @@ describe('<NestedMenu> integration', () => {
     setProps({ firstMenuOpen: true });
 
     expect(getByRole('menu')).to.have.id('first-menu');
-    expect(within(getByRole('menu')).getAllByRole('menuitem')[0]).to.be.focused;
+    expect(within(getByRole('menu')).getAllByRole('menuitem')[0]).toHaveFocus();
   });
 
   it('should be able to open second menu again', () => {
@@ -78,6 +77,6 @@ describe('<NestedMenu> integration', () => {
     setProps({ secondMenuOpen: true });
 
     expect(getByRole('menu')).to.have.id('second-menu');
-    expect(within(getByRole('menu')).getAllByRole('menuitem')[0]).to.be.focused;
+    expect(within(getByRole('menu')).getAllByRole('menuitem')[0]).toHaveFocus();
   });
 });

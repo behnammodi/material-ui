@@ -1,8 +1,8 @@
-import { assert } from 'chai';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createMount } from '@material-ui/core/test-utils';
-import { teardown, useIsFocusVisible } from './focusVisible';
+import { expect } from 'chai';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import createMount from 'test/utils/createMount';
+import useIsFocusVisible, { teardown as teardownFocusVisible } from './useIsFocusVisible';
 import useForkRef from './useForkRef';
 
 function dispatchFocusVisible(element) {
@@ -30,7 +30,7 @@ const SimpleButton = React.forwardRef(function SimpleButton(props, ref) {
     }
   };
 
-  const handleFocus = event => {
+  const handleFocus = (event) => {
     if (isFocusVisible(event)) {
       setFocusVisible(true);
     }
@@ -49,16 +49,11 @@ const SimpleButton = React.forwardRef(function SimpleButton(props, ref) {
 });
 
 describe('focus-visible polyfill', () => {
-  let mount;
+  const mount = createMount();
 
   before(() => {
     // isolate test from previous component test that use the polyfill in the document scope
-    teardown(document);
-    mount = createMount({ strict: true });
-  });
-
-  after(() => {
-    mount.cleanUp();
+    teardownFocusVisible(document);
   });
 
   describe('focus inside shadowRoot', () => {
@@ -78,7 +73,7 @@ describe('focus-visible polyfill', () => {
 
     afterEach(() => {
       ReactDOM.unmountComponentAtNode(rootElement.shadowRoot);
-      teardown(rootElement.shadowRoot);
+      teardownFocusVisible(rootElement.shadowRoot);
       document.body.removeChild(rootElement);
     });
 
@@ -95,20 +90,20 @@ describe('focus-visible polyfill', () => {
       simulatePointerDevice();
 
       const { current: button } = buttonRef;
-      if (!(button instanceof window.HTMLButtonElement)) {
+      if (button.nodeName !== 'BUTTON') {
         throw new Error('missing button');
       }
 
-      assert.strictEqual(button.classList.contains('focus-visible'), false);
+      expect(button.classList.contains('focus-visible')).to.equal(false);
 
       button.focus();
 
-      assert.strictEqual(button.classList.contains('focus-visible'), false);
+      expect(button.classList.contains('focus-visible')).to.equal(false);
 
       button.blur();
       dispatchFocusVisible(button);
 
-      assert.strictEqual(button.classList.contains('focus-visible'), true);
+      expect(button.classList.contains('focus-visible')).to.equal(true);
     });
   });
 });

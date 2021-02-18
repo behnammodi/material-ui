@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
@@ -34,9 +34,10 @@ const StepButton = React.forwardRef(function StepButton(props, ref) {
     alternativeLabel,
     children,
     classes,
-    className: classNameProp,
+    className,
     completed,
     disabled,
+    expanded,
     icon,
     last,
     optional,
@@ -61,9 +62,10 @@ const StepButton = React.forwardRef(function StepButton(props, ref) {
 
   return (
     <ButtonBase
+      focusRipple
       disabled={disabled}
       TouchRippleProps={{ className: classes.touchRipple }}
-      className={clsx(classes.root, classes[orientation], classNameProp)}
+      className={clsx(classes.root, classes[orientation], className)}
       ref={ref}
       {...other}
     >
@@ -106,6 +108,11 @@ StepButton.propTypes = {
    * Disables the button and sets disabled styling. Is passed to StepLabel.
    */
   disabled: PropTypes.bool,
+  /**
+   * @ignore
+   * potentially passed from parent `Step`
+   */
+  expanded: PropTypes.bool,
   /**
    * The icon displayed by the step label.
    */

@@ -18,6 +18,8 @@ Material-UI's styling solution is inspired by many other styling libraries such 
 
 ## Installation
 
+> `@material-ui/styles` is re-exported as `@material-ui/core/styles` - you only need to install it if you wish to use it independently from Material-UI.
+
 Pour installer et enregistrer dans vos dépendances `package.json` , exécutez:
 
 ```sh
@@ -126,7 +128,6 @@ You can nest selectors to target elements inside the current class or component.
 ```js
 const useStyles = makeStyles({
   root: {
-    padding: 16,
     color: 'red',
     '& p': {
       color: 'green',
@@ -138,7 +139,7 @@ const useStyles = makeStyles({
 });
 ```
 
-{{"demo": "pages/styles/basics/NestedStylesHook.js"}}
+{{"demo": "pages/styles/basics/NestedStylesHook.js", "defaultCodeOpen": false}}
 
 ## Adapting based on props
 
@@ -203,7 +204,7 @@ To reduce the number of packages to install when using Material-UI, and to simpl
 
 To remove the need to systematically supply a theme, the default Material-UI theme is applied to the re-exported `makeStyles`, `styled`, `withTheme`, `useTheme`, and `withStyles` modules.
 
-For instance:
+Par exemple:
 
 ```js
 // Re-export with a default theme

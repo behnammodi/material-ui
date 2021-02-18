@@ -7,7 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import InfoIcon from '@material-ui/icons/Info';
 import IconButton from '@material-ui/core/IconButton';
 
-const styles = theme => ({
+const styles = (theme) => ({
   content: {
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.text.primary,
@@ -46,10 +46,9 @@ function Snackbar(props) {
   return (
     <MuiSnackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      autoHideDuration={6e3}
+      autoHideDuration={6000}
       transition={Transition}
       ContentProps={{
-        'aria-describedby': 'snackbar',
         classes: {
           root: classes.content,
           message: classes.contentMessage,
@@ -59,7 +58,7 @@ function Snackbar(props) {
       message={
         <React.Fragment>
           <InfoIcon className={classes.info} />
-          <span id="snackbar">{message}</span>
+          <span>{message}</span>
         </React.Fragment>
       }
       action={[

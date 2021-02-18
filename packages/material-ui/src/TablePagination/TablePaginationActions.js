@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import KeyboardArrowLeft from '../internal/svg-icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '../internal/svg-icons/KeyboardArrowRight';
@@ -21,11 +21,11 @@ const TablePaginationActions = React.forwardRef(function TablePaginationActions(
 
   const theme = useTheme();
 
-  const handleBackButtonClick = event => {
+  const handleBackButtonClick = (event) => {
     onChangePage(event, page - 1);
   };
 
-  const handleNextButtonClick = event => {
+  const handleNextButtonClick = (event) => {
     onChangePage(event, page + 1);
   };
 
@@ -41,7 +41,7 @@ const TablePaginationActions = React.forwardRef(function TablePaginationActions(
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        disabled={count !== -1 ? page >= Math.ceil(count / rowsPerPage) - 1 : false}
         color="inherit"
         {...nextIconButtonProps}
       >

@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
 import ButtonBase from '../ButtonBase';
 import capitalize from '../utils/capitalize';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     ...theme.typography.button,
@@ -25,9 +25,6 @@ export const styles = theme => ({
     },
     color: theme.palette.getContrastText(theme.palette.grey[300]),
     backgroundColor: theme.palette.grey[300],
-    '&$focusVisible': {
-      boxShadow: theme.shadows[6],
-    },
     '&:hover': {
       backgroundColor: theme.palette.grey.A100,
       // Reset on touch devices, it doesn't add specificity
@@ -38,6 +35,9 @@ export const styles = theme => ({
         backgroundColor: theme.palette.action.disabledBackground,
       },
       textDecoration: 'none',
+    },
+    '&$focusVisible': {
+      boxShadow: theme.shadows[6],
     },
     '&$disabled': {
       color: theme.palette.action.disabled,
@@ -161,15 +161,19 @@ const Fab = React.forwardRef(function Fab(props, ref) {
 });
 
 Fab.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * The content of the button.
    */
-  children: PropTypes.node.isRequired,
+  children: PropTypes /* @typescript-to-proptypes-ignore */.node.isRequired,
   /**
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
@@ -180,16 +184,15 @@ Fab.propTypes = {
   color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary']),
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * If `true`, the button will be disabled.
    */
   disabled: PropTypes.bool,
   /**
    * If `true`, the  keyboard focus ripple will be disabled.
-   * `disableRipple` must also be true.
    */
   disableFocusRipple: PropTypes.bool,
   /**
@@ -209,15 +212,11 @@ Fab.propTypes = {
    * The size of the button.
    * `small` is equivalent to the dense button styling.
    */
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  /**
-   * @ignore
-   */
-  type: PropTypes.string,
+  size: PropTypes.oneOf(['large', 'medium', 'small']),
   /**
    * The variant to use.
    */
-  variant: PropTypes.oneOf(['round', 'extended']),
+  variant: PropTypes.oneOf(['extended', 'round']),
 };
 
 export default withStyles(styles, { name: 'MuiFab' })(Fab);

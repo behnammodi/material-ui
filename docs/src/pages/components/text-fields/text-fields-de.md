@@ -3,7 +3,7 @@ title: Text Field React-Komponente
 components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, InputBase, InputLabel, OutlinedInput, TextField
 ---
 
-# Text Felder (Text Fields)
+# Textfeld
 
 <p class="description">Text Felder lassen Nutzer Text eingeben und bearbeiten.</p>
 
@@ -13,21 +13,67 @@ components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, Inp
 
 Die `TextField` Wrapper-Komponente ist ein vollständiges Formularsteuerelement, das eine Beschriftung, Eingabe und Hilfetext enthält.
 
-{{"demo": "pages/components/text-fields/TextFields.js"}}
+It supports standard, outlined and filled styling.
 
-> **Note:** This version of the text field is no longer documented in the [Material Design guidelines](https://material.io/), but Material-UI will continue to support it.
+{{"demo": "pages/components/text-fields/BasicTextFields.js"}}
 
-## Umrandung
+**Note:** The standard variant of the `TextField` is no longer documented in the [Material Design guidelines](https://material.io/) ([here's why](https://medium.com/google-design/the-evolution-of-material-designs-text-fields-603688b3fe03)), but Material-UI will continue to support it.
 
-`TextField` unterstützt Umrandungen.
+## Form props
 
-{{"demo": "pages/components/text-fields/OutlinedTextFields.js"}}
+The underlying DOM nodes should have this structure: In order for the text field to be accessible, **the input should be linked to the label and the helper text**.
 
-## Gefüllt
+{{"demo": "pages/components/text-fields/FormPropsTextFields.js"}}
 
-`TextField` unterstützt Füllung.
+## Validierung
 
-{{"demo": "pages/components/text-fields/FilledTextFields.js"}}
+The `error` prop toggles the error state, the `helperText` prop can then be used to provide feedback to the user about the error.
+
+{{"demo": "pages/components/text-fields/ValidationTextFields.js"}}
+
+## Mehrzeilig
+
+The `multiline` prop transforms the text field into a [textarea](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) or a [TextareaAutosize](/components/textarea-autosize/).
+
+{{"demo": "pages/components/text-fields/MultilineTextFields.js"}}
+
+## Selects (auswähler)
+
+The `select` prop makes the text field use the [Select](/components/selects/) component internally.
+
+{{"demo": "pages/components/text-fields/SelectTextFields.js"}}
+
+## Icons
+
+There are multiple ways to display an icon with a text field.
+
+{{"demo": "pages/components/text-fields/InputWithIcon.js"}}
+
+### Eingabeverzierungen
+
+The main way is with an `InputAdornment`. Sie können beispielsweise eine Symbolschaltfläche verwenden, um das Kennwort ein- oder auszublenden. This can be used to add a prefix, a suffix or an action to an input.
+
+{{"demo": "pages/components/text-fields/InputAdornments.js"}}
+
+## Größen
+
+Fancy smaller inputs? Verwenden Sie die `size` Prop.
+
+{{"demo": "pages/components/text-fields/TextFieldSizes.js"}}
+
+## Layout
+
+`dense` and `normal` alter other styles to meet the specification. `margin` prop can be used to alter the vertical spacing of inputs. Using `none` (default) will not apply margins to the `FormControl`, whereas `dense` and `normal` will.
+
+`fullWidth` can be used to make the input take up the full width of its container.
+
+{{"demo": "pages/components/text-fields/LayoutTextFields.js"}}
+
+## Uncontrolled vs Controlled
+
+The component can be controlled or uncontrolled.
+
+{{"demo": "pages/components/text-fields/StateTextFields.js"}}
 
 ## Komponenten
 
@@ -41,47 +87,29 @@ Möglicherweise haben Sie auch festgestellt, dass einige native HTML-Eingabeeige
 
 {{"demo": "pages/components/text-fields/Inputs.js"}}
 
+## Farbe (Color)
+
+The `color` prop changes the highlight color of the text field when focused.
+
+{{"demo": "pages/components/text-fields/ColorTextFields.js"}}
+
 ## Benutzerdefinierte Eingabe
 
-Hier sind einige Beispiele, wie man die Komponente anpassen kann. Mehr dazu erfahren Sie auf der [Überschreibungsdokumentationsseite](/customization/components/).
+Hier einige Beispiele zum Anpassen der Komponente. Mehr dazu erfahren Sie auf der [Überschreibungsdokumentationsseite](/customization/components/).
 
 {{"demo": "pages/components/text-fields/CustomizedInputs.js"}}
 
 Die Anpassung endet nicht bei CSS. Sie können Komposition verwenden, um benutzerdefinierte Komponenten zu erstellen und Ihrer App ein einzigartiges Gefühl zu verleihen. Nachfolgend ein Beispiel mit der [`InputBase`](/api/input-base/) Komponente, die von Google Maps inspiriert wurde.
 
-{{"demo": "pages/components/text-fields/CustomizedInputBase.js"}}
+{{"demo": "pages/components/text-fields/CustomizedInputBase.js", "bg": true}}
 
-## Eingabeverzierungen
-
-`Input` ermöglicht die Bereitstellung von `InputAdornment`. Diese können verwendet werden, um einer Eingabe ein Präfix, ein Suffix oder eine Aktion hinzuzufügen. Sie können beispielsweise eine Symbolschaltfläche verwenden, um das Kennwort ein- oder auszublenden.
-
-{{"demo": "pages/components/text-fields/InputAdornments.js"}}
-
-### Mit Symbol
-
-Symbole können vorangestellt oder angehängt werden.
-
-{{"demo": "pages/components/text-fields/InputWithIcon.js"}}
-
-### Ausgefüllte Eingabeverzierungen
-
-{{"demo": "pages/components/text-fields/FilledInputAdornments.js"}}
-
-### Umrahmte Eingabeverzierungen
-
-{{"demo": "pages/components/text-fields/OutlinedInputAdornments.js"}}
-
-## Layout
-
-`TextField`, `FormControl` ermöglicht die Angabe von `Abständen (Margin)`, um den vertikalen Abstand der Eingaben zu ändern. Bei Verwendung von `none` (Standard) werden keine Ränder für das `FormControl` angewendet, wohingegen `dense (dicht)` und `normal` sowie andere Stile angegeben werden können, um die Spezifikation zu erfüllen.
-
-{{"demo": "pages/components/text-fields/TextFieldMargins.js"}}
+🎨 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/styles/text-field).
 
 ## Einschränkungen
 
 ### Shrink
 
-Der Status des Eingabe-Labels "Verkleinern" ist nicht immer korrekt. Das Eingabeetikett soll schrumpfen, sobald die Eingabe etwas anzeigt. Unter bestimmten Umständen können wir den Status "Schrumpfen" nicht ermitteln (Zahleneingabe, Datumseingabe, Stripe-Eingabe). Möglicherweise stellen Sie eine Überlappung fest.
+Der Status des Eingabe-Labels "Verkleinern" ist nicht immer korrekt. Das Eingabeetikett soll schrumpfen, sobald die Eingabe etwas anzeigt. Unter bestimmten Umständen können wir den Status "Schrumpfen" nicht ermitteln (Zahleneingabe, Datumseingabe, Stripe-Eingabe). Sie könnten eine Überlappung bemerken.
 
 ![schrumpfen](/static/images/text-fields/shrink.png)
 
@@ -109,7 +137,7 @@ Die folgende Demo verwendet die Bibliotheken [react-text-mask](https://github.co
 
 {{"demo": "pages/components/text-fields/FormattedInputs.js"}}
 
-The provided input component should handle the `inputRef` property. The property should be called with a value that implements the following interface:
+Die bereitgestellte Eingabekomponente sollte die Eigenschaft `inputRef` haben. The property should be called with a value that implements the following interface:
 
 ```ts
 interface InputElement {
@@ -145,7 +173,7 @@ function MyInputComponent(props) {
 
 ## Barrierefreiheit
 
-In order for the text field to be accessible, **the input should be linked to the label and the helper text**. The underlying DOM nodes should have this structure.
+In order for the text field to be accessible, **the input should be linked to the label and the helper text**. The underlying DOM nodes should have this structure:
 
 ```jsx
 <div class="form-control">
@@ -170,6 +198,6 @@ In order for the text field to be accessible, **the input should be linked to th
 
 Für fortgeschrittenere Anwendungsfälle können Ihnen folgende Projekte helfen:
 
-- [formik-material-ui](https://github.com/stackworx/formik-material-ui) Bindings for using Material-UI with formik.
-- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) A set of wrapper components to facilitate using Material UI with Redux Form.
-- [final-form-material-ui](https://github.com/Deadly0/final-form-material-ui) Eine Reihe von Wrapper-Komponenten, die die Verwendung der Material-Benutzeroberfläche mit Final Form erleichtern.
+- [formik-material-ui](https://github.com/stackworx/formik-material-ui) Bindings for using Material-UI with [formik](https://jaredpalmer.com/formik).
+- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) Bindings for using Material-UI with [Redux Form](https://redux-form.com/).
+- [mui-rff](https://github.com/lookfirst/mui-rff) Bindings for using Material-UI with [React Final Form](https://final-form.org/react).

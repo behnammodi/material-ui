@@ -18,7 +18,7 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     backgroundColor: theme.palette.secondary.light,
@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
   list: {
     margin: 0,
     listStyle: 'none',
-    paddingLeft: 0,
+    padding: 0,
   },
   listItem: {
     paddingTop: theme.spacing(0.5),
@@ -124,7 +124,7 @@ export default function AppFooter() {
               }}
               className={classes.language}
             >
-              {LANGUAGES.map(language => (
+              {LANGUAGES.map((language) => (
                 <option value={language.code} key={language.code}>
                   {language.name}
                 </option>
@@ -134,11 +134,11 @@ export default function AppFooter() {
           <Grid item>
             <Typography variant="caption">
               {'Icons made by '}
-              <Link href="https://www.freepik.com" rel="nofollow" title="Freepik">
+              <Link href="https://www.freepik.com" rel="sponsored" title="Freepik">
                 Freepik
               </Link>
               {' from '}
-              <Link href="https://www.flaticon.com" rel="nofollow" title="Flaticon">
+              <Link href="https://www.flaticon.com" rel="sponsored" title="Flaticon">
                 www.flaticon.com
               </Link>
               {' is licensed by '}

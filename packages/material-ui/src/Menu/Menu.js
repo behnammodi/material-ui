@@ -1,10 +1,12 @@
-import React from 'react';
+import * as React from 'react';
+import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { HTMLElementType } from '@material-ui/utils';
 import withStyles from '../styles/withStyles';
 import Popover from '../Popover';
 import MenuList from '../MenuList';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import setRef from '../utils/setRef';
 import useTheme from '../styles/useTheme';
 
@@ -70,7 +72,7 @@ const Menu = React.forwardRef(function Menu(props, ref) {
     }
   };
 
-  const handleListKeyDown = event => {
+  const handleListKeyDown = (event) => {
     if (event.key === 'Tab') {
       event.preventDefault();
 
@@ -95,10 +97,10 @@ const Menu = React.forwardRef(function Menu(props, ref) {
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      if (child.type === React.Fragment) {
+      if (isFragment(child)) {
         console.error(
           [
-            "Material-UI: the Menu component doesn't accept a Fragment as a child.",
+            "Material-UI: The Menu component doesn't accept a Fragment as a child.",
             'Consider providing an array instead.',
           ].join('\n'),
         );
@@ -117,7 +119,7 @@ const Menu = React.forwardRef(function Menu(props, ref) {
   const items = React.Children.map(children, (child, index) => {
     if (index === activeItemIndex) {
       return React.cloneElement(child, {
-        ref: instance => {
+        ref: (instance) => {
           // #StrictMode ready
           contentAnchorRef.current = ReactDOM.findDOMNode(instance);
           setRef(child.ref, instance);
@@ -165,10 +167,18 @@ const Menu = React.forwardRef(function Menu(props, ref) {
 });
 
 Menu.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
-   * The DOM element used to set the position of the menu.
+   * A HTML element, or a function that returns it.
+   * It's used to set the position of the menu.
    */
-  anchorEl: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+  anchorEl: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
+    HTMLElementType,
+    PropTypes.func,
+  ]),
   /**
    * If `true` (Default) will focus the `[role="menu"]` if no focusable child is found. Disabled
    * children are not focusable. If you set this prop to `false` focus will be placed
@@ -184,7 +194,7 @@ Menu.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * When opening the menu will not focus the active item but the `[role="menu"]`
    * unless `autoFocus` is also set to `false`. Not using the default means not
@@ -200,7 +210,7 @@ Menu.propTypes = {
    * Callback fired when the component requests to be closed.
    *
    * @param {object} event The event source of the callback.
-   * @param {string} reason Can be:`"escapeKeyDown"`, `"backdropClick"`, `"tabKeyDown"`.
+   * @param {string} reason Can be: `"escapeKeyDown"`, `"backdropClick"`, `"tabKeyDown"`.
    */
   onClose: PropTypes.func,
   /**
@@ -243,9 +253,13 @@ Menu.propTypes = {
    * The length of the transition in `ms`, or 'auto'
    */
   transitionDuration: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({ enter: PropTypes.number, exit: PropTypes.number }),
     PropTypes.oneOf(['auto']),
+    PropTypes.number,
+    PropTypes.shape({
+      appear: PropTypes.number,
+      enter: PropTypes.number,
+      exit: PropTypes.number,
+    }),
   ]),
   /**
    * The variant to use. Use `menu` to prevent selected items from impacting the initial focus

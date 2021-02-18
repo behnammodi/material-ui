@@ -6,11 +6,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
+const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -22,35 +18,21 @@ const useStyles = makeStyles(theme => ({
 
 export default function SimpleSelect() {
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    age: '',
-    name: 'hai',
-  });
+  const [age, setAge] = React.useState('');
 
-  const inputLabel = React.useRef(null);
-  const [labelWidth, setLabelWidth] = React.useState(0);
-  React.useEffect(() => {
-    setLabelWidth(inputLabel.current.offsetWidth);
-  }, []);
-
-  const handleChange = event => {
-    setValues(oldValues => ({
-      ...oldValues,
-      [event.target.name]: event.target.value,
-    }));
+  const handleChange = (event) => {
+    setAge(event.target.value);
   };
 
   return (
-    <form className={classes.root} autoComplete="off">
+    <div>
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="age-simple">Age</InputLabel>
+        <InputLabel id="demo-simple-select-label">Age</InputLabel>
         <Select
-          value={values.age}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
           onChange={handleChange}
-          inputProps={{
-            name: 'age',
-            id: 'age-simple',
-          }}
         >
           <MenuItem value={10}>Ten</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>
@@ -58,14 +40,12 @@ export default function SimpleSelect() {
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="age-helper">Age</InputLabel>
+        <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
         <Select
-          value={values.age}
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          value={age}
           onChange={handleChange}
-          inputProps={{
-            name: 'age',
-            id: 'age-helper',
-          }}
         >
           <MenuItem value="">
             <em>None</em>
@@ -78,11 +58,11 @@ export default function SimpleSelect() {
       </FormControl>
       <FormControl className={classes.formControl}>
         <Select
-          value={values.age}
+          value={age}
           onChange={handleChange}
           displayEmpty
-          name="age"
           className={classes.selectEmpty}
+          inputProps={{ 'aria-label': 'Without label' }}
         >
           <MenuItem value="">
             <em>None</em>
@@ -94,18 +74,15 @@ export default function SimpleSelect() {
         <FormHelperText>Without label</FormHelperText>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel shrink htmlFor="age-label-placeholder">
+        <InputLabel shrink id="demo-simple-select-placeholder-label-label">
           Age
         </InputLabel>
         <Select
-          value={values.age}
+          labelId="demo-simple-select-placeholder-label-label"
+          id="demo-simple-select-placeholder-label"
+          value={age}
           onChange={handleChange}
-          inputProps={{
-            name: 'age',
-            id: 'age-label-placeholder',
-          }}
           displayEmpty
-          name="age"
           className={classes.selectEmpty}
         >
           <MenuItem value="">
@@ -118,73 +95,65 @@ export default function SimpleSelect() {
         <FormHelperText>Label + placeholder</FormHelperText>
       </FormControl>
       <FormControl className={classes.formControl} disabled>
-        <InputLabel htmlFor="name-disabled">Name</InputLabel>
+        <InputLabel id="demo-simple-select-disabled-label">Name</InputLabel>
         <Select
-          value={values.name}
+          labelId="demo-simple-select-disabled-label"
+          id="demo-simple-select-disabled"
+          value={age}
           onChange={handleChange}
-          inputProps={{
-            name: 'name',
-            id: 'name-disabled',
-          }}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value="hai">Hai</MenuItem>
-          <MenuItem value="olivier">Olivier</MenuItem>
-          <MenuItem value="kevin">Kevin</MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
         </Select>
         <FormHelperText>Disabled</FormHelperText>
       </FormControl>
       <FormControl className={classes.formControl} error>
-        <InputLabel htmlFor="name-error">Name</InputLabel>
+        <InputLabel id="demo-simple-select-error-label">Name</InputLabel>
         <Select
-          value={values.name}
+          labelId="demo-simple-select-error-label"
+          id="demo-simple-select-error"
+          value={age}
           onChange={handleChange}
-          name="name"
-          renderValue={value => `⚠️  - ${value}`}
-          inputProps={{
-            id: 'name-error',
-          }}
+          renderValue={(value) => `⚠️  - ${value}`}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value="hai">Hai</MenuItem>
-          <MenuItem value="olivier">Olivier</MenuItem>
-          <MenuItem value="kevin">Kevin</MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
         </Select>
         <FormHelperText>Error</FormHelperText>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="name-readonly">Name</InputLabel>
+        <InputLabel id="demo-simple-select-readonly-label">Name</InputLabel>
         <Select
-          value={values.name}
+          labelId="demo-simple-select-readonly-label"
+          id="demo-simple-select-readonly"
+          value={age}
           onChange={handleChange}
-          inputProps={{
-            name: 'name',
-            id: 'name-readonly',
-            readOnly: true,
-          }}
+          inputProps={{ readOnly: true }}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value="hai">Hai</MenuItem>
-          <MenuItem value="olivier">Olivier</MenuItem>
-          <MenuItem value="kevin">Kevin</MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
         </Select>
         <FormHelperText>Read only</FormHelperText>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="age-auto-width">Age</InputLabel>
+        <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
         <Select
-          value={values.age}
+          labelId="demo-simple-select-autowidth-label"
+          id="demo-simple-select-autowidth"
+          value={age}
           onChange={handleChange}
-          inputProps={{
-            name: 'age',
-            id: 'age-auto-width',
-          }}
           autoWidth
         >
           <MenuItem value="">
@@ -198,11 +167,11 @@ export default function SimpleSelect() {
       </FormControl>
       <FormControl className={classes.formControl}>
         <Select
-          value={values.age}
+          value={age}
           onChange={handleChange}
-          name="age"
           displayEmpty
           className={classes.selectEmpty}
+          inputProps={{ 'aria-label': 'Without label' }}
         >
           <MenuItem value="" disabled>
             Placeholder
@@ -214,14 +183,12 @@ export default function SimpleSelect() {
         <FormHelperText>Placeholder</FormHelperText>
       </FormControl>
       <FormControl required className={classes.formControl}>
-        <InputLabel htmlFor="age-required">Age</InputLabel>
+        <InputLabel id="demo-simple-select-required-label">Age</InputLabel>
         <Select
-          value={values.age}
+          labelId="demo-simple-select-required-label"
+          id="demo-simple-select-required"
+          value={age}
           onChange={handleChange}
-          name="age"
-          inputProps={{
-            id: 'age-required',
-          }}
           className={classes.selectEmpty}
         >
           <MenuItem value="">
@@ -234,17 +201,13 @@ export default function SimpleSelect() {
         <FormHelperText>Required</FormHelperText>
       </FormControl>
       <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
-          Age
-        </InputLabel>
+        <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
         <Select
-          value={values.age}
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
+          value={age}
           onChange={handleChange}
-          labelWidth={labelWidth}
-          inputProps={{
-            name: 'age',
-            id: 'outlined-age-simple',
-          }}
+          label="Age"
         >
           <MenuItem value="">
             <em>None</em>
@@ -255,14 +218,12 @@ export default function SimpleSelect() {
         </Select>
       </FormControl>
       <FormControl variant="filled" className={classes.formControl}>
-        <InputLabel htmlFor="filled-age-simple">Age</InputLabel>
+        <InputLabel id="demo-simple-select-filled-label">Age</InputLabel>
         <Select
-          value={values.age}
+          labelId="demo-simple-select-filled-label"
+          id="demo-simple-select-filled"
+          value={age}
           onChange={handleChange}
-          inputProps={{
-            name: 'age',
-            id: 'filled-age-simple',
-          }}
         >
           <MenuItem value="">
             <em>None</em>
@@ -272,6 +233,6 @@ export default function SimpleSelect() {
           <MenuItem value={30}>Thirty</MenuItem>
         </Select>
       </FormControl>
-    </form>
+    </div>
   );
 }

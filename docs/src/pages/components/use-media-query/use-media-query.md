@@ -16,7 +16,7 @@ Some of the key features:
 ## Simple media query
 
 You should provide a media query to the first argument of the hook.
-The media query string can by any valid CSS media query, e.g. [`'(prefers-color-scheme: dark)'`](/customization/palette/#user-preference).
+The media query string can be any valid CSS media query, e.g. [`'(prefers-color-scheme: dark)'`](/customization/palette/#user-preference).
 
 {{"demo": "pages/components/use-media-query/SimpleMediaQuery.js", "defaultCodeOpen": true}}
 
@@ -108,7 +108,7 @@ You have the choice between using:
 Finally, you need to provide an implementation of [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) to the `useMediaQuery` with the previously guessed characteristics.
 Using [css-mediaquery](https://github.com/ericf/css-mediaquery) to emulate matchMedia is recommended.
 
-For instance:
+For instance on the server-side:
 
 ```js
 import ReactDOMServer from 'react-dom/server';
@@ -121,7 +121,7 @@ function handleRender(req, res) {
   const ssrMatchMedia = query => ({
     matches: mediaQuery.match(query, {
       // The estimated CSS width of the browser.
-      width: deviceType === 'mobile' ? 0 : 1024,
+      width: deviceType === 'mobile' ? '0px' : '1024px',
     }),
   });
 
@@ -142,7 +142,9 @@ function handleRender(req, res) {
 }
 ```
 
-{{"demo": "pages/components/use-media-query/ServerSide.js"}}
+{{"demo": "pages/components/use-media-query/ServerSide.js", "defaultCodeOpen": false}}
+
+Make sure you provide the same custom match media implementation to the client-side to guarantee a hydration match.
 
 ## Migrating from `withWidth()`
 
@@ -162,12 +164,13 @@ You can reproduce the same behavior with a `useWidth` hook:
   - `options.defaultMatches` (*Boolean* [optional]):
   As `window.matchMedia()` is unavailable on the server,
   we return a default matches during the first mount. The default value is `false`.
+  - `options.matchMedia` (*Function* [optional]) You can provide your own implementation of *matchMedia*. This can be used for handling an iframe content window.
   - `options.noSsr` (*Boolean* [optional]): Defaults to `false`.
   In order to perform the server-side rendering reconciliation, it needs to render twice.
   A first time with nothing and a second time with the children.
   This double pass rendering cycle comes with a drawback. It's slower.
   You can set this flag to `true` if you are **not doing server-side rendering**.
-  - `options.ssrMatchMedia` (*Function* [optional]) You can provide your own implementation of *matchMedia*. This especially useful for [server-side rendering support](#server-side-rendering).
+  - `options.ssrMatchMedia` (*Function* [optional]) You can provide your own implementation of *matchMedia* in a [server-side rendering context](#server-side-rendering).
 
 Note: You can change the default options using the [`default props`](/customization/globals/#default-props) feature of the theme with the `MuiUseMediaQuery` key.
 

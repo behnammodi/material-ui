@@ -5,37 +5,31 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   close: {
     padding: theme.spacing(0.5),
   },
 }));
 
 export default function ConsecutiveSnackbars() {
-  const queueRef = React.useRef([]);
+  const [snackPack, setSnackPack] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [messageInfo, setMessageInfo] = React.useState(undefined);
 
-  const processQueue = () => {
-    if (queueRef.current.length > 0) {
-      setMessageInfo(queueRef.current.shift());
+  React.useEffect(() => {
+    if (snackPack.length && !messageInfo) {
+      // Set a new snack when we don't have an active one
+      setMessageInfo({ ...snackPack[0] });
+      setSnackPack((prev) => prev.slice(1));
       setOpen(true);
-    }
-  };
-
-  const handleClick = message => () => {
-    queueRef.current.push({
-      message,
-      key: new Date().getTime(),
-    });
-
-    if (open) {
-      // immediately begin dismissing current message
-      // to start showing new one
+    } else if (snackPack.length && messageInfo && open) {
+      // Close an active snack when a new one is added
       setOpen(false);
-    } else {
-      processQueue();
     }
+  }, [snackPack, messageInfo, open]);
+
+  const handleClick = (message) => () => {
+    setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   };
 
   const handleClose = (event, reason) => {
@@ -46,7 +40,7 @@ export default function ConsecutiveSnackbars() {
   };
 
   const handleExited = () => {
-    processQueue();
+    setMessageInfo(undefined);
   };
 
   const classes = useStyles();
@@ -64,24 +58,22 @@ export default function ConsecutiveSnackbars() {
         autoHideDuration={6000}
         onClose={handleClose}
         onExited={handleExited}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={<span id="message-id">{messageInfo ? messageInfo.message : undefined}</span>}
-        action={[
-          <Button key="undo" color="secondary" size="small" onClick={handleClose}>
-            UNDO
-          </Button>,
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            className={classes.close}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>,
-        ]}
+        message={messageInfo ? messageInfo.message : undefined}
+        action={
+          <React.Fragment>
+            <Button color="secondary" size="small" onClick={handleClose}>
+              UNDO
+            </Button>
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              className={classes.close}
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          </React.Fragment>
+        }
       />
     </div>
   );

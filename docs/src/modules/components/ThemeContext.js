@@ -2,14 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   ThemeProvider as MuiThemeProvider,
-  createMuiTheme,
+  createMuiTheme as createLegacyModeTheme,
+  unstable_createMuiStrictModeTheme as createStrictModeTheme,
   darken,
 } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { enUS, zhCN, faIR, ruRU, ptBR, esES, frFR, deDE, jaJP } from '@material-ui/core/locale';
 import { blue, pink } from '@material-ui/core/colors';
 import { getCookie } from 'docs/src/modules/utils/helpers';
-import { darkTheme, setPrismTheme } from 'docs/src/modules/components/prism';
-import deepmerge from 'deepmerge';
+import useLazyCSS from 'docs/src/modules/utils/useLazyCSS';
+
+const languageMap = {
+  en: enUS,
+  zh: zhCN,
+  fa: faIR,
+  ru: ruRU,
+  pt: ptBR,
+  es: esES,
+  fr: frFR,
+  de: deDE,
+  ja: jaJP,
+};
 
 export const themeColor = blue[700];
 
@@ -20,78 +34,76 @@ const themeInitialOptions = {
   spacing: 8, // spacing unit
 };
 
-/**
- * @typedef {import('@material-ui/core/src/styles/createMuiTheme').ThemeOptions} ThemeOptions
- *
- *
- * @param {ThemeOptions} themeOptions
- * @returns {ThemeOptions}
- */
-function usingHighDensity(themeOptions) {
-  return deepmerge(themeOptions, {
-    props: {
-      MuiButton: {
-        size: 'small',
-      },
-      MuiFilledInput: {
-        margin: 'dense',
-      },
-      MuiFormControl: {
-        margin: 'dense',
-      },
-      MuiFormHelperText: {
-        margin: 'dense',
-      },
-      MuiIconButton: {
-        size: 'small',
-      },
-      MuiInputBase: {
-        margin: 'dense',
-      },
-      MuiInputLabel: {
-        margin: 'dense',
-      },
-      MuiListItem: {
-        dense: true,
-      },
-      MuiOutlinedInput: {
-        margin: 'dense',
-      },
-      MuiFab: {
-        size: 'small',
-      },
-      MuiTable: {
-        size: 'small',
-      },
-      MuiTextField: {
-        margin: 'dense',
-      },
-      MuiToolbar: {
-        variant: 'dense',
+const highDensity = {
+  props: {
+    MuiButton: {
+      size: 'small',
+    },
+    MuiFilledInput: {
+      margin: 'dense',
+    },
+    MuiFormControl: {
+      margin: 'dense',
+    },
+    MuiFormHelperText: {
+      margin: 'dense',
+    },
+    MuiIconButton: {
+      size: 'small',
+    },
+    MuiInputBase: {
+      margin: 'dense',
+    },
+    MuiInputLabel: {
+      margin: 'dense',
+    },
+    MuiListItem: {
+      dense: true,
+    },
+    MuiOutlinedInput: {
+      margin: 'dense',
+    },
+    MuiFab: {
+      size: 'small',
+    },
+    MuiTable: {
+      size: 'small',
+    },
+    MuiTextField: {
+      margin: 'dense',
+    },
+    MuiToolbar: {
+      variant: 'dense',
+    },
+  },
+  overrides: {
+    MuiIconButton: {
+      sizeSmall: {
+        // minimal touch target hit spacing
+        marginLeft: 4,
+        marginRight: 4,
+        padding: 12,
       },
     },
-    overrides: {
-      MuiIconButton: {
-        sizeSmall: {
-          // minimal touch target hit spacing
-          marginLeft: 4,
-          marginRight: 4,
-          padding: 12,
-        },
-      },
-    },
-  });
-}
-
-function usingIdentity(themeOptions) {
-  return themeOptions;
-}
+  },
+};
 
 export const DispatchContext = React.createContext(() => {
-  throw new Error('Forgot to wrap component in ThemeContext.Provider');
+  throw new Error('Forgot to wrap component in `ThemeProvider`');
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  DispatchContext.displayName = 'ThemeDispatchContext';
+}
+
 const useEnhancedEffect = typeof window === 'undefined' ? React.useEffect : React.useLayoutEffect;
+
+let createMuiTheme;
+if (process.env.REACT_MODE === 'legacy') {
+  createMuiTheme = createLegacyModeTheme;
+} else {
+  createMuiTheme = createStrictModeTheme;
+}
 
 export function ThemeProvider(props) {
   const { children } = props;
@@ -143,13 +155,12 @@ export function ThemeProvider(props) {
     }
   }, themeInitialOptions);
 
+  const userLanguage = useSelector((state) => state.options.userLanguage);
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const preferredType = prefersDarkMode ? 'dark' : 'light';
   const { dense, direction, paletteColors, paletteType = preferredType, spacing } = themeOptions;
 
-  React.useEffect(() => {
-    setPrismTheme(darkTheme);
-  }, []);
+  useLazyCSS('/static/styles/prism-okaidia.css', '#prismjs');
 
   React.useEffect(() => {
     if (process.browser) {
@@ -173,9 +184,8 @@ export function ThemeProvider(props) {
   }, [direction]);
 
   const theme = React.useMemo(() => {
-    const themeDecorator = dense ? usingHighDensity : usingIdentity;
     const nextTheme = createMuiTheme(
-      themeDecorator({
+      {
         direction,
         nprogress: {
           color: paletteType === 'light' ? '#000' : '#fff',
@@ -194,7 +204,9 @@ export function ThemeProvider(props) {
           ...paletteColors,
         },
         spacing,
-      }),
+      },
+      dense ? highDensity : null,
+      languageMap[userLanguage],
     );
 
     nextTheme.palette.background.level2 =
@@ -204,7 +216,7 @@ export function ThemeProvider(props) {
       paletteType === 'light' ? '#fff' : nextTheme.palette.grey[900];
 
     return nextTheme;
-  }, [dense, direction, paletteColors, paletteType, spacing]);
+  }, [dense, direction, paletteColors, paletteType, spacing, userLanguage]);
 
   React.useEffect(() => {
     // Expose the theme as a global variable so people can play with it.
@@ -229,5 +241,5 @@ ThemeProvider.propTypes = {
  */
 export function useChangeTheme() {
   const dispatch = React.useContext(DispatchContext);
-  return React.useCallback(options => dispatch({ type: 'CHANGE', payload: options }), [dispatch]);
+  return React.useCallback((options) => dispatch({ type: 'CHANGE', payload: options }), [dispatch]);
 }

@@ -1,9 +1,9 @@
 ---
-title: Divider React-Komponente
+title: React Divider component
 components: Divider
 ---
 
-# Trenner (Divider)
+# Divider
 
 <p class="description">Ein Trenner ist eine dünne Linie, die den Inhalt in Listen und Layouts gruppiert.</p>
 
@@ -11,9 +11,9 @@ components: Divider
 
 ## Listentrenner
 
-Der Trenner gibt per Standard ein `<hr>`-Element aus. Sie können sich dieses zusätzliche Element sparen, in dem sie die `divider`-Eigenschaft bei der `ListItem`-Komponente verwenden.
+Sie können sich dieses zusätzliche Element sparen, in dem sie die `divider`-Eigenschaft bei der `ListItem`-Komponente verwenden. Der Trenner gibt per Standard ein `<hr>`-Element aus.
 
-{{"demo": "pages/components/dividers/ListDividers.js"}}
+{{"demo": "pages/components/dividers/ListDividers.js", "bg": true}}
 
 ## HTML5-Spezifikation
 
@@ -21,12 +21,18 @@ In einer Liste sollten sie sicherstellen, dass der `Trenner` als `<li>` gerender
 
 ## Eingerückter Trenner
 
-{{"demo": "pages/components/dividers/InsetDividers.js"}}
+{{"demo": "pages/components/dividers/InsetDividers.js", "bg": true}}
 
 ## Subheader-Trenner
 
-{{"demo": "pages/components/dividers/SubheaderDividers.js"}}
+{{"demo": "pages/components/dividers/SubheaderDividers.js", "bg": true}}
 
 ## Mitteltrenner
 
-{{"demo": "pages/components/dividers/MiddleDividers.js"}}
+{{"demo": "pages/components/dividers/MiddleDividers.js", "bg": true}}
+
+## Vertikale Trennlinien
+
+Sie können einen Trenner auch vertikal mit der `orientation` prop rendern. Note the use of the `flexItem` prop to accommodate for the flex container.
+
+{{"demo": "pages/components/dividers/VerticalDividers.js", "bg": true}}

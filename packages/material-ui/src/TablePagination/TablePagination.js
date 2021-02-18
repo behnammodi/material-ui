@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { chainPropTypes } from '@material-ui/utils';
 import clsx from 'clsx';
@@ -10,12 +10,14 @@ import TableCell from '../TableCell';
 import Toolbar from '../Toolbar';
 import Typography from '../Typography';
 import TablePaginationActions from './TablePaginationActions';
+import useId from '../utils/unstable_useId';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     color: theme.palette.text.primary,
     fontSize: theme.typography.pxToRem(14),
+    overflow: 'auto',
     // Increase the specificity to override TableCell.
     '&:last-child': {
       padding: 0,
@@ -34,9 +36,9 @@ export const styles = theme => ({
   caption: {
     flexShrink: 0,
   },
+  // TODO v5: `.selectRoot` should be merged with `.input`
   /* Styles applied to the Select component root element. */
   selectRoot: {
-    // `.selectRoot` should be merged with `.input` in v5.
     marginRight: 32,
     marginLeft: 8,
   },
@@ -47,10 +49,9 @@ export const styles = theme => ({
     textAlign: 'right',
     textAlignLast: 'right', // Align <select> on Chrome.
   },
+  // TODO v5: remove
   /* Styles applied to the Select component `icon` class. */
-  selectIcon: {
-    top: 1,
-  },
+  selectIcon: {},
   /* Styles applied to the `InputBase` component. */
   input: {
     color: 'inherit',
@@ -67,7 +68,7 @@ export const styles = theme => ({
 });
 
 const defaultLabelDisplayedRows = ({ from, to, count }) =>
-  `${from}-${to === -1 ? count : to} of ${count}`;
+  `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`;
 const defaultRowsPerPageOptions = [10, 25, 50, 100];
 
 /**
@@ -77,6 +78,7 @@ const TablePagination = React.forwardRef(function TablePagination(props, ref) {
   const {
     ActionsComponent = TablePaginationActions,
     backIconButtonProps,
+    backIconButtonText = 'Previous page',
     classes,
     className,
     colSpan: colSpanProp,
@@ -85,6 +87,7 @@ const TablePagination = React.forwardRef(function TablePagination(props, ref) {
     labelDisplayedRows = defaultLabelDisplayedRows,
     labelRowsPerPage = 'Rows per page:',
     nextIconButtonProps,
+    nextIconButtonText = 'Next page',
     onChangePage,
     onChangeRowsPerPage,
     page,
@@ -93,13 +96,14 @@ const TablePagination = React.forwardRef(function TablePagination(props, ref) {
     SelectProps = {},
     ...other
   } = props;
-
   let colSpan;
 
   if (Component === TableCell || Component === 'td') {
     colSpan = colSpanProp || 1000; // col-span over everything
   }
 
+  const selectId = useId();
+  const labelId = useId();
   const MenuItemComponent = SelectProps.native ? 'option' : MenuItem;
 
   return (
@@ -107,7 +111,7 @@ const TablePagination = React.forwardRef(function TablePagination(props, ref) {
       <Toolbar className={classes.toolbar}>
         <div className={classes.spacer} />
         {rowsPerPageOptions.length > 1 && (
-          <Typography color="inherit" variant="body2" className={classes.caption}>
+          <Typography color="inherit" variant="body2" className={classes.caption} id={labelId}>
             {labelRowsPerPage}
           </Typography>
         )}
@@ -120,12 +124,14 @@ const TablePagination = React.forwardRef(function TablePagination(props, ref) {
             input={<InputBase className={clsx(classes.input, classes.selectRoot)} />}
             value={rowsPerPage}
             onChange={onChangeRowsPerPage}
+            id={selectId}
+            labelId={labelId}
             {...SelectProps}
           >
-            {rowsPerPageOptions.map(rowsPerPageOption => (
+            {rowsPerPageOptions.map((rowsPerPageOption) => (
               <MenuItemComponent
                 className={classes.menuItem}
-                key={rowsPerPageOption}
+                key={rowsPerPageOption.value ? rowsPerPageOption.value : rowsPerPageOption}
                 value={rowsPerPageOption.value ? rowsPerPageOption.value : rowsPerPageOption}
               >
                 {rowsPerPageOption.label ? rowsPerPageOption.label : rowsPerPageOption}
@@ -136,16 +142,24 @@ const TablePagination = React.forwardRef(function TablePagination(props, ref) {
         <Typography color="inherit" variant="body2" className={classes.caption}>
           {labelDisplayedRows({
             from: count === 0 ? 0 : page * rowsPerPage + 1,
-            to: Math.min(count, (page + 1) * rowsPerPage),
-            count,
+            to: count !== -1 ? Math.min(count, (page + 1) * rowsPerPage) : (page + 1) * rowsPerPage,
+            count: count === -1 ? -1 : count,
             page,
           })}
         </Typography>
         <ActionsComponent
           className={classes.actions}
-          backIconButtonProps={backIconButtonProps}
+          backIconButtonProps={{
+            title: backIconButtonText,
+            'aria-label': backIconButtonText,
+            ...backIconButtonProps,
+          }}
           count={count}
-          nextIconButtonProps={nextIconButtonProps}
+          nextIconButtonProps={{
+            title: nextIconButtonText,
+            'aria-label': nextIconButtonText,
+            ...nextIconButtonProps,
+          }}
           onChangePage={onChangePage}
           page={page}
           rowsPerPage={rowsPerPage}
@@ -158,13 +172,19 @@ const TablePagination = React.forwardRef(function TablePagination(props, ref) {
 TablePagination.propTypes = {
   /**
    * The component used for displaying the actions.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
   ActionsComponent: PropTypes.elementType,
   /**
    * Props applied to the back arrow [`IconButton`](/api/icon-button/) component.
    */
   backIconButtonProps: PropTypes.object,
+  /**
+   * Text label for the back arrow icon button.
+   *
+   * For localization purposes, you can use the provided [translations](/guides/localization/).
+   */
+  backIconButtonText: PropTypes.string,
   /**
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
@@ -180,26 +200,38 @@ TablePagination.propTypes = {
   colSpan: PropTypes.number,
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * The total number of rows.
+   *
+   * To enable server side pagination for an unknown number of items, provide -1.
    */
   count: PropTypes.number.isRequired,
   /**
-   * Customize the displayed rows label.
+   * Customize the displayed rows label. Invoked with a `{ from, to, count, page }`
+   * object.
+   *
+   * For localization purposes, you can use the provided [translations](/guides/localization/).
    */
   labelDisplayedRows: PropTypes.func,
   /**
-   * Customize the rows per page label. Invoked with a `{ from, to, count, page }`
-   * object.
+   * Customize the rows per page label.
+   *
+   * For localization purposes, you can use the provided [translations](/guides/localization/).
    */
   labelRowsPerPage: PropTypes.node,
   /**
    * Props applied to the next arrow [`IconButton`](/api/icon-button/) element.
    */
   nextIconButtonProps: PropTypes.object,
+  /**
+   * Text label for the next arrow icon button.
+   *
+   * For localization purposes, you can use the provided [translations](/guides/localization/).
+   */
+  nextIconButtonText: PropTypes.string,
   /**
    * Callback fired when the page is changed.
    *
@@ -216,12 +248,17 @@ TablePagination.propTypes = {
   /**
    * The zero-based index of the current page.
    */
-  page: chainPropTypes(PropTypes.number.isRequired, props => {
+  page: chainPropTypes(PropTypes.number.isRequired, (props) => {
     const { count, page, rowsPerPage } = props;
+
+    if (count === -1) {
+      return null;
+    }
+
     const newLastPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
     if (page < 0 || page > newLastPage) {
       return new Error(
-        'Material-UI: the page prop of a TablePagination is out of range ' +
+        'Material-UI: The page prop of a TablePagination is out of range ' +
           `(0 to ${newLastPage}, but page is ${page}).`,
       );
     }

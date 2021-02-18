@@ -8,7 +8,7 @@ import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 import SaveIcon from '@material-ui/icons/Save';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -60,7 +60,7 @@ export default function CircularIntegration() {
     if (!loading) {
       setSuccess(false);
       setLoading(true);
-      timer.current = setTimeout(() => {
+      timer.current = window.setTimeout(() => {
         setSuccess(true);
         setLoading(false);
       }, 2000);

@@ -2,9 +2,11 @@
 
 <p class="description">TypeScriptを使用することで、JavaScriptに静的型付けを追加し、開発者の生産性とコード品質を向上させることができます。</p>
 
-[Create React AppでのTypeScript](https://github.com/mui-org/material-ui/tree/master/examples/create-react-app-with-typescript)の使用例を参考にしてください。 TypeScript 2.8以上が必要です。
+Material-UI requires a minimum version of TypeScript 3.2.
 
-In order for types to work, you have to at least have the following options enabled in your `tsconfig.json`:
+[Create React AppでのTypeScript](https://github.com/mui-org/material-ui/tree/master/examples/create-react-app-with-typescript)の使用例を参考にしてください。
+
+型が機能するためには、少なくともあなたの`tsconfig.json` の次のオプションを有効にする必要があります
 
 ```json
 {
@@ -17,7 +19,7 @@ In order for types to work, you have to at least have the following options enab
 }
 ```
 
-Strictモードのオプションは、すべてのタイプのパッケージに必要なものと同じです。 は`@types/`namespaceで発行されます。 あまり厳密でない`tsconfig.json`を使ったり、一部のライブラリを省略した場合、エラーが発生する可能性があります。 To get the best type experience with the types we recommend setting `"strict": true`.
+Strictモードのオプションは、すべてのタイプのパッケージに必要なものと同じです。 は`@types/`namespaceで発行されます。 あまり厳密でない`tsconfig.json`を使ったり、一部のライブラリを省略した場合、エラーが発生する可能性があります。 To get the best type experience with the types we recommend setting `"strict": true`. あまり厳密でない`tsconfig.json`を使ったり、一部のライブラリを省略した場合、エラーが発生する可能性があります。 To get the best type experience with the types we recommend setting `"strict": true`. To get the best type experience with the types we recommend setting `"strict": true`.
 
 ## `withStyles`の使い方
 
@@ -41,7 +43,7 @@ withStyles(styles);
 //           Type 'string' is not assignable to type '"-moz-initial" | "inherit" | "initial" | "revert" | "unset" | "column" | "column-reverse" | "row"...'.
 ```
 
-問題は、`flexDirection`プロパティの型が`string`として型推論されることです。これは独断的すぎます。 これを修正するため、styleオブジェクトを直接`withStyles`に渡します:
+すべてのコンポーネントが、渡すコンポーネントタイプを完全にサポートしているわけではありません。 If you encounter a component that rejects its `component` props in TypeScript please open an issue. コンポーネントプロップを汎用化することで、この問題を解決するための取り組みが続けられています。
 
 ```ts
 withStyles({
@@ -110,7 +112,7 @@ const styles = createStyles({
 });
 ```
 
-ただし、これらのスタイルがTypeScriptを渡せるようにするには、CSSクラスの名前と実際のCSSプロパティ名に関して定義があいまいでなければなりません。 このため、CSSプロパティと同じクラス名は使用しないでください。
+ただし、これらのスタイルがTypeScriptを渡せるようにするには、CSSクラスの名前と実際のCSSプロパティ名に関して定義があいまいでなければなりません。 このため、CSSプロパティと同じクラス名は使用しないでください。 ただし、これらのスタイルがTypeScriptを渡せるようにするには、CSSクラスの名前と実際のCSSプロパティ名に関して定義があいまいでなければなりません。 このため、CSSプロパティと同じクラス名は使用しないでください。 ただし、これらのスタイルがTypeScriptを渡せるようにするには、CSSクラスの名前と実際のCSSプロパティ名に関して定義があいまいでなければなりません。 このため、CSSプロパティと同じクラス名は使用しないでください。 ただし、これらのスタイルがTypeScriptを渡せるようにするには、CSSクラスの名前と実際のCSSプロパティ名に関して定義があいまいでなければなりません。 このため、CSSプロパティと同じクラス名は使用しないでください。 ただし、これらのスタイルがTypeScriptを渡せるようにするには、CSSクラスの名前と実際のCSSプロパティ名に関して定義があいまいでなければなりません。 このため、CSSプロパティと同じクラス名は使用しないでください。
 
 ```ts
 // error because TypeScript thinks `@media (min-width: 960px)` is a class name
@@ -139,13 +141,13 @@ const ambiguousStyles = createStyles({
 });
 ```
 
-### ` WithStylesを使用して propsを増強する`
+### WithStylesを使用して propsを増強する
 
 `withStyles(styles) で装飾されたコンポーネント`には、特別な`classes` プロパティが挿入されるため、それに応じてプロパティを定義する必要があります。
 
 ```ts
-const styles = (theme: Theme) => createStyles({
-  root: { /* ... */ },
+*/ },
+  button: { /* ... */ },
   paper: { /* ... */ },
   button: { /* ... */ },
 });
@@ -163,7 +165,7 @@ interface Props {
 }
 ```
 
-しかし、これはあまり[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)ではありません。なぜなら、クラス名(`'root'`、`'paper'`、`'button'`、...。) を二つの異なる場所に維持する必要があるからです。 このために、型演算子`WithStyles`を使用して、次のように記述します。
+しかし、これはあまり[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)ではありません。なぜなら、クラス名(`'root'`、`'paper'`、`'button'`、...。) を二つの異なる場所に維持する必要があるからです。 このために、型演算子`WithStyles`を使用して、次のように記述します。 このために、型演算子`WithStyles`を使用して、次のように記述します。 このために、型演算子`WithStyles`を使用して、次のように記述します。 このために、型演算子`WithStyles`を使用して、次のように記述します。 このために、型演算子`WithStyles`を使用して、次のように記述します。
 
 ```ts
 import { WithStyles, createStyles } from '@material-ui/core';
@@ -172,17 +174,12 @@ const styles = (theme: Theme) => createStyles({
   root: { /* ... */ },
   paper: { /* ... */ },
   button: { /* ... */ },
-});
-
-interface Props extends WithStyles<typeof styles> {
-  foo: number;
-  bar: boolean;
-}
+  paper: { /* ...
 ```
 
 ### コンポーネントの装飾
 
-` withStyles（styles）`の適用で、関数が期待どおりに機能する：
+`withStyles（styles）`の適用で、関数が期待どおりに機能する：
 
 ```tsx
 const DecoratedSFC = withStyles(styles)(({ text, type, color, classes }: Props) => (
@@ -207,7 +204,7 @@ const DecoratedClass = withStyles(styles)(
 
 残念ながら、[TypeScript decoratorsの現在の制限](https://github.com/Microsoft/TypeScript/issues/4881) により、`withStyles(スタイル)`はTypeScriptのデコレータとして使用できません。
 
-## `テーマのカスタマイズ`
+## テーマのカスタマイズ
 
 カスタムプロパティを`テーマ`に追加する場合、[TypeScriptのモジュール拡張](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation)を利用して、厳密に型指定した方法で引き続き使用できます。
 
@@ -239,7 +236,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
 **./styles/createMyTheme**:
 
 ```ts
-import createMuiTheme, { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
+import { createMuiTheme, ThemeOptions } from '@material-ui/core/styles';
 
 export default function createMyTheme(options: ThemeOptions) {
   return createMuiTheme({
@@ -262,14 +259,53 @@ const theme = createMyTheme({ appDrawer: { breakpoint: 'md' }});
 
 ## Usage of `component` prop
 
-Material-UI allows you to replace a component's root node via a `component` prop. For example, a Button's root node can be replaced with a React Router's Link, and any additional props that are passed to Button, such as `to`, will be spread to the Link component. For a code example concerning Button and react-router-dom checkout [these demos](/guides/composition/#routing-libraries).
+Many Material-UI components allow you to replace their root node via a `component` prop, this will be detailed in the component's API documentation. For example, a Button's root node can be replaced with a React Router's Link, and any additional props that are passed to Button, such as `to`, will be spread to the Link component. For a code example concerning Button and react-router-dom checkout [these demos](/guides/composition/#routing-libraries).
 
-すべてのコンポーネントが、渡すコンポーネントタイプを完全にサポートしているわけではありません。 次のような問題が発生した場合 TypeScriptで `component`プロパティを拒否するコンポーネントの問題を開いてください。 コンポーネントプロップを汎用化することで、この問題を解決するための取り組みが続けられています。
+To be able to use props of such a Material-UI component on their own, props should be used with type arguments. Otherwise, the `component` prop will not be present in the props of the Material-UI component.
+
+The examples below use `TypographyProps` but the same will work for any component which has props defined with `OverrideProps`.
+
+The following `CustomComponent` component has the same props as the `Typography` component.
+
+```ts
+function CustomComponent(props: TypographyProps<'a', { component: 'a' }>) {
+  /* ... */
+}
+```
+
+Now the `CustomComponent` can be used with a `component` prop which should be set to `'a'`. In addition, the `CustomComponent` will have all props of a `<a>` HTML element. The other props of the `Typography` component will also be present in props of the `CustomComponent`.
+
+It is possible to have generic `CustomComponent` which will accept any React component, custom and HTML elements.
+
+```ts
+function GenericCustomComponent<C extends React.ElementType>(
+  props: TypographyProps<C, { component?: C }>,
+) {
+  /* ... */
+}
+```
+
+Now if the `GenericCustomComponent` will be used with a `component` prop provided, it should also have all props required by the provided component.
+
+```ts
+function ThirdPartyComponent({ prop1 } : { prop1: string }) {
+  return <div />
+}
+// ...
+function ThirdPartyComponent({ prop1 } : { prop1: string }) {
+  return <div />
+}
+// ...
+```
+
+The `prop1` became required for the `GenericCustomComponent` as the `ThirdPartyComponent` has it as a requirement.
+
+すべてのコンポーネントが、渡すコンポーネントタイプを完全にサポートしているわけではありません。 すべてのコンポーネントが、渡すコンポーネントタイプを完全にサポートしているわけではありません。 If you encounter a component that rejects its `component` props in TypeScript please open an issue. すべてのコンポーネントが、渡すコンポーネントタイプを完全にサポートしているわけではありません。 If you encounter a component that rejects its `component` props in TypeScript please open an issue. コンポーネントプロップを汎用化することで、この問題を解決するための取り組みが続けられています。
 
 ## `value` およびイベントハンドラの処理
 
-ユーザ入力に関連する多くのコンポーネントは、現在の `value`を含む`value`プロパティまたはイベントハンドラを提供します。 ほとんどの場合、`値`のみが処理されます。 オブジェクトや配列などの任意のタイプを使用できます。
+ユーザ入力に関連する多くのコンポーネントは、現在の `value`を含む`value`プロパティまたはイベントハンドラを提供します。 ほとんどの場合、`値`のみが処理されます。 オブジェクトや配列などの任意のタイプを使用できます。 ほとんどの場合、`値`のみが処理されます。 オブジェクトや配列などの任意のタイプを使用できます。 ほとんどの場合、`値`のみが処理されます。 オブジェクトや配列などの任意のタイプを使用できます。 ほとんどの場合、`値`のみが処理されます。 オブジェクトや配列などの任意のタイプを使用できます。 ほとんどの場合、`値`のみが処理されます。 オブジェクトや配列などの任意のタイプを使用できます。
 
-ただし、そのタイプは、たとえば`Select`または`RadioGroup`など、コンポーネントの子に依存する状況では、コンパイル時に検証できません。 つまり、soundest オプションは、それを`unknown`として入力し、その型をどのように絞り込むかを開発者に決定させることです。 [同じ理由で` event.target` は Reactでは一般的ではないため](https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682)これらの場合にジェネリック タイプを使用する可能性は提供しません。
+ただし、そのタイプは、たとえば`Select`または`RadioGroup`など、コンポーネントの子に依存する状況では、コンパイル時に検証できません。 つまり、soundest オプションは、それを`unknown`として入力し、その型をどのように絞り込むかを開発者に決定させることです。 [同じ理由で`event.target` は Reactでは一般的ではないため](https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682)これらの場合にジェネリック タイプを使用する可能性は提供しません。 つまり、soundest オプションは、それを`unknown`として入力し、その型をどのように絞り込むかを開発者に決定させることです。 [同じ理由で` event.target` は Reactでは一般的ではないため](https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682)これらの場合にジェネリック タイプを使用する可能性は提供しません。
 
 The demos include typed variants that use type casting. すべての型が単一のファイル内にあり、非常に基本的であるため、これは許容できるトレードオフです。 同じトレードオフが受け入れられるかどうかは、自分で判断する必要があります。 The library types are be strict by default and loose via opt-in.

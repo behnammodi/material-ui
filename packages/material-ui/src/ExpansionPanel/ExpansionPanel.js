@@ -1,12 +1,15 @@
-import React from 'react';
+import * as React from 'react';
+import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { chainPropTypes } from '@material-ui/utils';
 import Collapse from '../Collapse';
 import Paper from '../Paper';
 import withStyles from '../styles/withStyles';
+import ExpansionPanelContext from './ExpansionPanelContext';
+import useControlled from '../utils/useControlled';
 
-export const styles = theme => {
+export const styles = (theme) => {
   const transition = {
     duration: theme.transitions.duration.shortest,
   };
@@ -77,7 +80,29 @@ export const styles = theme => {
   };
 };
 
+let warnedOnce = false;
+
+/**
+ * ⚠️ The ExpansionPanel component was renamed to Accordion to use a more common naming convention.
+ *
+ * You should use `import { Accordion } from '@material-ui/core'`
+ * or `import Accordion from '@material-ui/core/Accordion'`.
+ */
 const ExpansionPanel = React.forwardRef(function ExpansionPanel(props, ref) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!warnedOnce) {
+      warnedOnce = true;
+      console.error(
+        [
+          'Material-UI: the ExpansionPanel component was renamed to Accordion to use a more common naming convention.',
+          '',
+          "You should use `import { Accordion } from '@material-ui/core'`",
+          "or `import Accordion from '@material-ui/core/Accordion'`",
+        ].join('\n'),
+      );
+    }
+  }
+
   const {
     children: childrenProp,
     classes,
@@ -92,40 +117,30 @@ const ExpansionPanel = React.forwardRef(function ExpansionPanel(props, ref) {
     ...other
   } = props;
 
-  const { current: isControlled } = React.useRef(expandedProp != null);
-  const [expandedState, setExpandedState] = React.useState(defaultExpanded);
-  const expanded = isControlled ? expandedProp : expandedState;
+  const [expanded, setExpandedState] = useControlled({
+    controlled: expandedProp,
+    default: defaultExpanded,
+    name: 'ExpansionPanel',
+    state: 'expanded',
+  });
 
-  if (process.env.NODE_ENV !== 'production') {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    React.useEffect(() => {
-      if (isControlled !== (expandedProp != null)) {
-        console.error(
-          [
-            `Material-UI: A component is changing ${
-              isControlled ? 'a ' : 'an un'
-            }controlled ExpansionPanel to be ${isControlled ? 'un' : ''}controlled.`,
-            'Elements should not switch from uncontrolled to controlled (or vice versa).',
-            'Decide between using a controlled or uncontrolled ExpansionPanel ' +
-              'element for the lifetime of the component.',
-            'More info: https://fb.me/react-controlled-components',
-          ].join('\n'),
-        );
-      }
-    }, [expandedProp, isControlled]);
-  }
-
-  const handleChange = event => {
-    if (!isControlled) {
+  const handleChange = React.useCallback(
+    (event) => {
       setExpandedState(!expanded);
-    }
 
-    if (onChange) {
-      onChange(event, !expanded);
-    }
-  };
+      if (onChange) {
+        onChange(event, !expanded);
+      }
+    },
+    [expanded, onChange, setExpandedState],
+  );
 
   const [summary, ...children] = React.Children.toArray(childrenProp);
+  const contextValue = React.useMemo(() => ({ expanded, disabled, toggle: handleChange }), [
+    expanded,
+    disabled,
+    handleChange,
+  ]);
 
   return (
     <Paper
@@ -142,11 +157,9 @@ const ExpansionPanel = React.forwardRef(function ExpansionPanel(props, ref) {
       square={square}
       {...other}
     >
-      {React.cloneElement(summary, {
-        disabled,
-        expanded,
-        onChange: handleChange,
-      })}
+      <ExpansionPanelContext.Provider value={contextValue}>
+        {summary}
+      </ExpansionPanelContext.Provider>
       <TransitionComponent in={expanded} timeout="auto" {...TransitionProps}>
         <div aria-labelledby={summary.props.id} id={summary.props['aria-controls']} role="region">
           {children}
@@ -157,21 +170,25 @@ const ExpansionPanel = React.forwardRef(function ExpansionPanel(props, ref) {
 });
 
 ExpansionPanel.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * The content of the expansion panel.
    */
-  children: chainPropTypes(PropTypes.node.isRequired, props => {
+  children: chainPropTypes(PropTypes.node.isRequired, (props) => {
     const summary = React.Children.toArray(props.children)[0];
-    if (summary.type === React.Fragment) {
+    if (isFragment(summary)) {
       return new Error(
-        "Material-UI: the ExpansionPanel doesn't accept a Fragment as a child. " +
+        "Material-UI: The ExpansionPanel doesn't accept a Fragment as a child. " +
           'Consider providing an array instead.',
       );
     }
 
     if (!React.isValidElement(summary)) {
       return new Error(
-        'Material-UI: expected the first child of ExpansionPanel to be a valid element.',
+        'Material-UI: Expected the first child of ExpansionPanel to be a valid element.',
       );
     }
 
@@ -181,7 +198,7 @@ ExpansionPanel.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
@@ -207,15 +224,16 @@ ExpansionPanel.propTypes = {
    */
   onChange: PropTypes.func,
   /**
-   * @ignore
+   * If `true`, rounded corners are disabled.
    */
   square: PropTypes.bool,
   /**
    * The component used for the collapse effect.
+   * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
    */
   TransitionComponent: PropTypes.elementType,
   /**
-   * Props applied to the `Transition` element.
+   * Props applied to the [`Transition`](http://reactcommunity.org/react-transition-group/transition#Transition-props) element.
    */
   TransitionProps: PropTypes.object,
 };

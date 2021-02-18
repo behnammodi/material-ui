@@ -1,15 +1,21 @@
 ---
-title: Breadcrumbs Reactコンポーネント
+title: React Breadcrumbs component
 components: Breadcrumbs, Link, Typography
 ---
 
 # Breadcrumbs
 
-<p class="description">ブレッドクラムを使用すると、値の範囲から選択できます。</p>
+<p class="description">Breadcrumbsを使用すると、値の範囲から選択できます。</p>
 
 ## シンプルなbreadcurmbs
 
 {{"demo": "pages/components/breadcrumbs/SimpleBreadcrumbs.js"}}
+
+## Active last breadcrumb
+
+Keep the last breadcrumb interactive.
+
+{{"demo": "pages/components/breadcrumbs/ActiveLastBreadcrumb.js"}}
 
 ## カスタムセパレーター (Custom separator）
 
@@ -27,19 +33,19 @@ components: Breadcrumbs, Link, Typography
 
 ## カスタマイズされた breadcrumbs
 
-コンポーネントのカスタマイズ例を次に示します。 詳細については、 [オーバーライドのドキュメントページ](/customization/components/)を参照してください。
+コンポーネントのカスタマイズ例を次に示します。 コンポーネントのカスタマイズ例を次に示します。 コンポーネントのカスタマイズ例を次に示します。 詳細については、 [オーバーライドのドキュメントページ](/customization/components/)を参照してください。
 
 {{"demo": "pages/components/breadcrumbs/CustomizedBreadcrumbs.js"}}
 
-## Integration with react-router
+## react-routerとの統合
 
-{{"demo": "pages/components/breadcrumbs/RouterBreadcrumbs.js"}}
+{{"demo": "pages/components/breadcrumbs/RouterBreadcrumbs.js", "bg": true}}
 
 ## アクセシビリティ
 
 (WAI-ARIA: https://www.w3.org/TR/wai-aria-practices/#breadcrumb)
 
-Be sure to add a `aria-label` description on the `Breadcrumbs` component.
+`Breadcrumbs`コンポーネントには、必ず`aria-label`を追加してください。
 
 このコンポーネントのアクセシビリティは、
 

@@ -30,7 +30,7 @@ function SimpleDialog(props) {
     onClose(selectedValue);
   };
 
-  const handleListItemClick = value => {
+  const handleListItemClick = (value) => {
     onClose(value);
   };
 
@@ -38,7 +38,7 @@ function SimpleDialog(props) {
     <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
       <List>
-        {emails.map(email => (
+        {emails.map((email) => (
           <ListItem button onClick={() => handleListItemClick(email)} key={email}>
             <ListItemAvatar>
               <Avatar className={classes.avatar}>
@@ -49,13 +49,13 @@ function SimpleDialog(props) {
           </ListItem>
         ))}
 
-        <ListItem button onClick={() => handleListItemClick('addAccount')}>
+        <ListItem autoFocus button onClick={() => handleListItemClick('addAccount')}>
           <ListItemAvatar>
             <Avatar>
               <AddIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary="add account" />
+          <ListItemText primary="Add account" />
         </ListItem>
       </List>
     </Dialog>
@@ -76,7 +76,7 @@ export default function SimpleDialogDemo() {
     setOpen(true);
   };
 
-  const handleClose = value => {
+  const handleClose = (value) => {
     setOpen(false);
     setSelectedValue(value);
   };

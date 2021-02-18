@@ -10,7 +10,7 @@ export default function ScrollDialog() {
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState('paper');
 
-  const handleClickOpen = scrollType => () => {
+  const handleClickOpen = (scrollType) => () => {
     setOpen(true);
     setScroll(scrollType);
   };
@@ -18,6 +18,16 @@ export default function ScrollDialog() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const descriptionElementRef = React.useRef(null);
+  React.useEffect(() => {
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [open]);
 
   return (
     <div>
@@ -28,10 +38,15 @@ export default function ScrollDialog() {
         onClose={handleClose}
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
       >
         <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
         <DialogContent dividers={scroll === 'paper'}>
-          <DialogContentText>
+          <DialogContentText
+            id="scroll-dialog-description"
+            ref={descriptionElementRef}
+            tabIndex={-1}
+          >
             {[...new Array(50)]
               .map(
                 () => `Cras mattis consectetur purus sit amet fermentum.

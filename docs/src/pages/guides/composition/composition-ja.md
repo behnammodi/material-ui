@@ -4,11 +4,11 @@
 
 ## ラッピングコンポーネント
 
-最大限の柔軟性とパフォーマンスを提供するために、 コンポーネントが受け取る子要素の性質を知る方法が必要です。 To solve this problem we tag some of the components with a `muiName` static property when needed.
+最大限の柔軟性とパフォーマンスを提供するために、 コンポーネントが受け取る子要素の性質を知る方法が必要です。 To solve this problem we tag some of the components with a `muiName` static property when needed. 最大限の柔軟性とパフォーマンスを提供するために、 コンポーネントが受け取る子要素の性質を知る方法が必要です。 To solve this problem we tag some of the components with a `muiName` static property when needed.
 
-ただし、拡張するためにコンポーネントをラップする必要がある場合があり、これは`muiName`ソリューションと競合する可能性があります。 コンポーネントをラップする場合は、そのコンポーネントにこの静的プロパティーが設定されているかどうかを確認します。
+Invalid prop `component` supplied to `ComponentName`. Expected an element type that can hold a ref.
 
-コンポーネントをラップする場合は、そのコンポーネントにこの静的プロパティーが設定されているかどうかを確認します。 さらに、親コンポーネントがラップされたコンポーネントプロパティをコントロールする必要がある場合があるため、プロパティを転送する必要があります。
+To find out if the Material-UI component you're using has this requirement, check out the the props API documentation for that component. If you need to forward refs the description will link to this section.
 
 例を見てみましょう：
 
@@ -25,7 +25,7 @@ Material-UI allows you to change the root element that will be rendered via a pr
 
 ### どのように機能しますか？
 
-The component will render like this:
+The custom component will be rendered by Material-UI like this:
 
 ```js
 return React.createElement(props.component, props)
@@ -48,7 +48,7 @@ This pattern is very powerful and allows for great flexibility, as well as a way
 
 ### インラインのある警告
 
-Using an inline function as an argument for the `component` prop may result in **unexpected unmounting**, since a new component is passed every time React renders. For instance, if you want to create a custom `ListItem` that acts as a link, you could do the following:
+⚠️ However, since we are using an inline function to change the rendered component, React will unmount the link every time `ListItemLink` is rendered. Not only will React update the DOM unnecessarily, the ripple effect of the `ListItem` will also not work correctly.
 
 ```jsx
 import { Link } from 'react-router-dom';
@@ -56,9 +56,11 @@ import { Link } from 'react-router-dom';
 function ListItemLink(props) {
   const { icon, primary, to } = props;
 
+  const CustomLink = props => <Link to={to} {...props} />;
+
   return (
     <li>
-      <ListItem button component={props => <Link to={to} {...props} />}>
+      <ListItem button component={CustomLink}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={primary} />
       </ListItem>
@@ -69,7 +71,7 @@ function ListItemLink(props) {
 
 ⚠️ However, since we are using an inline function to change the rendered component, React will unmount the link every time `ListItemLink` is rendered. Not only will React update the DOM unnecessarily, the ripple effect of the `ListItem` will also not work correctly.
 
-The solution is simple: **avoid inline functions and pass a static component to the `component` prop** instead. Let's change the `ListItemLink` to the following:
+The solution is simple: **avoid inline functions and pass a static component to the `component` prop** instead. Let's change the `ListItemLink` component so `CustomLink` always reference the same component:
 
 ```jsx
 import { Link } from 'react-router-dom';
@@ -77,19 +79,17 @@ import { Link } from 'react-router-dom';
 function ListItemLink(props) {
   const { icon, primary, to } = props;
 
-  const renderLink = React.useMemo(
+  const CustomLink = React.useMemo(
     () =>
       React.forwardRef((linkProps, ref) => (
-        // With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
-        // See https://github.com/ReactTraining/react-router/issues/6056
-        <Link to={to} {...linkProps} innerRef={ref} />
+        <Link ref={ref} to={to} {...linkProps} />
       )),
     [to],
   );
 
   return (
     <li>
-      <ListItem button component={renderLink}>
+      <ListItem button component={CustomLink}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={primary} />
       </ListItem>
@@ -97,8 +97,6 @@ function ListItemLink(props) {
   );
 }
 ```
-
-`renderLink` will now always reference the same component.
 
 ### Caveat with prop forwarding
 
@@ -120,7 +118,7 @@ You can find the details in the [TypeScript guide](/guides/typescript/#usage-of-
 
 The integration with third-party routing libraries is achieved with the `component` prop. The behavior is identical to the description of the prop above. Here are a few demos with [react-router-dom](https://github.com/ReactTraining/react-router). It covers the Button, Link, and List components, you should be able to apply the same strategy with all the components.
 
-### Button
+### Button (ボタン)
 
 {{"demo": "pages/guides/composition/ButtonRouter.js"}}
 
@@ -128,7 +126,7 @@ The integration with third-party routing libraries is achieved with the `compone
 
 {{"demo": "pages/guides/composition/LinkRouter.js"}}
 
-### List
+### List (リスト)
 
 {{"demo": "pages/guides/composition/ListRouter.js"}}
 
@@ -158,14 +156,14 @@ In some instances an additional warning is issued to help with debugging, simila
 Only the two most common use cases are covered. For more information see [this section in the official React docs](https://reactjs.org/docs/forwarding-refs.html).
 
 ```diff
-- const MyButton = props => <div role="button" {...props} />;
-+ const MyButton = React.forwardRef((props, ref) => <div role="button" {...props} ref={ref} />);
+-const MyButton = props => <div role="button" {...props} />;
++const MyButton = React.forwardRef((props, ref) => <div role="button" {...props} ref={ref} />);
 <Button component={MyButton} />;
 ```
 
 ```diff
-- const SomeContent = props => <div {...props}>Hello, World!</div>;
-+ const SomeContent = React.forwardRef((props, ref) => <div {...props} ref={ref}>Hello, World!</div>);
+-const SomeContent = props => <div {...props}>Hello, World!</div>;
++const SomeContent = React.forwardRef((props, ref) => <div {...props} ref={ref}>Hello, World!</div>);
 <Tooltip title="Hello, again."><SomeContent /></Tooltip>;
 ```
 

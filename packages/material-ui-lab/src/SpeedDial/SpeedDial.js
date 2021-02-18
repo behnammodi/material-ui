@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { duration, withStyles } from '@material-ui/core/styles';
@@ -29,11 +30,12 @@ function clamp(value, min, max) {
 const dialRadius = 32;
 const spacingActions = 16;
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     zIndex: theme.zIndex.speedDial,
     display: 'flex',
+    alignItems: 'center',
     pointerEvents: 'none',
   },
   /* Styles applied to the Fab component. */
@@ -146,7 +148,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
   const actions = React.useRef([]);
   actions.current = [actions.current[0]];
 
-  const handleOwnFabRef = React.useCallback(fabFef => {
+  const handleOwnFabRef = React.useCallback((fabFef) => {
     actions.current[0] = fabFef;
   }, []);
   const handleFabRef = useForkRef(origDialButtonRef, handleOwnFabRef);
@@ -159,7 +161,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
    * @param origButtonRef {React.RefObject?}
    */
   const createHandleSpeedDialActionButtonRef = (dialActionIndex, origButtonRef) => {
-    return buttonRef => {
+    return (buttonRef) => {
       actions.current[dialActionIndex + 1] = buttonRef;
       if (origButtonRef) {
         origButtonRef(buttonRef);
@@ -167,7 +169,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
     };
   };
 
-  const handleKeyDown = event => {
+  const handleKeyDown = (event) => {
     if (onKeyDown) {
       onKeyDown(event);
     }
@@ -207,7 +209,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
     }
   }, [open]);
 
-  const handleClose = event => {
+  const handleClose = (event) => {
     if (event.type === 'mouseleave' && onMouseLeave) {
       onMouseLeave(event);
     }
@@ -230,7 +232,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
     }
   };
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     if (FabProps.onClick) {
       FabProps.onClick(event);
     }
@@ -246,7 +248,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
     }
   };
 
-  const handleOpen = event => {
+  const handleOpen = (event) => {
     if (event.type === 'mouseenter' && onMouseEnter) {
       onMouseEnter(event);
     }
@@ -277,12 +279,12 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
   // Filter the label for valid id characters.
   const id = ariaLabel.replace(/^[^a-z]+|[^\w:.-]+/gi, '');
 
-  const allItems = React.Children.toArray(childrenProp).filter(child => {
+  const allItems = React.Children.toArray(childrenProp).filter((child) => {
     if (process.env.NODE_ENV !== 'production') {
-      if (child.type === React.Fragment) {
+      if (isFragment(child)) {
         console.error(
           [
-            "Material-UI: the SpeedDial component doesn't accept a Fragment as a child.",
+            "Material-UI: The SpeedDial component doesn't accept a Fragment as a child.",
             'Consider providing an array instead.',
           ].join('\n'),
         );
@@ -400,7 +402,7 @@ SpeedDial.propTypes = {
    * Callback fired when the component requests to be closed.
    *
    * @param {object} event The event source of the callback.
-   * @param {string} reason Can be:`"toggle"`, `"blur"`, `"mouseLeave"`, `"escapeKeyDown"`.
+   * @param {string} reason Can be: `"toggle"`, `"blur"`, `"mouseLeave"`, `"escapeKeyDown"`.
    */
   onClose: PropTypes.func,
   /**
@@ -423,7 +425,7 @@ SpeedDial.propTypes = {
    * Callback fired when the component requests to be open.
    *
    * @param {object} event The event source of the callback.
-   * @param {string} reason Can be:`"toggle"`, `"focus"`, `"mouseEnter"`.
+   * @param {string} reason Can be: `"toggle"`, `"focus"`, `"mouseEnter"`.
    */
   onOpen: PropTypes.func,
   /**
@@ -436,6 +438,7 @@ SpeedDial.propTypes = {
   openIcon: PropTypes.node,
   /**
    * The component used for the transition.
+   * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
    */
   TransitionComponent: PropTypes.elementType,
   /**
@@ -451,7 +454,7 @@ SpeedDial.propTypes = {
     }),
   ]),
   /**
-   * Props applied to the `Transition` element.
+   * Props applied to the [`Transition`](http://reactcommunity.org/react-transition-group/transition#Transition-props) element.
    */
   TransitionProps: PropTypes.object,
 };

@@ -1,10 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
 import ListItem from '../ListItem';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     ...theme.typography.body1,
@@ -19,7 +19,7 @@ export const styles = theme => ({
       minHeight: 'auto',
     },
   },
-  // TODO To remove in v5?
+  // TODO v5: remove
   /* Styles applied to the root element if `disableGutters={false}`. */
   gutters: {},
   /* Styles applied to the root element if `selected={true}`. */
@@ -37,6 +37,7 @@ const MenuItem = React.forwardRef(function MenuItem(props, ref) {
     className,
     component = 'li',
     disableGutters = false,
+    ListItemClasses,
     role = 'menuitem',
     selected,
     tabIndex: tabIndexProp,
@@ -47,6 +48,7 @@ const MenuItem = React.forwardRef(function MenuItem(props, ref) {
   if (!props.disabled) {
     tabIndex = tabIndexProp !== undefined ? tabIndexProp : -1;
   }
+
   return (
     <ListItem
       button
@@ -55,7 +57,7 @@ const MenuItem = React.forwardRef(function MenuItem(props, ref) {
       component={component}
       selected={selected}
       disableGutters={disableGutters}
-      classes={{ dense: classes.dense }}
+      classes={{ dense: classes.dense, ...ListItemClasses }}
       className={clsx(
         classes.root,
         {
@@ -86,9 +88,9 @@ MenuItem.propTypes = {
   className: PropTypes.string,
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * If `true`, compact vertical padding designed for keyboard and mouse input will be used.
    */
@@ -101,6 +103,10 @@ MenuItem.propTypes = {
    * If `true`, the left and right padding is removed.
    */
   disableGutters: PropTypes.bool,
+  /**
+   * `classes` prop applied to the [`ListItem`](/api/list-item/) element.
+   */
+  ListItemClasses: PropTypes.object,
   /**
    * @ignore
    */

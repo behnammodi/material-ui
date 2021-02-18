@@ -1,5 +1,5 @@
 ---
-title: Popper React component
+title: React Popper component
 components: Popper
 ---
 
@@ -44,11 +44,11 @@ Alternatively, you can use [react-spring](https://github.com/react-spring/react-
 
 ## Positioned Popper
 
-{{"demo": "pages/components/popper/PositionedPopper.js"}}
+{{"demo": "pages/components/popper/PositionedPopper.js", "bg": true}}
 
 ## Scroll playground
 
-{{"demo": "pages/components/popper/ScrollPlayground.js", "hideHeader": true}}
+{{"demo": "pages/components/popper/ScrollPlayground.js", "hideToolbar": true, "bg": true}}
 
 ## Faked reference object
 

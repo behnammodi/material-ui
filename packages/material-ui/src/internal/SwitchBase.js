@@ -1,7 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { refType } from '@material-ui/utils';
+import useControlled from '../utils/useControlled';
 import useFormControl from '../FormControl/useFormControl';
 import withStyles from '../styles/withStyles';
 import IconButton from '../IconButton';
@@ -35,7 +36,7 @@ const SwitchBase = React.forwardRef(function SwitchBase(props, ref) {
     checked: checkedProp,
     checkedIcon,
     classes,
-    className: classNameProp,
+    className,
     defaultChecked,
     disabled: disabledProp,
     icon,
@@ -53,12 +54,16 @@ const SwitchBase = React.forwardRef(function SwitchBase(props, ref) {
     value,
     ...other
   } = props;
-  const { current: isControlled } = React.useRef(checkedProp != null);
-  const [checkedState, setCheckedState] = React.useState(Boolean(defaultChecked));
+  const [checked, setCheckedState] = useControlled({
+    controlled: checkedProp,
+    default: Boolean(defaultChecked),
+    name: 'SwitchBase',
+    state: 'checked',
+  });
 
   const muiFormControl = useFormControl();
 
-  const handleFocus = event => {
+  const handleFocus = (event) => {
     if (onFocus) {
       onFocus(event);
     }
@@ -68,7 +73,7 @@ const SwitchBase = React.forwardRef(function SwitchBase(props, ref) {
     }
   };
 
-  const handleBlur = event => {
+  const handleBlur = (event) => {
     if (onBlur) {
       onBlur(event);
     }
@@ -78,15 +83,14 @@ const SwitchBase = React.forwardRef(function SwitchBase(props, ref) {
     }
   };
 
-  const handleInputChange = event => {
-    const checked = event.target.checked;
+  const handleInputChange = (event) => {
+    const newChecked = event.target.checked;
 
-    if (!isControlled) {
-      setCheckedState(checked);
-    }
+    setCheckedState(newChecked);
 
     if (onChange) {
-      onChange(event, checked);
+      // TODO v5: remove the second argument.
+      onChange(event, newChecked);
     }
   };
 
@@ -98,7 +102,6 @@ const SwitchBase = React.forwardRef(function SwitchBase(props, ref) {
     }
   }
 
-  const checked = isControlled ? checkedProp : checkedState;
   const hasLabelFor = type === 'checkbox' || type === 'radio';
 
   return (
@@ -110,7 +113,7 @@ const SwitchBase = React.forwardRef(function SwitchBase(props, ref) {
           [classes.checked]: checked,
           [classes.disabled]: disabled,
         },
-        classNameProp,
+        className,
       )}
       disabled={disabled}
       tabIndex={null}

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { refType } from '@material-ui/utils';
@@ -8,9 +8,9 @@ import { fade } from '../styles/colorManipulator';
 import capitalize from '../utils/capitalize';
 import createChainedFunction from '../utils/createChainedFunction';
 import withStyles from '../styles/withStyles';
-import RadioGroupContext from '../RadioGroup/RadioGroupContext';
+import useRadioGroup from '../RadioGroup/useRadioGroup';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     color: theme.palette.text.secondary,
@@ -63,9 +63,10 @@ const Radio = React.forwardRef(function Radio(props, ref) {
     color = 'secondary',
     name: nameProp,
     onChange: onChangeProp,
+    size = 'medium',
     ...other
   } = props;
-  const radioGroup = React.useContext(RadioGroupContext);
+  const radioGroup = useRadioGroup();
 
   let checked = checkedProp;
   const onChange = createChainedFunction(onChangeProp, radioGroup && radioGroup.onChange);
@@ -84,8 +85,10 @@ const Radio = React.forwardRef(function Radio(props, ref) {
     <SwitchBase
       color={color}
       type="radio"
-      icon={defaultIcon}
-      checkedIcon={defaultCheckedIcon}
+      icon={React.cloneElement(defaultIcon, { fontSize: size === 'small' ? 'small' : 'default' })}
+      checkedIcon={React.cloneElement(defaultCheckedIcon, {
+        fontSize: size === 'small' ? 'small' : 'default',
+      })}
       classes={{
         root: clsx(classes.root, classes[`color${capitalize(color)}`]),
         checked: classes.checked,
@@ -101,6 +104,10 @@ const Radio = React.forwardRef(function Radio(props, ref) {
 });
 
 Radio.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * If `true`, the component is checked.
    */
@@ -113,13 +120,13 @@ Radio.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * The color of the component. It supports those theme colors that make sense for this component.
    */
-  color: PropTypes.oneOf(['primary', 'secondary', 'default']),
+  color: PropTypes.oneOf(['default', 'primary', 'secondary']),
   /**
-   * If `true`, the switch will be disabled.
+   * If `true`, the radio will be disabled.
    */
   disabled: PropTypes.bool,
   /**
@@ -159,9 +166,10 @@ Radio.propTypes = {
    */
   required: PropTypes.bool,
   /**
-   * The input component prop `type`.
+   * The size of the radio.
+   * `small` is equivalent to the dense radio styling.
    */
-  type: PropTypes.string,
+  size: PropTypes.oneOf(['medium', 'small']),
   /**
    * The value of the component. The DOM API casts this to a string.
    */

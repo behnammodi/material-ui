@@ -1,19 +1,17 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import formControlState from '../FormControl/formControlState';
 import useFormControl from '../FormControl/useFormControl';
 import withStyles from '../styles/withStyles';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     color: theme.palette.text.secondary,
     ...theme.typography.caption,
     textAlign: 'left',
-    marginTop: 8,
-    lineHeight: '1em',
-    minHeight: '1em',
+    marginTop: 3,
     margin: 0,
     '&$disabled': {
       color: theme.palette.text.disabled,
@@ -32,7 +30,8 @@ export const styles = theme => ({
   },
   /* Styles applied to the root element if `variant="filled"` or `variant="outlined"`. */
   contained: {
-    margin: '8px 14px 0',
+    marginLeft: 14,
+    marginRight: 14,
   },
   /* Pseudo-class applied to the root element if `focused={true}`. */
   focused: {},
@@ -44,8 +43,9 @@ export const styles = theme => ({
 
 const FormHelperText = React.forwardRef(function FormHelperText(props, ref) {
   const {
+    children,
     classes,
-    className: classNameProp,
+    className,
     component: Component = 'p',
     disabled,
     error,
@@ -77,33 +77,46 @@ const FormHelperText = React.forwardRef(function FormHelperText(props, ref) {
           [classes.focused]: fcs.focused,
           [classes.required]: fcs.required,
         },
-        classNameProp,
+        className,
       )}
       ref={ref}
       {...other}
-    />
+    >
+      {children === ' ' ? (
+        // eslint-disable-next-line react/no-danger
+        <span dangerouslySetInnerHTML={{ __html: '&#8203;' }} />
+      ) : (
+        children
+      )}
+    </Component>
   );
 });
 
 FormHelperText.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * The content of the component.
+   *
+   * If `' '` is provided, the component reserves one line height for displaying a future message.
    */
   children: PropTypes.node,
   /**
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
   className: PropTypes.string,
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
-  component: PropTypes.elementType,
+  component: PropTypes /* @typescript-to-proptypes-ignore */.elementType,
   /**
    * If `true`, the helper text should be displayed in a disabled state.
    */
@@ -132,7 +145,7 @@ FormHelperText.propTypes = {
   /**
    * The variant to use.
    */
-  variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
+  variant: PropTypes.oneOf(['filled', 'outlined', 'standard']),
 };
 
 export default withStyles(styles, { name: 'MuiFormHelperText' })(FormHelperText);

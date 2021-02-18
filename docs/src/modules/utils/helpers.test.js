@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { expect } from 'chai';
 import { getDependencies } from './helpers';
 
 describe('docs getDependencies helpers', () => {
@@ -21,7 +21,7 @@ const styles = theme => ({
 `;
 
   it('should handle @ dependencies', () => {
-    assert.deepEqual(getDependencies(s1), {
+    expect(getDependencies(s1)).to.deep.equal({
       '@foo-bar/bip': 'latest',
       '@material-ui/core': 'latest',
       'prop-types': 'latest',
@@ -35,7 +35,7 @@ const styles = theme => ({
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as _ from '@unexisting/thing';
-import Autosuggest from 'react-autosuggest';
+import Draggable from 'react-draggable';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import TextField from '@material-ui/core/TextField';
@@ -45,24 +45,14 @@ import { withStyles } from '@material-ui/core/styles';
 const suggestions = [
 `;
 
-    assert.deepEqual(getDependencies(source), {
+    expect(getDependencies(source)).to.deep.equal({
       '@material-ui/core': 'latest',
       '@unexisting/thing': 'latest',
       'autosuggest-highlight': 'latest',
       'prop-types': 'latest',
-      'react-autosuggest': 'latest',
+      'react-draggable': 'latest',
       'react-dom': 'latest',
       react: 'latest',
-    });
-  });
-
-  it('should support next dependencies', () => {
-    assert.deepEqual(getDependencies(s1, { reactVersion: 'next' }), {
-      '@foo-bar/bip': 'latest',
-      '@material-ui/core': 'latest',
-      'prop-types': 'latest',
-      'react-dom': 'next',
-      react: 'next',
     });
   });
 
@@ -77,9 +67,9 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pickers';
 `;
 
-    assert.deepEqual(getDependencies(source), {
-      'date-fns': 'next',
-      '@date-io/date-fns': 'latest',
+    expect(getDependencies(source)).to.deep.equal({
+      'date-fns': 'latest',
+      '@date-io/date-fns': 'v1',
       '@material-ui/pickers': 'latest',
       '@material-ui/core': 'latest',
       'prop-types': 'latest',
@@ -89,7 +79,7 @@ import { MuiPickersUtilsProvider, TimePicker, DatePicker } from '@material-ui/pi
   });
 
   it('can collect required @types packages', () => {
-    assert.deepEqual(getDependencies(s1, { codeLanguage: 'TS' }), {
+    expect(getDependencies(s1, { codeLanguage: 'TS' })).to.deep.equal({
       '@foo-bar/bip': 'latest',
       '@material-ui/core': 'latest',
       'prop-types': 'latest',
@@ -114,11 +104,55 @@ import {
 } from '@material-ui/pickers';
     `;
 
-    assert.deepEqual(getDependencies(source), {
-      'date-fns': 'next',
+    expect(getDependencies(source)).to.deep.equal({
+      'date-fns': 'latest',
+      '@material-ui/core': 'latest',
       '@material-ui/pickers': 'latest',
       react: 'latest',
       'react-dom': 'latest',
+    });
+  });
+
+  it('should include core if lab present', () => {
+    const source = `
+import lab from '@material-ui/lab';
+    `;
+
+    expect(getDependencies(source)).to.deep.equal({
+      '@material-ui/core': 'latest',
+      '@material-ui/lab': 'latest',
+      react: 'latest',
+      'react-dom': 'latest',
+    });
+  });
+
+  it('can use codesandbox deploys if a commit is given', () => {
+    const source = `
+import * as Core from '@material-ui/core';
+import * as Icons from '@material-ui/icons';
+import * as Lab from '@material-ui/lab';
+import * as Styles from '@material-ui/styles';
+import * as System from '@material-ui/system';
+import * as Utils from '@material-ui/utils';
+    `;
+
+    expect(
+      getDependencies(source, { muiCommitRef: '2d0e8b4daf20b7494c818b6f8c4cc8423bc99d6f' }),
+    ).to.deep.equal({
+      react: 'latest',
+      'react-dom': 'latest',
+      '@material-ui/core':
+        'https://pkg.csb.dev/mui-org/material-ui/commit/2d0e8b4d/@material-ui/core',
+      '@material-ui/icons':
+        'https://pkg.csb.dev/mui-org/material-ui/commit/2d0e8b4d/@material-ui/icons',
+      '@material-ui/lab':
+        'https://pkg.csb.dev/mui-org/material-ui/commit/2d0e8b4d/@material-ui/lab',
+      '@material-ui/styles':
+        'https://pkg.csb.dev/mui-org/material-ui/commit/2d0e8b4d/@material-ui/styles',
+      '@material-ui/system':
+        'https://pkg.csb.dev/mui-org/material-ui/commit/2d0e8b4d/@material-ui/system',
+      '@material-ui/utils':
+        'https://pkg.csb.dev/mui-org/material-ui/commit/2d0e8b4d/@material-ui/utils',
     });
   });
 });

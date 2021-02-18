@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import withStyles from '../styles/withStyles';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     position: 'absolute',
@@ -72,7 +72,7 @@ const GridListTileBar = React.forwardRef(function GridListTileBar(props, ref) {
     actionIcon,
     actionPosition = 'right',
     classes,
-    className: classNameProp,
+    className,
     subtitle,
     title,
     titlePosition = 'bottom',
@@ -80,25 +80,27 @@ const GridListTileBar = React.forwardRef(function GridListTileBar(props, ref) {
   } = props;
 
   const actionPos = actionIcon && actionPosition;
-  const className = clsx(
-    classes.root,
-    {
-      [classes.titlePositionBottom]: titlePosition === 'bottom',
-      [classes.titlePositionTop]: titlePosition === 'top',
-      [classes.rootSubtitle]: subtitle,
-    },
-    classNameProp,
-  );
-
-  // Remove the margin between the title / subtitle wrapper, and the Action Icon
-  const titleWrapClassName = clsx(classes.titleWrap, {
-    [classes.titleWrapActionPosLeft]: actionPos === 'left',
-    [classes.titleWrapActionPosRight]: actionPos === 'right',
-  });
 
   return (
-    <div className={className} ref={ref} {...other}>
-      <div className={titleWrapClassName}>
+    <div
+      className={clsx(
+        classes.root,
+        {
+          [classes.titlePositionBottom]: titlePosition === 'bottom',
+          [classes.titlePositionTop]: titlePosition === 'top',
+          [classes.rootSubtitle]: subtitle,
+        },
+        className,
+      )}
+      ref={ref}
+      {...other}
+    >
+      <div
+        className={clsx(classes.titleWrap, {
+          [classes.titleWrapActionPosLeft]: actionPos === 'left',
+          [classes.titleWrapActionPosRight]: actionPos === 'right',
+        })}
+      >
         <div className={classes.title}>{title}</div>
         {subtitle ? <div className={classes.subtitle}>{subtitle}</div> : null}
       </div>
@@ -116,6 +118,10 @@ const GridListTileBar = React.forwardRef(function GridListTileBar(props, ref) {
 });
 
 GridListTileBar.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * An IconButton element to be used as secondary action target
    * (primary action target is the tile itself).
@@ -129,7 +135,7 @@ GridListTileBar.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
@@ -145,7 +151,7 @@ GridListTileBar.propTypes = {
   /**
    * Position of the title bar.
    */
-  titlePosition: PropTypes.oneOf(['top', 'bottom']),
+  titlePosition: PropTypes.oneOf(['bottom', 'top']),
 };
 
 export default withStyles(styles, { name: 'MuiGridListTileBar' })(GridListTileBar);

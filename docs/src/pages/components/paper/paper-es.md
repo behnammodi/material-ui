@@ -1,5 +1,5 @@
 ---
-title: Componente React Papel
+title: React Paper component
 components: Paper
 ---
 
@@ -9,4 +9,10 @@ components: Paper
 
 El fondo de una aplicación asemeja la textura plana, opaca de una hoja de papel, y el comportamiento de una aplicación imita la habilidad del papel de ser redimensionado, barajado y agrupado en múltiples hojas.
 
-{{"demo": "pages/components/paper/PaperSheet.js"}}
+{{"demo": "pages/components/paper/SimplePaper.js", "bg": true}}
+
+## Variantes
+
+Si necesitas una superficie con bordes, usa la propiedad `variant`.
+
+{{"demo": "pages/components/paper/Variants.js", "bg": "inline"}}

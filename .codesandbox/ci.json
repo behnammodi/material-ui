@@ -6,6 +6,7 @@
     "packages/material-ui-lab",
     "packages/material-ui-styles",
     "packages/material-ui-system",
+    "packages/material-ui-types",
     "packages/material-ui-utils"
   ],
   "publishDirectory": {
@@ -14,11 +15,13 @@
     "@material-ui/lab": "packages/material-ui-lab/build",
     "@material-ui/styles": "packages/material-ui-styles/build",
     "@material-ui/system": "packages/material-ui-system/build",
+    "@material-ui/types": "packages/material-ui-types",
     "@material-ui/utils": "packages/material-ui-utils/build"
   },
   "sandboxes": [
-    "react",
+    "new",
     "github/mui-org/material-ui/tree/master/examples/create-react-app",
     "github/mui-org/material-ui/tree/master/examples/create-react-app-with-typescript"
-  ]
+  ],
+  "silent": true
 }

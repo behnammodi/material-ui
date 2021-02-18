@@ -1,9 +1,9 @@
 ---
-title: Select React component
+title: React Select component
 components: Select, NativeSelect
 ---
 
-# Selects
+# Select
 
 <p class="description">Select components are used for collecting user provided information from a list of options.</p>
 
@@ -13,12 +13,24 @@ Menus are positioned over their emitting elements such that the currently select
 
 {{"demo": "pages/components/selects/SimpleSelect.js"}}
 
+## Advanced features
+
+The Select component is meant to be interchangeable with a native `<select>` element.
+
+If you are looking for more advanced features, like combobox, multiselect, autocomplete, async or creatable support, head to the [`Autocomplete` component](/components/autocomplete/).
+It's meant to be an improved version of the "react-select" and "downshift" packages.
+
 ## Native Select
 
 As the user experience can be improved on mobile using the native select of the platform,
 we allow such pattern.
 
 {{"demo": "pages/components/selects/NativeSelects.js"}}
+
+## Text Fields
+
+The `TextField` wrapper component is a complete form control including a label, input and help text.
+You can find an example with the select mode [in this section](/components/text-fields/#select).
 
 ## Customized selects
 
@@ -29,6 +41,8 @@ The first step is to style the `InputBase` component.
 Once it's styled, you can either use it directly as a text field or provide it to the select `input` property to have a `select` field.
 
 {{"demo": "pages/components/selects/CustomizedSelects.js"}}
+
+🎨 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/styles/select).
 
 ## Multiple Select
 
@@ -49,6 +63,41 @@ While it's discouraged by the Material Design specification, you can use a selec
 
 {{"demo": "pages/components/selects/DialogSelect.js"}}
 
-## Text Fields
+## Grouping
 
-The `TextField` wrapper component is a complete form control including a label, input and help text. You can find an example with the select mode [in this section](/components/text-fields/#textfield).
+Display categories with the `ListSubheader` component or the native `<optgroup>` element.
+
+{{"demo": "pages/components/selects/GroupedSelect.js"}}
+
+## Accessibility
+
+To properly label your `Select` input you need an extra element with an `id` that contains a label.
+That `id` needs to match the `labelId` of the `Select` e.g.
+
+```jsx
+<InputLabel id="label">Age</InputLabel>
+<Select labelId="label" id="select" value="20">
+  <MenuItem value="10">Ten</MenuItem>
+  <MenuItem value="20">Twenty</MenuItem>
+</Select>
+```
+
+Alternatively a `TextField` with an `id` and `label` creates the proper markup and
+ids for you:
+
+```jsx
+<TextField id="select" label="Age" value="20" select>
+  <MenuItem value="10">Ten</MenuItem>
+  <MenuItem value="20">Twenty</MenuItem>
+</TextField>
+```
+
+For a [native select](#native-select), you should mention a label by giving the value of the `id` attribute of the select element to the `InputLabel`'s `htmlFor` attribute:
+
+```jsx
+<InputLabel htmlFor="select">Age</InputLabel>
+<NativeSelect id="select">
+  <option value="10">Ten</option>
+  <option value="20">Twenty</option>
+</NativeSelect>
+```

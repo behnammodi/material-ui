@@ -5,7 +5,7 @@ import Chip from '@material-ui/core/Chip';
 import FaceIcon from '@material-ui/icons/Face';
 import DoneIcon from '@material-ui/icons/Done';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
@@ -20,11 +20,11 @@ export default function Chips() {
   const classes = useStyles();
 
   const handleDelete = () => {
-    alert('You clicked the delete icon.');
+    console.info('You clicked the delete icon.');
   };
 
   const handleClick = () => {
-    alert('You clicked the Chip.');
+    console.info('You clicked the Chip.');
   };
 
   return (

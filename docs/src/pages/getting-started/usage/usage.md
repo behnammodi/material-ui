@@ -31,7 +31,7 @@ ReactDOM.render(<App />, document.querySelector('#app'));
 
 Yes, this really is all you need to get started, as you can see in this live and interactive demo:
 
-{{"demo": "pages/getting-started/usage/Usage.js", "hideHeader": true}}
+{{"demo": "pages/getting-started/usage/Usage.js", "hideToolbar": true, "bg": true}}
 
 ## Globals
 
@@ -45,7 +45,7 @@ To ensure proper rendering and touch zooming for all devices, add the responsive
 ```html
 <meta
   name="viewport"
-  content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+  content="minimum-scale=1, initial-scale=1, width=device-width"
 />
 ```
 
@@ -57,7 +57,7 @@ It fixes some inconsistencies across browsers and devices while providing slight
 ## Versioned Documentation
 
 This documentation always reflects the latest stable version of Material-UI.
-You can find older versions of the documentation on a [separate page](/versions/).
+You can find older versions of the documentation on a [separate page](https://material-ui.com/versions/).
 
 ## Next steps
 

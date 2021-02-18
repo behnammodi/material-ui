@@ -1,5 +1,5 @@
 ---
-title: Breadcrumbs React component
+title: React Breadcrumbs component
 components: Breadcrumbs, Link, Typography
 ---
 
@@ -10,6 +10,12 @@ components: Breadcrumbs, Link, Typography
 ## Simple breadcrumbs
 
 {{"demo": "pages/components/breadcrumbs/SimpleBreadcrumbs.js"}}
+
+## Active last breadcrumb
+
+Keep the last breadcrumb interactive.
+
+{{"demo": "pages/components/breadcrumbs/ActiveLastBreadcrumb.js"}}
 
 ## Custom separator
 
@@ -34,7 +40,7 @@ Here is an example of customizing the component. You can learn more about this i
 
 ## Integration with react-router
 
-{{"demo": "pages/components/breadcrumbs/RouterBreadcrumbs.js"}}
+{{"demo": "pages/components/breadcrumbs/RouterBreadcrumbs.js", "bg": true}}
 
 ## Accessibility
 

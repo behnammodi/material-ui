@@ -1,7 +1,15 @@
 import React from 'react';
-import MarkdownDocs from 'docs/src/modules/components/MarkdownDocs';
-import markdown from './material-ui-v1-is-out.md';
+import TopLayoutBlog from 'docs/src/modules/components/TopLayoutBlog';
+import { prepareMarkdown } from 'docs/src/modules/utils/parseMarkdown';
 
-export default function Page() {
-  return <MarkdownDocs markdown={markdown} blog disableAd disableToc disableEdit />;
+const pageFilename = 'blog/material-ui-v1-is-out';
+const requireRaw = require.context('!raw-loader!./', false, /material-ui-v1-is-out\.md$/);
+
+export default function Page({ docs }) {
+  return <TopLayoutBlog docs={docs} />;
 }
+
+Page.getInitialProps = () => {
+  const { demos, docs } = prepareMarkdown({ pageFilename, requireRaw });
+  return { demos, docs };
+};

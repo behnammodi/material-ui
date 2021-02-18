@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'relative',
   },
@@ -53,7 +53,7 @@ export default function FullScreenDialog() {
             <Typography variant="h6" className={classes.title}>
               Sound
             </Typography>
-            <Button color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={handleClose}>
               save
             </Button>
           </Toolbar>

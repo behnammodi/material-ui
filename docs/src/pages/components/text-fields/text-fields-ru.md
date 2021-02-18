@@ -3,7 +3,7 @@ title: Текстовое Поле, компонент React
 components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, InputBase, InputLabel, OutlinedInput, TextField
 ---
 
-# Текстовые поля
+# Text Field (Текстовое поле)
 
 <p class="description">Текстовые поля позволяют пользователям вводить и редактировать текст.</p>
 
@@ -13,21 +13,67 @@ components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, Inp
 
 `TextField` представляет собой полноценный элемент управления формы, включая метку (label), само поле ввода и вспомогательный текст.
 
-{{"demo": "pages/components/text-fields/TextFields.js"}}
+It supports standard, outlined and filled styling.
 
-> **Note:** This version of the text field is no longer documented in the [Material Design guidelines](https://material.io/), but Material-UI will continue to support it.
+{{"demo": "pages/components/text-fields/BasicTextFields.js"}}
 
-## Контурный стиль
+**Note:** The standard variant of the `TextField` is no longer documented in the [Material Design guidelines](https://material.io/) ([here's why](https://medium.com/google-design/the-evolution-of-material-designs-text-fields-603688b3fe03)), but Material-UI will continue to support it.
 
-`TextField` поддерживает контурный стиль.
+## Form props
 
-{{"demo": "pages/components/text-fields/OutlinedTextFields.js"}}
+The underlying DOM nodes should have this structure: In order for the text field to be accessible, **the input should be linked to the label and the helper text**.
 
-## Заполненный стиль
+{{"demo": "pages/components/text-fields/FormPropsTextFields.js"}}
 
-`TextField` поддерживает заполненный стиль.
+## Validation
 
-{{"demo": "pages/components/text-fields/FilledTextFields.js"}}
+The `error` prop toggles the error state, the `helperText` prop can then be used to provide feedback to the user about the error.
+
+{{"demo": "pages/components/text-fields/ValidationTextFields.js"}}
+
+## Multiline
+
+The `multiline` prop transforms the text field into a [textarea](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) or a [TextareaAutosize](/components/textarea-autosize/).
+
+{{"demo": "pages/components/text-fields/MultilineTextFields.js"}}
+
+## Select (Список)
+
+The `select` prop makes the text field use the [Select](/components/selects/) component internally.
+
+{{"demo": "pages/components/text-fields/SelectTextFields.js"}}
+
+## Иконки
+
+There are multiple ways to display an icon with a text field.
+
+{{"demo": "pages/components/text-fields/InputWithIcon.js"}}
+
+### Украшения поля ввода (Input)
+
+The main way is with an `InputAdornment`. Например, вы можете использовать кнопку-иконку, чтобы скрыть или показать пароль. This can be used to add a prefix, a suffix or an action to an input.
+
+{{"demo": "pages/components/text-fields/InputAdornments.js"}}
+
+## Размеры
+
+Fancy smaller inputs? Use the `size` prop.
+
+{{"demo": "pages/components/text-fields/TextFieldSizes.js"}}
+
+## Расположение
+
+`dense` and `normal` alter other styles to meet the specification. `margin` prop can be used to alter the vertical spacing of inputs. Using `none` (default) will not apply margins to the `FormControl`, whereas `dense` and `normal` will.
+
+`fullWidth` can be used to make the input take up the full width of its container.
+
+{{"demo": "pages/components/text-fields/LayoutTextFields.js"}}
+
+## Uncontrolled vs Controlled
+
+The component can be controlled or uncontrolled.
+
+{{"demo": "pages/components/text-fields/StateTextFields.js"}}
 
 ## Компоненты
 
@@ -41,6 +87,12 @@ components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, Inp
 
 {{"demo": "pages/components/text-fields/Inputs.js"}}
 
+## Цвет
+
+The `color` prop changes the highlight color of the text field when focused.
+
+{{"demo": "pages/components/text-fields/ColorTextFields.js"}}
+
 ## Кастомизированные поля ввода
 
 Ниже находятся примеры кастомизации компонента. You can learn more about this in the [overrides documentation page](/customization/components/).
@@ -49,33 +101,9 @@ components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, Inp
 
 Настройка не ограничивается CSS, вы можете использовать композицию для создания пользовательских компонентов и придать вашему приложению уникальный стиль. Ниже приведен пример использования компонента [`InputBase`](/api/input-base/), вдохновленный Google Maps.
 
-{{"demo": "pages/components/text-fields/CustomizedInputBase.js"}}
+{{"demo": "pages/components/text-fields/CustomizedInputBase.js", "bg": true}}
 
-## Украшения поля ввода (Input)
-
-`Input` позволяет использовать `InputAdornment`. Их можно использовать для добавления префикса, суффикса или действия к полю ввода. Например, вы можете использовать кнопку-иконку, чтобы скрыть или показать пароль.
-
-{{"demo": "pages/components/text-fields/InputAdornments.js"}}
-
-### С иконкой
-
-Иконки могут быть указаны как предварительно добавленные или добавленные.
-
-{{"demo": "pages/components/text-fields/InputWithIcon.js"}}
-
-### Украшение полей ввода с заполненным стилем
-
-{{"demo": "pages/components/text-fields/FilledInputAdornments.js"}}
-
-### Украшение полей ввода с контурным стилем
-
-{{"demo": "pages/components/text-fields/OutlinedInputAdornments.js"}}
-
-## Расположение
-
-`TextField`, `FormControl` позволяет спецификации `margin` изменять вертикальные отступы для полей ввода. Использование `none` (по умолчанию) не будет применять отступы для `FormControl`, тогда как `dense` и `normal` будут применять другие стили, которые соответствуют спецификации.
-
-{{"demo": "pages/components/text-fields/TextFieldMargins.js"}}
+🎨 If you are looking for inspiration, you can check [MUI Treasury's customization examples](https://mui-treasury.com/styles/text-field).
 
 ## Ограничения
 
@@ -109,7 +137,7 @@ components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, Inp
 
 {{"demo": "pages/components/text-fields/FormattedInputs.js"}}
 
-The provided input component should handle the `inputRef` property. Свойство должно вызываться со значением, которое реализует следующий интерфейс:
+Предоставленный компонент ввода должен обрабатывать свойство `inputRef`. Свойство должно вызываться со значением, которое реализует следующий интерфейс:
 
 ```ts
 interface InputElement {
@@ -145,7 +173,7 @@ function MyInputComponent(props) {
 
 ## Доступность
 
-In order for the text field to be accessible, **the input should be linked to the label and the helper text**. The underlying DOM nodes should have this structure.
+In order for the text field to be accessible, **the input should be linked to the label and the helper text**. The underlying DOM nodes should have this structure:
 
 ```jsx
 <div class="form-control">
@@ -168,8 +196,8 @@ In order for the text field to be accessible, **the input should be linked to th
 
 ## Дополнительные проекты
 
-Для более сложных решений вы можете применить следующие пакеты:
+Для более сложных вариантов использования вы можете воспользоваться:
 
-- [formik-material-ui](https://github.com/stackworx/formik-material-ui) Bindings for using Material-UI with formik.
-- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) A set of wrapper components to facilitate using Material UI with Redux Form.
-- [final-form-material-ui](https://github.com/Deadly0/final-form-material-ui) Набор компонентов-оберток для облегчения работы с Material UI в связке с Final Form.
+- [formik-material-ui](https://github.com/stackworx/formik-material-ui) Bindings for using Material-UI with [formik](https://jaredpalmer.com/formik).
+- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) Bindings for using Material-UI with [Redux Form](https://redux-form.com/).
+- [mui-rff](https://github.com/lookfirst/mui-rff) Bindings for using Material-UI with [React Final Form](https://final-form.org/react).

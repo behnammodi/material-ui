@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -20,37 +20,32 @@ export interface SnackbarMessage {
 
 export interface State {
   open: boolean;
+  snackPack: SnackbarMessage[];
   messageInfo?: SnackbarMessage;
 }
 
 export default function ConsecutiveSnackbars() {
-  const queueRef = React.useRef<SnackbarMessage[]>([]);
+  const [snackPack, setSnackPack] = React.useState<SnackbarMessage[]>([]);
   const [open, setOpen] = React.useState(false);
   const [messageInfo, setMessageInfo] = React.useState<SnackbarMessage | undefined>(undefined);
 
-  const processQueue = () => {
-    if (queueRef.current.length > 0) {
-      setMessageInfo(queueRef.current.shift());
+  React.useEffect(() => {
+    if (snackPack.length && !messageInfo) {
+      // Set a new snack when we don't have an active one
+      setMessageInfo({ ...snackPack[0] });
+      setSnackPack((prev) => prev.slice(1));
       setOpen(true);
+    } else if (snackPack.length && messageInfo && open) {
+      // Close an active snack when a new one is added
+      setOpen(false);
     }
-  };
+  }, [snackPack, messageInfo, open]);
 
   const handleClick = (message: string) => () => {
-    queueRef.current.push({
-      message,
-      key: new Date().getTime(),
-    });
-
-    if (open) {
-      // immediately begin dismissing current message
-      // to start showing new one
-      setOpen(false);
-    } else {
-      processQueue();
-    }
+    setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   };
 
-  const handleClose = (event: SyntheticEvent | MouseEvent, reason?: string) => {
+  const handleClose = (event: React.SyntheticEvent | MouseEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -58,7 +53,7 @@ export default function ConsecutiveSnackbars() {
   };
 
   const handleExited = () => {
-    processQueue();
+    setMessageInfo(undefined);
   };
 
   const classes = useStyles();
@@ -76,24 +71,22 @@ export default function ConsecutiveSnackbars() {
         autoHideDuration={6000}
         onClose={handleClose}
         onExited={handleExited}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={<span id="message-id">{messageInfo ? messageInfo.message : undefined}</span>}
-        action={[
-          <Button key="undo" color="secondary" size="small" onClick={handleClose}>
-            UNDO
-          </Button>,
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            className={classes.close}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>,
-        ]}
+        message={messageInfo ? messageInfo.message : undefined}
+        action={
+          <React.Fragment>
+            <Button color="secondary" size="small" onClick={handleClose}>
+              UNDO
+            </Button>
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              className={classes.close}
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          </React.Fragment>
+        }
       />
     </div>
   );

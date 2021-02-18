@@ -74,6 +74,7 @@ export default function MaxWidthDialog() {
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="max-width">maxWidth</InputLabel>
               <Select
+                autoFocus
                 value={maxWidth}
                 onChange={handleMaxWidthChange}
                 inputProps={{
@@ -91,9 +92,7 @@ export default function MaxWidthDialog() {
             </FormControl>
             <FormControlLabel
               className={classes.formControlLabel}
-              control={
-                <Switch checked={fullWidth} onChange={handleFullWidthChange} value="fullWidth" />
-              }
+              control={<Switch checked={fullWidth} onChange={handleFullWidthChange} />}
               label="Full width"
             />
           </form>

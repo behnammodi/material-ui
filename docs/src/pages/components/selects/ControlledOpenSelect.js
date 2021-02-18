@@ -6,7 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     display: 'block',
     marginTop: theme.spacing(2),
@@ -22,7 +22,7 @@ export default function ControlledOpenSelect() {
   const [age, setAge] = React.useState('');
   const [open, setOpen] = React.useState(false);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setAge(event.target.value);
   };
 
@@ -35,22 +35,20 @@ export default function ControlledOpenSelect() {
   };
 
   return (
-    <form autoComplete="off">
+    <div>
       <Button className={classes.button} onClick={handleOpen}>
         Open the select
       </Button>
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="demo-controlled-open-select">Age</InputLabel>
+        <InputLabel id="demo-controlled-open-select-label">Age</InputLabel>
         <Select
+          labelId="demo-controlled-open-select-label"
+          id="demo-controlled-open-select"
           open={open}
           onClose={handleClose}
           onOpen={handleOpen}
           value={age}
           onChange={handleChange}
-          inputProps={{
-            name: 'age',
-            id: 'demo-controlled-open-select',
-          }}
         >
           <MenuItem value="">
             <em>None</em>
@@ -60,6 +58,6 @@ export default function ControlledOpenSelect() {
           <MenuItem value={30}>Thirty</MenuItem>
         </Select>
       </FormControl>
-    </form>
+    </div>
   );
 }

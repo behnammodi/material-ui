@@ -3,113 +3,141 @@ title: React Text Field（文本框）组件
 components: FilledInput, FormControl, FormHelperText, Input, InputAdornment, InputBase, InputLabel, OutlinedInput, TextField
 ---
 
-# Text Fields（文本框）
+# TextField 文本框
 
 <p class="description">用户可以在文本框内输入或编辑文字。</p>
 
-[Text fields](https://material.io/design/components/text-fields.html) allow users to enter text into a UI. They typically appear in forms and dialogs.
+用户可以通过[文本框](https://material.io/design/components/text-fields.html)在界面中输入文本。 通常，我们会在表单域和对话框中使用它们。
 
 ## TextField
 
-`TextField` wrapper 组件是一个完整的表单控件，包括标签，输入和帮助文本。
+`TextField` wrapper 组件是一个完整的表单控件，它包括了标签，输入和帮助文本。
 
-{{"demo": "pages/components/text-fields/TextFields.js"}}
+它支持 standard，outlined 和 filled 这几个样式。
 
-> **注意：** 此版本的文本框将不再记录在 [Material Design 指南中](https://material.io/)，但 Material-UI 将继续支持它。
+{{"demo": "pages/components/text-fields/BasicTextFields.js"}}
 
-## Outlined（轮廓）
+**友情提示：** [Material 设计指南](https://material.io/)不再记录 `TextField` 的 standard 布局，（[原因见此](https://medium.com/google-design/the-evolution-of-material-designs-text-fields-603688b3fe03)），但是 Material-UI 会继续支持此布局。
 
-`TextField` 支持轮廓的样式。
+## Form props 表单的属性
 
-{{"demo": "pages/components/text-fields/OutlinedTextFields.js"}}
+我们支持一些基本的表单属性，例如： `required`，`disabled`，`type` 等等。 这也包含了 `helperText`，通常我们用这个属性来描述一个表单域的输入框，譬如说，如何使用这个输入框。
 
-## Filled（填充）
+{{"demo": "pages/components/text-fields/FormPropsTextFields.js"}}
 
-`TextField` 支持轮廓的样式。
+## 校验
 
-{{"demo": "pages/components/text-fields/FilledTextFields.js"}}
+您可以使用 `error` 属性来切换错误的状态，同时也可以使用 `helperText` 属性来给用户提供错误的提示信息。
 
-## 组件
+{{"demo": "pages/components/text-fields/ValidationTextFields.js"}}
 
-`TextField` 是由以下较小的组件组成的 ( [`FormControl`](/api/form-control/), [`Input`](/api/input/), [`FilledInput`](/api/filled-input/), [`InputLabel`](/api/input-label/), [`OutlinedInput`](/api/outlined-input/), and [`FormHelperText`](/api/form-helper-text/) )， 你可以直接利用这一点来自定义你的表单输入.
+## 多行属性
 
-您可能注意到了， 和原生的 HTML input 组件相比，`TextField` 组件缺缺失了一些属性。 这是故意而为之的。 该组件只负责处理最常用的一些属性，如果有其他需求，用户可以自行使用下面 Demo 中演示的基础组件。 但是同时, 为了避免过于模版化，您仍然可以使用 `inputProps` (和 `inputProps`, `InputLabelProps` 属性) 来控制原生组件的属性。
+使用 `multiline` 属性，能将一个文本框转换成[多行文本框](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea)或者 [自适应的多行文本框](/components/textarea-autosize/)。
 
-{{"demo": "pages/components/text-fields/ComposedTextField.js"}}
+{{"demo": "pages/components/text-fields/MultilineTextFields.js"}}
 
-## Inputs（输入）
+## Select 选择属性
 
-{{"demo": "pages/components/text-fields/Inputs.js"}}
+使用 `select` 属性的时候，您可以在文本框内插入一个 [Select](/components/selects/) 组件。
 
-## 自定义输入
+{{"demo": "pages/components/text-fields/SelectTextFields.js"}}
 
-以下是自定义组件的一些例子。 您可以在[重写文档页](/customization/components/)中了解有关此内容的更多信息。
+## 图标
 
-{{"demo": "pages/components/text-fields/CustomizedInputs.js"}}
-
-自定义不止于CSS，您可以使用组合来构建自定义组件，并给您的应用程序提供一种独特的感觉。 以下是使用受Google地图启发的 [`InputBase`](/api/input-base/) 组件的示例。
-
-{{"demo": "pages/components/text-fields/CustomizedInputBase.js"}}
-
-## 修饰输入
-
-`Input` 允许提供 `InputAdornment`。 这些可用于向一个输入框添加前缀、后缀或动作。 例如，您可以使用图标按钮来隐藏或显示密码。
-
-{{"demo": "pages/components/text-fields/InputAdornments.js"}}
-
-### 使用图标
-
-您可以将图标指定为预置的或追加的。
+我们提供了在文本框内展示图标的不同的方式。
 
 {{"demo": "pages/components/text-fields/InputWithIcon.js"}}
 
-### 修饰输入框的填充内容
+### 修饰输入框
 
-{{"demo": "pages/components/text-fields/FilledInputAdornments.js"}}
+一个主流的方法是使用 `InputAdornment` 组件。 这些可用于向输入添加前缀、后缀或动作. 例如，可以用一个图标按钮来隐藏或者显示输入框里的密码。
 
-### 修饰输入框的轮廓
+{{"demo": "pages/components/text-fields/InputAdornments.js"}}
 
-{{"demo": "pages/components/text-fields/OutlinedInputAdornments.js"}}
+## 大小
+
+想要使用外观看起来比较小的输入框吗？ 你可以使用 `size` 属性。
+
+{{"demo": "pages/components/text-fields/TextFieldSizes.js"}}
 
 ## 布局
 
-`TextField` 和 `FormControl` 允许使用指定的 `间距`来改变输入的垂直间距。 使用 `none` (默认值)将不会在`FormControl` 添加间距，而相应的，以符合规范，`dense` 和 `normal` 也会改变其他的样式。
+通过使用 `margin` 属性，你可以改变输入框的垂直间距。 若您使用 `none` （默认选项），将不会在 `FormControl` 上添加间距， 相对来说，使用 `dense` 和 `normal` 会添加间距。 使用 ` dense ` 和 `normal` 会更改其他的样式，以符合规范。
 
-{{"demo": "pages/components/text-fields/TextFieldMargins.js"}}
+我们提供了`fullWidth` 属性，使用它的时候，输入框会占据整个容器的宽度。
 
-## 局限性
+{{"demo": "pages/components/text-fields/LayoutTextFields.js"}}
 
-### Shrink
+## 可控制的 vs 不可控制的
 
-输入标签 "shrink" 状态并不总是正确的。 输入标签应在输入显示内容时立即缩小。 在某些情况下, 我们无法确定 "shrink" 状态 (数字输入、日期时间输入、条带输入)。 您可能会注意到重叠的现象。
+你可以选择控制的组件，或者不受控的组件。
 
-![缩小](/static/images/text-fields/shrink.png)
+{{"demo": "pages/components/text-fields/StateTextFields.js"}}
 
-若要解决此问题，您可以在标签上强制赋予 "shrink" 状态。
+## Components 组件
+
+`TextField` 是由一些较小的组件组成的 ( [`FormControl`](/api/form-control/)， [`Input`](/api/input/)， [`FilledInput`](/api/filled-input/)， [`InputLabel`](/api/input-label/)， [`OutlinedInput`](/api/outlined-input/)， and [`FormHelperText`](/api/form-helper-text/) ) ，而你可以直接使用这些小的组件，来自定制你的表单域输入框。
+
+您可能注意到了， 和原生的 HTML input 组件相比，`TextField` 组件缺失了一些属性。 这是故意为之的。 该组件只负责处理最常用的一些属性，如果有需求，用户可以自行调用下面演示的一些组件。 但是同时, 为了避免过于模版化，您仍然可以使用 `inputProps` (和 `inputProps`, `InputLabelProps` 属性) 来控制原生组件的属性。
+
+{{"demo": "pages/components/text-fields/ComposedTextField.js"}}
+
+## Inputs 输入框
+
+{{"demo": "pages/components/text-fields/Inputs.js"}}
+
+## 颜色属性
+
+当使用 `color` 属性时，聚焦文本框时的高亮颜色会被改变。
+
+{{"demo": "pages/components/text-fields/ColorTextFields.js"}}
+
+## 自定义输入
+
+你可以参考以下一些例子来自定义组件。 您可以在 [重写文档页面](/customization/components/) 中了解更多有关此内容的信息。
+
+{{"demo": "pages/components/text-fields/CustomizedInputs.js"}}
+
+自定义不会停留在CSS，您可以使用组合来构建自定义组件，让您的 app 独树一帜。 接下来的这个示例受到了 Google 地图的启发，它使用了 [`InputBase`](/api/input-base/) 组件。
+
+{{"demo": "pages/components/text-fields/CustomizedInputBase.js", "bg": true}}
+
+🎨 如果您还在寻找灵感，您可以看看 [MUI Treasury 特别定制的一些例子](https://mui-treasury.com/styles/text-field)。
+
+## 设计局限
+
+### 缩放
+
+输入框标签的 "shrink" 状态并不总是正确的。 输入标签应在输入框显示内容的时候立即收缩。 在某些情况下，我们无法确定输入框的 "shrink" 状态 (如数字输入、日期时间输入、条带输入)。 这样一来，有可能出现重叠的现象。
+
+![shrink 缩放](/static/images/text-fields/shrink.png)
+
+若要解决此问题，您可以在输入框的标签上强制赋予 "shrink" 状态。
 
 ```jsx
 <TextField InputLabelProps={{ shrink: true }} />
 ```
 
-或者
+或
 
 ```jsx
 <InputLabel shrink>计数</InputLabel>
 ```
 
-### Floating label
+### 悬浮的标签
 
-The floating label is absolutely positioned, it won't impact the layout of the page. You need to make sure that the input is larger than the label to display correctly.
+悬浮的标签被定义了一个绝对的位置，这样的话，它将不会影响到页面的整体布局。 想要正确显示你的组件，你只要确保输入框的比输入标签大。
 
 ## 与第三方 input 库的整合
 
-您可以使用第三方库格式化输入。 您必须提供一个带有 `inputComponent` 属性的 `<input>` 元素的自定义实现。
+您可以使用第三方库来格式化您的输入框。 只要确保在整合的时候，您提供了一个带有 `inputComponent` 属性的自定义 `<input>` 元素。
 
-下面的演示使用 [react-text-mask](https://github.com/text-mask/text-mask)和 [react-number-format](https://github.com/s-yadav/react-number-format) 库。 同样的概念可以适用于 [这个例子：react-stripe-element](https://github.com/mui-org/material-ui/issues/16037)。
+下面的演示使用 [react-text-mask](https://github.com/text-mask/text-mask) 和 [react-number-format](https://github.com/s-yadav/react-number-format) 这两个基本库。 同样的概念可以适用于 [这个例子：react-stripe-element](https://github.com/mui-org/material-ui/issues/16037)。
 
 {{"demo": "pages/components/text-fields/FormattedInputs.js"}}
 
-The provided input component should handle the `inputRef` property. The property should be called with a value that implements the following interface:
+我们要求提供的输入组件能够受理 `inputRef` 这个属性。 这个属性可以通过一个值来调用，而这个值实现了一下的接口：
 
 ```ts
 interface InputElement {
@@ -143,9 +171,9 @@ function MyInputComponent(props) {
 />;
 ```
 
-## 可及性
+## 无障碍设计
 
-In order for the text field to be accessible, **the input should be linked to the label and the helper text**. The underlying DOM nodes should have this structure.
+为了确保您的文本框是的无障碍访问，**输入框必须和标签以及帮助文本连在一起调用**。 而且，深层的 DOM 节点应该遵循这个结构。
 
 ```jsx
 <div class="form-control">
@@ -155,8 +183,8 @@ In order for the text field to be accessible, **the input should be linked to th
 </div>
 ```
 
-- 如果您使用的是 `TextField` 组件，您只需提供唯一的 `id`。
-- 如果您正在编写组件：
+- 如果您使用的是 `TextField` 组件，那您只需提供独特的 `id`。
+- 如果您正在构造一个组件：
 
 ```jsx
 <FormControl>
@@ -166,10 +194,10 @@ In order for the text field to be accessible, **the input should be linked to th
 </FormControl>
 ```
 
-## 补充项目
+## 辅助项目
 
 对于更高级的用例，您可以使用这些：
 
-- [formik-material-ui](https://github.com/stackworx/formik-material-ui) Bindings for using Material-UI with formik.
-- [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) A set of wrapper components to facilitate using Material UI with Redux Form.
-- [final-form-material-ui](https://github.com/Deadly0/final-form-material-ui)：一组配合 Final Form 和 Material UI 的封装组件。
+- 使用 [formik-material-ui](https://github.com/stackworx/formik-material-ui) 将 Material-UI 和 [formik](https://jaredpalmer.com/formik) 结合使用。
+- 使用 [redux-form-material-ui](https://github.com/erikras/redux-form-material-ui) 将 Material-UI 和 [Redux Form](https://redux-form.com/) 结合使用。
+- 使用 [mui-rff](https://github.com/lookfirst/mui-rff) 将 Material-UI 和 [React Final Form](https://final-form.org/react) 结合使用。

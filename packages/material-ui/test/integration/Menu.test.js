@@ -1,12 +1,11 @@
-/* eslint-disable jsx-a11y/tabindex-no-positive */
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { expect } from 'chai';
 import { useFakeTimers } from 'sinon';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { createClientRender, fireEvent } from 'test/utils/createClientRender';
+import { createClientRender, fireEvent, screen } from 'test/utils/createClientRender';
 
 const options = [
   'Show some love to Material-UI',
@@ -19,7 +18,7 @@ function ButtonMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(selectedIndexProp || null);
 
-  const handleClickListItem = event => {
+  const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -57,7 +56,7 @@ function ButtonMenu(props) {
           <MenuItem
             key={option}
             selected={index === selectedIndex}
-            onClick={event => handleMenuItemClick(event, index)}
+            onClick={(event) => handleMenuItemClick(event, index)}
           >
             {option}
           </MenuItem>
@@ -86,10 +85,9 @@ describe('<Menu /> integration', () => {
   });
 
   it('is part of the DOM by default but hidden', () => {
-    const { queryByRole } = render(<ButtonMenu />);
+    const { getByRole } = render(<ButtonMenu />);
 
-    // note: this will fail once testing-library ignores inaccessible roles :)
-    expect(queryByRole('menu')).to.be.null;
+    expect(getByRole('menu', { hidden: true })).toBeInaccessible();
   });
 
   it('does not gain any focus when mounted ', () => {
@@ -105,7 +103,7 @@ describe('<Menu /> integration', () => {
     button.focus();
     button.click();
 
-    expect(getAllByRole('menuitem')[0]).to.be.focused;
+    expect(getAllByRole('menuitem')[0]).toHaveFocus();
   });
 
   it('changes focus according to keyboard navigation', () => {
@@ -114,24 +112,25 @@ describe('<Menu /> integration', () => {
     const button = getByLabelText('open menu');
     button.focus();
     button.click();
+    const menuitems = getAllByRole('menuitem');
 
-    fireEvent.keyDown(document.activeElement, { key: 'ArrowDown' });
-    expect(getAllByRole('menuitem')[1]).to.be.focused;
+    fireEvent.keyDown(menuitems[0], { key: 'ArrowDown' });
+    expect(menuitems[1]).toHaveFocus();
 
-    fireEvent.keyDown(document.activeElement, { key: 'ArrowUp' });
-    expect(getAllByRole('menuitem')[0]).to.be.focused;
+    fireEvent.keyDown(menuitems[1], { key: 'ArrowUp' });
+    expect(menuitems[0]).toHaveFocus();
 
-    fireEvent.keyDown(document.activeElement, { key: 'ArrowUp' });
-    expect(getAllByRole('menuitem')[2]).to.be.focused;
+    fireEvent.keyDown(menuitems[0], { key: 'ArrowUp' });
+    expect(menuitems[2]).toHaveFocus();
 
-    fireEvent.keyDown(document.activeElement, { key: 'Home' });
-    expect(getAllByRole('menuitem')[0]).to.be.focused;
+    fireEvent.keyDown(menuitems[2], { key: 'Home' });
+    expect(menuitems[0]).toHaveFocus();
 
-    fireEvent.keyDown(document.activeElement, { key: 'End' });
-    expect(getAllByRole('menuitem')[2]).to.be.focused;
+    fireEvent.keyDown(menuitems[0], { key: 'End' });
+    expect(menuitems[2]).toHaveFocus();
 
-    fireEvent.keyDown(document.activeElement, { key: 'ArrowRight' });
-    expect(getAllByRole('menuitem')[2], 'no change on unassociated keys').to.be.focused;
+    fireEvent.keyDown(menuitems[2], { key: 'ArrowRight' });
+    expect(menuitems[2], 'no change on unassociated keys').toHaveFocus();
   });
 
   it('focuses the selected item when opening', () => {
@@ -141,7 +140,7 @@ describe('<Menu /> integration', () => {
     button.focus();
     button.click();
 
-    expect(getAllByRole('menuitem')[2]).to.be.focused;
+    expect(getAllByRole('menuitem')[2]).toHaveFocus();
   });
 
   describe('Menu variant differences', () => {
@@ -157,11 +156,12 @@ describe('<Menu /> integration', () => {
           <MenuItem />
         </OpenMenu>,
       );
+      const menuitems = getAllByRole('menuitem');
 
-      expect(getAllByRole('menuitem')[0]).to.be.focused;
-      expect(getAllByRole('menuitem')[0]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[1]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[2]).to.have.property('tabIndex', -1);
+      expect(menuitems[0]).toHaveFocus();
+      expect(menuitems[0]).to.have.property('tabIndex', -1);
+      expect(menuitems[1]).to.have.property('tabIndex', -1);
+      expect(menuitems[2]).to.have.property('tabIndex', -1);
     });
 
     specify('[variant=selectedMenu] will focus the first item if nothing is selected', () => {
@@ -172,11 +172,12 @@ describe('<Menu /> integration', () => {
           <MenuItem />
         </OpenMenu>,
       );
+      const menuitems = getAllByRole('menuitem');
 
-      expect(getAllByRole('menuitem')[0]).to.be.focused;
-      expect(getAllByRole('menuitem')[0]).to.have.property('tabIndex', 0);
-      expect(getAllByRole('menuitem')[1]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[2]).to.have.property('tabIndex', -1);
+      expect(menuitems[0]).toHaveFocus();
+      expect(menuitems[0]).to.have.property('tabIndex', 0);
+      expect(menuitems[1]).to.have.property('tabIndex', -1);
+      expect(menuitems[2]).to.have.property('tabIndex', -1);
     });
 
     // no case for variant=selectedMenu
@@ -188,11 +189,12 @@ describe('<Menu /> integration', () => {
           <MenuItem autoFocus />
         </OpenMenu>,
       );
+      const menuitems = getAllByRole('menuitem');
 
-      expect(getAllByRole('menuitem')[2]).to.be.focused;
-      expect(getAllByRole('menuitem')[0]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[1]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[2]).to.have.property('tabIndex', -1);
+      expect(menuitems[2]).toHaveFocus();
+      expect(menuitems[0]).to.have.property('tabIndex', -1);
+      expect(menuitems[1]).to.have.property('tabIndex', -1);
+      expect(menuitems[2]).to.have.property('tabIndex', -1);
     });
 
     specify('[variant=menu] ignores `selected` on `MenuItem`', () => {
@@ -203,11 +205,12 @@ describe('<Menu /> integration', () => {
           <MenuItem />
         </OpenMenu>,
       );
+      const menuitems = getAllByRole('menuitem');
 
-      expect(getAllByRole('menuitem')[0]).to.be.focused;
-      expect(getAllByRole('menuitem')[0]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[1]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[2]).to.have.property('tabIndex', -1);
+      expect(menuitems[0]).toHaveFocus();
+      expect(menuitems[0]).to.have.property('tabIndex', -1);
+      expect(menuitems[1]).to.have.property('tabIndex', -1);
+      expect(menuitems[2]).to.have.property('tabIndex', -1);
     });
 
     specify('[variant=selectedMenu] focuses the `selected` `MenuItem`', () => {
@@ -218,11 +221,12 @@ describe('<Menu /> integration', () => {
           <MenuItem />
         </OpenMenu>,
       );
+      const menuitems = getAllByRole('menuitem');
 
-      expect(getAllByRole('menuitem')[1]).to.be.focused;
-      expect(getAllByRole('menuitem')[0]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[1]).to.have.property('tabIndex', 0);
-      expect(getAllByRole('menuitem')[2]).to.have.property('tabIndex', -1);
+      expect(menuitems[1]).toHaveFocus();
+      expect(menuitems[0]).to.have.property('tabIndex', -1);
+      expect(menuitems[1]).to.have.property('tabIndex', 0);
+      expect(menuitems[2]).to.have.property('tabIndex', -1);
     });
 
     specify('[variant=selectedMenu] allows overriding `tabIndex` on `MenuItem`', () => {
@@ -233,11 +237,12 @@ describe('<Menu /> integration', () => {
           <MenuItem />
         </OpenMenu>,
       );
+      const menuitems = getAllByRole('menuitem');
 
-      expect(getAllByRole('menuitem')[1]).to.be.focused;
-      expect(getAllByRole('menuitem')[0]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[1]).to.have.property('tabIndex', 2);
-      expect(getAllByRole('menuitem')[2]).to.have.property('tabIndex', -1);
+      expect(menuitems[1]).toHaveFocus();
+      expect(menuitems[0]).to.have.property('tabIndex', -1);
+      expect(menuitems[1]).to.have.property('tabIndex', 2);
+      expect(menuitems[2]).to.have.property('tabIndex', -1);
     });
 
     // falling back to the menu immediately so that we don't have to come up
@@ -254,12 +259,13 @@ describe('<Menu /> integration', () => {
             <MenuItem />
           </OpenMenu>,
         );
+        const menuitems = getAllByRole('menuitem');
 
-        expect(getAllByRole('menuitem')[1]).to.be.focused;
-        expect(getAllByRole('menuitem')[0]).to.have.property('tabIndex', -1);
-        expect(getAllByRole('menuitem')[1]).to.have.property('tabIndex', 0);
-        expect(getAllByRole('menuitem')[2]).to.have.property('tabIndex', -1);
-        expect(getAllByRole('menuitem')[3]).to.have.property('tabIndex', -1);
+        expect(menuitems[1]).toHaveFocus();
+        expect(menuitems[0]).to.have.property('tabIndex', -1);
+        expect(menuitems[1]).to.have.property('tabIndex', 0);
+        expect(menuitems[2]).to.have.property('tabIndex', -1);
+        expect(menuitems[3]).to.have.property('tabIndex', -1);
       },
     );
 
@@ -274,11 +280,12 @@ describe('<Menu /> integration', () => {
           <MenuItem />
         </OpenMenu>,
       );
+      const menuitems = getAllByRole('menuitem');
 
-      expect(getByTestId('Paper')).to.be.focused;
-      expect(getAllByRole('menuitem')[0]).to.have.property('tabIndex', -1);
-      expect(getAllByRole('menuitem')[1]).to.have.property('tabIndex', 0);
-      expect(getAllByRole('menuitem')[2]).to.have.property('tabIndex', -1);
+      expect(getByTestId('Paper')).toHaveFocus();
+      expect(menuitems[0]).to.have.property('tabIndex', -1);
+      expect(menuitems[1]).to.have.property('tabIndex', 0);
+      expect(menuitems[2]).to.have.property('tabIndex', -1);
     });
 
     specify('[variant=selectedMenu] focuses nothing when it is closed and mounted', () => {
@@ -296,38 +303,40 @@ describe('<Menu /> integration', () => {
 
         getByRole('button').focus();
         getByRole('button').click();
+        const menuitems = getAllByRole('menuitem');
 
-        expect(getAllByRole('menuitem')[1]).to.be.focused;
-        expect(getAllByRole('menuitem')[0]).to.have.property('tabIndex', -1);
-        expect(getAllByRole('menuitem')[1]).to.have.property('tabIndex', 0);
-        expect(getAllByRole('menuitem')[2]).to.have.property('tabIndex', -1);
+        expect(menuitems[1]).toHaveFocus();
+        expect(menuitems[0]).to.have.property('tabIndex', -1);
+        expect(menuitems[1]).to.have.property('tabIndex', 0);
+        expect(menuitems[2]).to.have.property('tabIndex', -1);
       },
     );
   });
 
   it('closes the menu when Tabbing while the list is active', () => {
-    const { getByRole, queryByRole } = render(<ButtonMenu />);
+    render(<ButtonMenu />);
 
-    getByRole('button').focus();
-    getByRole('button').click();
+    const trigger = screen.getByRole('button');
+    trigger.focus();
+    trigger.click();
 
-    fireEvent.keyDown(document.activeElement, { key: 'Tab' });
+    fireEvent.keyDown(screen.getAllByRole('menuitem')[0], { key: 'Tab' });
     // react-transition-group uses one commit per state transition so we need to wait a bit
     clock.tick(0);
 
-    expect(queryByRole('menu')).to.be.null;
+    expect(screen.getByRole('menu', { hidden: true })).toBeInaccessible();
   });
 
   it('closes the menu when the backdrop is clicked', () => {
-    const { getByRole, queryByRole } = render(<ButtonMenu />);
+    const { getByRole } = render(<ButtonMenu />);
+    const button = getByRole('button');
 
-    getByRole('button').focus();
-    getByRole('button').click();
+    button.focus();
+    button.click();
 
     document.querySelector('[data-mui-test="Backdrop"]').click();
     clock.tick(0);
 
-    // TODO use getByRole with hidden and match that it's inaccessible
-    expect(queryByRole('menu')).to.be.null;
+    expect(getByRole('menu', { hidden: true })).toBeInaccessible();
   });
 });

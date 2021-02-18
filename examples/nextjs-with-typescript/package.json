@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "latest",
-    "@material-ui/styles": "latest",
     "clsx": "latest",
     "next": "latest",
     "react": "latest",
@@ -13,10 +12,12 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   },
   "devDependencies": {
     "@types/next": "latest",
+    "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "typescript": "latest"

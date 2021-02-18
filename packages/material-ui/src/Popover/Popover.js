@@ -1,9 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
+import {
+  chainPropTypes,
+  elementTypeAcceptingRef,
+  refType,
+  HTMLElementType,
+} from '@material-ui/utils';
 import debounce from '../utils/debounce';
 import clsx from 'clsx';
-import { chainPropTypes, elementTypeAcceptingRef, refType } from '@material-ui/utils';
 import ownerDocument from '../utils/ownerDocument';
 import ownerWindow from '../utils/ownerWindow';
 import createChainedFunction from '../utils/createChainedFunction';
@@ -42,7 +47,7 @@ export function getOffsetLeft(rect, horizontal) {
 
 function getTransformOriginValue(transformOrigin) {
   return [transformOrigin.horizontal, transformOrigin.vertical]
-    .map(n => (typeof n === 'number' ? `${n}px` : n))
+    .map((n) => (typeof n === 'number' ? `${n}px` : n))
     .join(' ');
 }
 
@@ -52,7 +57,7 @@ function getScrollParent(parent, child) {
   let scrollTop = 0;
 
   while (element && element !== parent) {
-    element = element.parentNode;
+    element = element.parentElement;
     scrollTop += element.scrollTop;
   }
   return scrollTop;
@@ -63,7 +68,7 @@ function getAnchorEl(anchorEl) {
 }
 
 export const styles = {
-  /* Styles applied to the root element */
+  /* Styles applied to the root element. */
   root: {},
   /* Styles applied to the `Paper` component. */
   paper: {
@@ -120,12 +125,12 @@ const Popover = React.forwardRef(function Popover(props, ref) {
   // Returns the top/left offset of the position
   // to attach to on the anchor element (or body if none is provided)
   const getAnchorOffset = React.useCallback(
-    contentAnchorOffset => {
+    (contentAnchorOffset) => {
       if (anchorReference === 'anchorPosition') {
         if (process.env.NODE_ENV !== 'production') {
           if (!anchorPosition) {
             console.error(
-              'Material-UI: you need to provide a `anchorPosition` prop when using ' +
+              'Material-UI: You need to provide a `anchorPosition` prop when using ' +
                 '<Popover anchorReference="anchorPosition" />.',
             );
           }
@@ -134,11 +139,10 @@ const Popover = React.forwardRef(function Popover(props, ref) {
       }
 
       const resolvedAnchorEl = getAnchorEl(anchorEl);
-      const containerWindow = ownerWindow(resolvedAnchorEl);
 
       // If an anchor element wasn't provided, just use the parent body element of this Popover
       const anchorElement =
-        resolvedAnchorEl instanceof containerWindow.Element
+        resolvedAnchorEl && resolvedAnchorEl.nodeType === 1
           ? resolvedAnchorEl
           : ownerDocument(paperRef.current).body;
       const anchorRect = anchorElement.getBoundingClientRect();
@@ -155,7 +159,7 @@ const Popover = React.forwardRef(function Popover(props, ref) {
         ) {
           console.warn(
             [
-              'Material-UI: the `anchorEl` prop provided to the component is invalid.',
+              'Material-UI: The `anchorEl` prop provided to the component is invalid.',
               'The anchor element should be part of the document layout.',
               "Make sure the element is present in the document or that it's not display none.",
             ].join('\n'),
@@ -175,7 +179,7 @@ const Popover = React.forwardRef(function Popover(props, ref) {
 
   // Returns the vertical offset of inner content to anchor the transform on if provided
   const getContentAnchorOffset = React.useCallback(
-    element => {
+    (element) => {
       let contentAnchorOffset = 0;
 
       if (getContentAnchorEl && anchorReference === 'anchorEl') {
@@ -192,7 +196,7 @@ const Popover = React.forwardRef(function Popover(props, ref) {
           if (anchorOrigin.vertical !== 'top') {
             console.error(
               [
-                'Material-UI: you can not change the default `anchorOrigin.vertical` value ',
+                'Material-UI: You can not change the default `anchorOrigin.vertical` value ',
                 'when also providing the `getContentAnchorEl` prop to the popover component.',
                 'Only use one of the two props.',
                 'Set `getContentAnchorEl` to `null | undefined`' +
@@ -221,7 +225,7 @@ const Popover = React.forwardRef(function Popover(props, ref) {
   );
 
   const getPositioningStyle = React.useCallback(
-    element => {
+    (element) => {
       // Check if the parent has requested anchoring on an inner content node
       const contentAnchorOffset = getContentAnchorOffset(element);
       const elemRect = {
@@ -271,9 +275,10 @@ const Popover = React.forwardRef(function Popover(props, ref) {
         if (elemRect.height > heightThreshold && elemRect.height && heightThreshold) {
           console.error(
             [
-              'Material-UI: the popover component is too tall.',
-              `Some part of it can not be seen on the screen (${elemRect.height -
-                heightThreshold}px).`,
+              'Material-UI: The popover component is too tall.',
+              `Some part of it can not be seen on the screen (${
+                elemRect.height - heightThreshold
+              }px).`,
               'Please consider adding a `max-height` to improve the user-experience.',
             ].join('\n'),
           );
@@ -292,8 +297,8 @@ const Popover = React.forwardRef(function Popover(props, ref) {
       }
 
       return {
-        top: `${top}px`,
-        left: `${left}px`,
+        top: `${Math.round(top)}px`,
+        left: `${Math.round(left)}px`,
         transformOrigin: getTransformOriginValue(elemTransformOrigin),
       };
     },
@@ -307,60 +312,71 @@ const Popover = React.forwardRef(function Popover(props, ref) {
     ],
   );
 
-  const setPositioningStyles = React.useCallback(
-    element => {
-      const positioning = getPositioningStyle(element);
+  const setPositioningStyles = React.useCallback(() => {
+    const element = paperRef.current;
 
-      if (positioning.top !== null) {
-        element.style.top = positioning.top;
-      }
-      if (positioning.left !== null) {
-        element.style.left = positioning.left;
-      }
-      element.style.transformOrigin = positioning.transformOrigin;
-    },
-    [getPositioningStyle],
-  );
+    if (!element) {
+      return;
+    }
+
+    const positioning = getPositioningStyle(element);
+
+    if (positioning.top !== null) {
+      element.style.top = positioning.top;
+    }
+    if (positioning.left !== null) {
+      element.style.left = positioning.left;
+    }
+    element.style.transformOrigin = positioning.transformOrigin;
+  }, [getPositioningStyle]);
 
   const handleEntering = (element, isAppearing) => {
     if (onEntering) {
       onEntering(element, isAppearing);
     }
 
-    setPositioningStyles(element);
+    setPositioningStyles();
   };
 
-  const handlePaperRef = React.useCallback(instance => {
+  const handlePaperRef = React.useCallback((instance) => {
     // #StrictMode ready
     paperRef.current = ReactDOM.findDOMNode(instance);
   }, []);
 
-  const updatePosition = React.useMemo(() => {
+  React.useEffect(() => {
+    if (open) {
+      setPositioningStyles();
+    }
+  });
+
+  React.useImperativeHandle(
+    action,
+    () =>
+      open
+        ? {
+            updatePosition: () => {
+              setPositioningStyles();
+            },
+          }
+        : null,
+    [open, setPositioningStyles],
+  );
+
+  React.useEffect(() => {
     if (!open) {
       return undefined;
     }
 
-    return debounce(() => {
-      setPositioningStyles(paperRef.current);
+    const handleResize = debounce(() => {
+      setPositioningStyles();
     });
-  }, [open, setPositioningStyles]);
 
-  React.useImperativeHandle(action, () => (open ? { updatePosition } : null), [
-    open,
-    updatePosition,
-  ]);
-
-  React.useEffect(() => {
-    if (!updatePosition) {
-      return undefined;
-    }
-
-    window.addEventListener('resize', updatePosition);
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('resize', updatePosition);
-      updatePosition.clear();
+      handleResize.clear();
+      window.removeEventListener('resize', handleResize);
     };
-  }, [updatePosition]);
+  }, [open, setPositioningStyles]);
 
   let transitionDuration = transitionDurationProp;
 
@@ -410,21 +426,24 @@ const Popover = React.forwardRef(function Popover(props, ref) {
 });
 
 Popover.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * A ref for imperative actions.
    * It currently only supports updatePosition() action.
    */
   action: refType,
   /**
-   * This is the DOM element, or a function that returns the DOM element,
-   * that may be used to set the position of the popover.
+   * A HTML element, or a function that returns it.
+   * It's used to set the position of the popover.
    */
-  anchorEl: chainPropTypes(PropTypes.oneOfType([PropTypes.object, PropTypes.func]), props => {
+  anchorEl: chainPropTypes(PropTypes.oneOfType([HTMLElementType, PropTypes.func]), (props) => {
     if (props.open && (!props.anchorReference || props.anchorReference === 'anchorEl')) {
       const resolvedAnchorEl = getAnchorEl(props.anchorEl);
-      const containerWindow = ownerWindow(resolvedAnchorEl);
 
-      if (resolvedAnchorEl instanceof containerWindow.Element) {
+      if (resolvedAnchorEl && resolvedAnchorEl.nodeType === 1) {
         const box = resolvedAnchorEl.getBoundingClientRect();
 
         if (
@@ -436,7 +455,7 @@ Popover.propTypes = {
         ) {
           return new Error(
             [
-              'Material-UI: the `anchorEl` prop provided to the component is invalid.',
+              'Material-UI: The `anchorEl` prop provided to the component is invalid.',
               'The anchor element should be part of the document layout.',
               "Make sure the element is present in the document or that it's not display none.",
             ].join('\n'),
@@ -445,7 +464,7 @@ Popover.propTypes = {
       } else {
         return new Error(
           [
-            'Material-UI: the `anchorEl` prop provided to the component is invalid.',
+            'Material-UI: The `anchorEl` prop provided to the component is invalid.',
             `It should be an Element instance but it's \`${resolvedAnchorEl}\` instead.`,
           ].join('\n'),
         );
@@ -465,10 +484,10 @@ Popover.propTypes = {
    */
   anchorOrigin: PropTypes.shape({
     horizontal: PropTypes.oneOfType([
+      PropTypes.oneOf(['center', 'left', 'right']),
       PropTypes.number,
-      PropTypes.oneOf(['left', 'center', 'right']),
     ]).isRequired,
-    vertical: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['top', 'center', 'bottom'])])
+    vertical: PropTypes.oneOfType([PropTypes.oneOf(['bottom', 'center', 'top']), PropTypes.number])
       .isRequired,
   }),
   /**
@@ -481,7 +500,7 @@ Popover.propTypes = {
     left: PropTypes.number.isRequired,
     top: PropTypes.number.isRequired,
   }),
-  /*
+  /**
    * This determines which anchor prop to refer to to set
    * the position of the popover.
    */
@@ -494,18 +513,23 @@ Popover.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
   className: PropTypes.string,
   /**
-   * A node, component instance, or function that returns either.
+   * A HTML element, component instance, or function that returns either.
    * The `container` will passed to the Modal component.
+   *
    * By default, it uses the body of the anchorEl's top-level document object,
    * so it's simply `document.body` most of the time.
    */
-  container: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+  container: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
+    HTMLElementType,
+    PropTypes.instanceOf(React.Component),
+    PropTypes.func,
+  ]),
   /**
    * The elevation of the popover.
    */
@@ -525,9 +549,6 @@ Popover.propTypes = {
   marginThreshold: PropTypes.number,
   /**
    * Callback fired when the component requests to be closed.
-   *
-   * @param {object} event The event source of the callback.
-   * @param {string} reason Can be:`"escapeKeyDown"`, `"backdropClick"`
    */
   onClose: PropTypes.func,
   /**
@@ -561,7 +582,7 @@ Popover.propTypes = {
   /**
    * Props applied to the [`Paper`](/api/paper/) element.
    */
-  PaperProps: PropTypes.shape({
+  PaperProps: PropTypes /* @typescript-to-proptypes-ignore */.shape({
     component: elementTypeAcceptingRef,
   }),
   /**
@@ -574,26 +595,31 @@ Popover.propTypes = {
    */
   transformOrigin: PropTypes.shape({
     horizontal: PropTypes.oneOfType([
+      PropTypes.oneOf(['center', 'left', 'right']),
       PropTypes.number,
-      PropTypes.oneOf(['left', 'center', 'right']),
     ]).isRequired,
-    vertical: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['top', 'center', 'bottom'])])
+    vertical: PropTypes.oneOfType([PropTypes.oneOf(['bottom', 'center', 'top']), PropTypes.number])
       .isRequired,
   }),
   /**
    * The component used for the transition.
+   * [Follow this guide](/components/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
    */
   TransitionComponent: PropTypes.elementType,
   /**
    * Set to 'auto' to automatically calculate transition time based on height.
    */
   transitionDuration: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({ enter: PropTypes.number, exit: PropTypes.number }),
     PropTypes.oneOf(['auto']),
+    PropTypes.number,
+    PropTypes.shape({
+      appear: PropTypes.number,
+      enter: PropTypes.number,
+      exit: PropTypes.number,
+    }),
   ]),
   /**
-   * Props applied to the `Transition` element.
+   * Props applied to the [`Transition`](http://reactcommunity.org/react-transition-group/transition#Transition-props) element.
    */
   TransitionProps: PropTypes.object,
 };

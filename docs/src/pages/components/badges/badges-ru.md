@@ -1,9 +1,9 @@
 ---
-title: React-компонент Значок
+title: Компонент React Badge
 components: Badge
 ---
 
-# Значки
+# Badge (значок)
 
 <p class="description">Значок генерирует маленький значок в правом верхнем углу своего дочернего(их) элемента(ов).</p>
 
@@ -15,7 +15,7 @@ components: Badge
 
 ## Настраиваемые значки
 
-Вот несколько примеров настройки компонента. You can learn more about this in the [overrides documentation page](/customization/components/).
+Ниже находится пример кастомизации компонента. You can learn more about this in the [overrides documentation page](/customization/components/).
 
 {{"demo": "pages/components/badges/CustomizedBadges.js"}}
 
@@ -23,30 +23,32 @@ components: Badge
 
 Видимость значков можно контролировать с помощью свойства `invisible`.
 
-Значок автоматически скрывается, когда свойство badgeContent равно нулю. You can override this with the `showZero` property.
-
 {{"demo": "pages/components/badges/BadgeVisibility.js"}}
+
+Значок автоматически скрывается, когда свойство badgeContent равно нулю. Вы можете переопределить это с помощью пропа `showZero`.
+
+{{"demo": "pages/components/badges/ShowZeroBadge.js"}}
 
 ## Максимальное значение
 
-You can use the `max` property to cap the value of the badge content.
+Вы можете использовать проп `max`, чтобы ограничить значение значка.
 
 {{"demo": "pages/components/badges/BadgeMax.js"}}
 
-## Dot Badge
+## Значок-точка
 
-The `dot` property changes a badge into a small dot. This can be used as a notification that something has changed without giving a count.
+Проп `dot` превращает значок в маленькую точку. Это можно использовать как уведомление о том, что что-то изменилось без количества.
 
 {{"demo": "pages/components/badges/DotBadge.js"}}
 
-## Badge overlap
+## Наложение значка
 
-You can use the `overlap` property to place the badge relative to the corner of the wrapped element.
+Вы можете использовать проп `overlap` для размещения значка относительно краев элемента.
 
 {{"demo": "pages/components/badges/BadgeOverlap.js"}}
 
 ## Выравнивание значка
 
-You can use the `horizontalAlignment` and `verticalAlignment` properties to move the badge to any corner of the wrapped element.
+Вы можете использовать проп `anchorOrigin` для перемещения значка в любой угол элемента.
 
-{{"demo": "pages/components/badges/BadgeAlignment.js"}}
+{{"demo": "pages/components/badges/BadgeAlignment.js", "hideToolbar": true}}

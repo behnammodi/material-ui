@@ -4,9 +4,7 @@ description: Here are the most significant improvements in June.
 
 # June 2019 Update
 
-**Olivier Tassinari**
-
-*July 8, 2019*
+Olivier Tassinari. July 8, 2019.
 
 Here are the most significant improvements in June:
 
@@ -26,13 +24,11 @@ But this summary is just scratching the surface. We have accepted 198 commits fr
 *(We'll do our best, no guarantee!)*
 
 - We will keep working on a new Tree View component.
-  You can already [preview it](https://deploy-preview-14827--material-ui.netlify.com/components/tree-view/).
+  You can already [preview it](https://deploy-preview-14827--material-ui.netlify.app/components/tree-view/).
   ![Tree View](/static/blog/may-2019-update/tree-view.png)
 
 - We will work on a new Rating component.
-  You can already [preview it](https://deploy-preview-16455--material-ui.netlify.com/components/rating/).
+  You can already [preview it](https://deploy-preview-16455--material-ui.netlify.app/components/rating/).
   ![Rating](/static/blog/june-2019-update/rating.png)
 
-<hr />
-
-Material-UI is an MIT-licensed open source project. It’s an independent project with ongoing development helped by the support of these awesome [backers](/discover-more/backers/). Please join them ✨.
+- ❓ Please upvote our [GitHub issues](https://github.com/mui-org/material-ui/issues) if you want something specific. The number of 👍 helps us to prioritize.

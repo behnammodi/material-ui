@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
-
-import 'isomorphic-fetch';
+import fetch from 'cross-fetch';
 import fse from 'fs-extra';
 import path from 'path';
 import yargs from 'yargs';
@@ -28,12 +27,10 @@ function downloadIcon(icon) {
   console.log(`downloadIcon ${icon.index}: ${icon.name}`);
 
   return Promise.all(
-    Object.keys(themeMap).map(async theme => {
+    Object.keys(themeMap).map(async (theme) => {
       const formattedTheme = themeMap[theme].split('_').join('');
       const response = await fetch(
-        `https://fonts.gstatic.com/s/i/materialicons${formattedTheme}/${icon.name}/v${
-          icon.version
-        }/24px.svg`,
+        `https://fonts.gstatic.com/s/i/materialicons${formattedTheme}/${icon.name}/v${icon.version}/24px.svg`,
       );
       if (response.status !== 200) {
         throw new Error(`status ${response.status}`);
@@ -63,7 +60,7 @@ async function run() {
     console.log(`${icons.length} icons to download`);
 
     const queue = new Queue(
-      async icon => {
+      async (icon) => {
         await retry(async ({ tries }) => {
           await sleep((tries - 1) * 100);
           await downloadIcon(icon);

@@ -1,5 +1,5 @@
 ---
-title: Drawer React-Komponente
+title: React Drawer component
 components: Drawer, SwipeableDrawer
 ---
 
@@ -19,7 +19,7 @@ The Drawer can be cancelled by clicking the overlay or pressing the Esc key. It 
 
 {{"demo": "pages/components/drawers/TemporaryDrawer.js"}}
 
-## Wischbare Navigationsleisten
+### Swipeable
 
 Sie können die Leiste mit der `SwipeableDrawer` Komponente einklappbar machen.
 
@@ -29,7 +29,7 @@ Diese Komponente ist mit einem 2-kB-gzipped -Overhead ausgestattet. Einige mobil
 
 The following properties are used in this documentation website for optimal usability of the component:
 
-- iOS is hosted on high-end devices. The backdrop transition can be enabled without dropping frames. Die Leistung wird gut genug sein.
+- iOS is hosted on high-end devices. Die Leistung wird gut genug sein. The backdrop transition can be enabled without dropping frames.
 - iOS has a "swipe to go back" feature that interferes with the discovery feature, so discovery has to be disabled.
 
 ```jsx
@@ -66,7 +66,7 @@ Die Mini-Variante wird für Anwendungsbereiche empfohlen, die neben Inhalten ein
 
 ## Permanente Navigationsleiste
 
-Permanent navigation drawers are always visible and pinned to the left edge, at the same elevation as the content or background. They cannot be closed.
+Permanent navigation drawers are always visible and pinned to the left edge, at the same elevation as the content or background. Sie können nicht geschlossen werden.
 
 Permanente Navigationsleisten sind die **empfohlene Standardeinstellung für Desktop**.
 

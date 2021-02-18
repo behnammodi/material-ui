@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { refType } from '@material-ui/utils';
@@ -7,7 +7,7 @@ import withStyles from '../styles/withStyles';
 import Typography from '../Typography';
 import capitalize from '../utils/capitalize';
 
-export const styles = theme => ({
+export const styles = (theme) => ({
   /* Styles applied to the root element. */
   root: {
     display: 'inline-flex',
@@ -15,7 +15,6 @@ export const styles = theme => ({
     cursor: 'pointer',
     // For correct alignment with the text.
     verticalAlign: 'middle',
-    // Remove grey highlight
     WebkitTapHighlightColor: 'transparent',
     marginLeft: -11,
     marginRight: 16, // used for row presentation of radio/checkbox
@@ -57,7 +56,7 @@ const FormControlLabel = React.forwardRef(function FormControlLabel(props, ref) 
   const {
     checked,
     classes,
-    className: classNameProp,
+    className,
     control,
     disabled: disabledProp,
     inputRef,
@@ -81,7 +80,8 @@ const FormControlLabel = React.forwardRef(function FormControlLabel(props, ref) 
   const controlProps = {
     disabled,
   };
-  ['checked', 'name', 'onChange', 'value', 'inputRef'].forEach(key => {
+
+  ['checked', 'name', 'onChange', 'value', 'inputRef'].forEach((key) => {
     if (typeof control.props[key] === 'undefined' && typeof props[key] !== 'undefined') {
       controlProps[key] = props[key];
     }
@@ -95,7 +95,7 @@ const FormControlLabel = React.forwardRef(function FormControlLabel(props, ref) 
           [classes[`labelPlacement${capitalize(labelPlacement)}`]]: labelPlacement !== 'end',
           [classes.disabled]: disabled,
         },
-        classNameProp,
+        className,
       )}
       ref={ref}
       {...other}
@@ -112,6 +112,10 @@ const FormControlLabel = React.forwardRef(function FormControlLabel(props, ref) 
 });
 
 FormControlLabel.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
   /**
    * If `true`, the component appears selected.
    */
@@ -120,7 +124,7 @@ FormControlLabel.propTypes = {
    * Override or extend the styles applied to the component.
    * See [CSS API](#css) below for more details.
    */
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   /**
    * @ignore
    */
@@ -128,7 +132,7 @@ FormControlLabel.propTypes = {
   /**
    * A control element. For instance, it can be be a `Radio`, a `Switch` or a `Checkbox`.
    */
-  control: PropTypes.element,
+  control: PropTypes.element.isRequired,
   /**
    * If `true`, the control will be disabled.
    */
@@ -144,8 +148,8 @@ FormControlLabel.propTypes = {
   /**
    * The position of the label.
    */
-  labelPlacement: PropTypes.oneOf(['end', 'start', 'top', 'bottom']),
-  /*
+  labelPlacement: PropTypes.oneOf(['bottom', 'end', 'start', 'top']),
+  /**
    * @ignore
    */
   name: PropTypes.string,

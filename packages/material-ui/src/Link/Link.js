@@ -1,10 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import capitalize from '../utils/capitalize';
 import withStyles from '../styles/withStyles';
 import { elementTypeAcceptingRef } from '@material-ui/utils';
-import { useIsFocusVisible } from '../utils/focusVisible';
+import useIsFocusVisible from '../utils/useIsFocusVisible';
 import useForkRef from '../utils/useForkRef';
 import Typography from '../Typography';
 
@@ -30,7 +30,6 @@ export const styles = {
   /* Styles applied to the root element if `component="button"`. */
   button: {
     position: 'relative',
-    // Remove grey highlight
     WebkitTapHighlightColor: 'transparent',
     backgroundColor: 'transparent', // Reset default value
     // We disable the focus ring for mouse, touch and keyboard users.
@@ -72,7 +71,7 @@ const Link = React.forwardRef(function Link(props, ref) {
   const { isFocusVisible, onBlurVisible, ref: focusVisibleRef } = useIsFocusVisible();
   const [focusVisible, setFocusVisible] = React.useState(false);
   const handlerRef = useForkRef(ref, focusVisibleRef);
-  const handleBlur = event => {
+  const handleBlur = (event) => {
     if (focusVisible) {
       onBlurVisible();
       setFocusVisible(false);
@@ -81,7 +80,7 @@ const Link = React.forwardRef(function Link(props, ref) {
       onBlur(event);
     }
   };
-  const handleFocus = event => {
+  const handleFocus = (event) => {
     if (isFocusVisible(event)) {
       setFocusVisible(true);
     }
@@ -131,17 +130,17 @@ Link.propTypes = {
    * The color of the link.
    */
   color: PropTypes.oneOf([
-    'default',
-    'error',
+    'initial',
     'inherit',
     'primary',
     'secondary',
     'textPrimary',
     'textSecondary',
+    'error',
   ]),
   /**
    * The component used for the root node.
-   * Either a string to use a DOM element or a component.
+   * Either a string to use a HTML element or a component.
    */
   component: elementTypeAcceptingRef,
   /**

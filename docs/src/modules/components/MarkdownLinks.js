@@ -9,8 +9,8 @@ export async function handleEvent(event, as) {
     event.button !== 0 || // ignore everything but left-click
     event.metaKey ||
     event.ctrlKey ||
-    event.shiftKey ||
-    (event.nativeEvent && event.nativeEvent.which === 2)
+    event.altKey ||
+    event.shiftKey
   ) {
     return;
   }
@@ -22,7 +22,7 @@ export async function handleEvent(event, as) {
   if (pathname !== '/') {
     // The leading / is only added to support static hosting (resolve /index.html).
     // We remove it to normalize the pathname.
-    // See `_rewriteUrlForNextExport` on Next.js side.
+    // See `rewriteUrlForNextExport` on Next.js side.
     pathname = pathname.replace(/\/$/, '');
   }
   pathname = pathnameToLanguage(pathname).canonical;

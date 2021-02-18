@@ -1,6 +1,6 @@
 ---
 title: Grid List React Komponente
-components: GridList, GridListTile, GridListTileBar, ListSubheader, IconButton
+components: GridList, GridListTile, GridListTileBar
 ---
 
 # Rasterliste (Grid List)
@@ -23,7 +23,7 @@ In diesem Beispiel wird die Verwendung der `GridListTileBar` veranschaulicht, um
 
 ## Einzeilige Rasterliste
 
-Dieses Beispiel zeigt eine horizontale, durchlaufbare, einzeilige Rasterliste von Bildern. Horizontales Scrollen von Rasterlisten wird empfohlen, da das Scrollen typische Lesemuster stört und das Verständnis beeinträchtigt. Eine Ausnahme ist eine horizontal scrollende, einzeilige Rasterliste von Bildern, z. B. einer Galerie.
+Dieses Beispiel zeigt eine horizontale, durchlaufbare, einzeilige Rasterliste von Bildern. Horizontales Scrollen von Rasterlisten wird empfohlen, da das Scrollen typische Lesemuster stört und das Verständnis beeinträchtigt. Eine Ausnahme ist eine horizontal scrollende, einzeilige Rasterliste von Bildern, z.
 
 {{"demo": "pages/components/grid-list/SingleLineGridList.js", "hideEditButton": true}}
 
@@ -31,4 +31,4 @@ Dieses Beispiel zeigt eine horizontale, durchlaufbare, einzeilige Rasterliste vo
 
 In diesem Beispiel werden "vorgestellte" Fliesen dargestellt, wobei die Eigenschaften `rows` und `cols` die Größe der Kacheln festlegen und der Abstand durch die `padding` Eigenschaft einstellen wird. Die Kacheln haben eine angepasste Titleleiste, an der Spitze positioniert ist und einem benutzerdefinierten Gradienten `titleBackground` hat. Die sekundäre Aktion `IconButton` befindet sich links.
 
-{{"demo": "pages/components/grid-list/AdvancedGridList.js", "hideEditButton": true}}
+{{"demo": "pages/components/grid-list/AdvancedGridList.js", "hideEditButton": true, "defaultCodeOpen": false}}

@@ -86,13 +86,13 @@ function ConfirmationDialogRaw(props: ConfirmationDialogRawProps) {
           value={value}
           onChange={handleChange}
         >
-          {options.map(option => (
+          {options.map((option) => (
             <FormControlLabel value={option} key={option} control={<Radio />} label={option} />
           ))}
         </RadioGroup>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel} color="primary">
+        <Button autoFocus onClick={handleCancel} color="primary">
           Cancel
         </Button>
         <Button onClick={handleOk} color="primary">

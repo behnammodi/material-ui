@@ -4,7 +4,7 @@ description: Material-UI v1 is out 🎉
 
 # Material-UI v1 is out 🎉
 
-*May 18, 2018*
+The core team. May 18, 2018.
 
 > React components that implement Google’s Material Design.
 
@@ -44,7 +44,7 @@ We know the ease of use is a critical part of user acquisition. The more user we
 - **Onboarding**. We have reduced the onboarding friction as much as possible. We know the onboarding is a critical step for user acquisition. The onboarding friction comes in different flavors:
 We have reduced the number of installation steps needed. It should be as simple as 1. npm install @material-ui/core and 2. import Button from '@material-ui/core/Button'; . We don’t ask for polyfill, custom webpack plugin or any specific build tool. The usage of MuiThemeProvider is no longer mandatory.
 
-- **Examples**. We are hosting [example projects](https://github.com/mui-org/material-ui/tree/master/examples) with the most popular solutions to start a project: [create-react-app](https://github.com/facebook/create-react-app), [Next.js](https://github.com/zeit/next.js), [Gatsby](https://github.com/gatsbyjs/gatsby), CDN and [Parcel](https://github.com/parcel-bundler/parcel).
+- **Examples**. We are hosting [example projects](https://github.com/mui-org/material-ui/tree/master/examples) with the most popular solutions to start a project: [create-react-app](https://github.com/facebook/create-react-app), [Next.js](https://github.com/zeit/next.js), [Gatsby](https://github.com/gatsbyjs/gatsby), and CDN.
 
 - **Isolation**. Our components now work in isolation. You should be able to use a single Material-UI component in an existing codebase without any side effect. No global CSS override needed, no bundle size bloat.
 
@@ -84,7 +84,7 @@ There are so many new things, we can’t be exhaustive. Aside from what we have 
 - New documentation
 - Right-To-Left support
 - First class server-side support
-- [Premium themes](https://themes.material-ui.com/)
+- [Premium themes](https://material-ui.com/store/)
 - First class TypeScript support
 - **And much, much more**
 
@@ -103,9 +103,9 @@ We want to translate the documentation into Chinese and more languages. [Any hel
 
 ## Premium themes
 
-We have shipped the long-awaited Material-UI v1 stable release. With a new codebase designed to better support customization, it’s the perfect timing to start building and promoting premium themes. We are very happy to announce [the first two](https://themes.material-ui.com/) from [Creative Tim](https://themes.material-ui.com/contributors/creative-tim/). More are coming.
+We have shipped the long-awaited Material-UI v1 stable release. With a new codebase designed to better support customization, it’s the perfect timing to start building and promoting premium themes. We are very happy to announce [the first two](https://material-ui.com/store/) from [Creative Tim](https://material-ui.com/store/contributors/creative-tim/). More are coming.
 
-![[Creative Tim](https://themes.material-ui.com/contributors/creative-tim/) themes](https://cdn-images-1.medium.com/max/2000/1*jPOu6n1EMsqv4Gh652MtPA.png)
+![Creative Tim themes](https://cdn-images-1.medium.com/max/2000/1*jPOu6n1EMsqv4Gh652MtPA.png)
 <p class="blog-description">Creative Tim themes</p>
 
 ![A preview of an open source theme we will soon release.](https://cdn-images-1.medium.com/max/2000/1*CThJG6Kuk-XlSM53jM6KLQ.png)

@@ -1,18 +1,19 @@
-import React from 'react';
-import { assert, expect } from 'chai';
-import { createMount, createRender, getClasses } from '@material-ui/core/test-utils';
+import * as React from 'react';
+import { expect } from 'chai';
+import { getClasses } from '@material-ui/core/test-utils';
+import createMount from 'test/utils/createMount';
 import describeConformance from '../test-utils/describeConformance';
 import { act, createClientRender, fireEvent } from 'test/utils/createClientRender';
+import createServerRender from 'test/utils/createServerRender';
 import Button from './Button';
 import ButtonBase from '../ButtonBase';
 
 describe('<Button />', () => {
-  let mount;
-  const render = createClientRender({ strict: true });
+  const mount = createMount();
+  const render = createClientRender();
   let classes;
 
   before(() => {
-    mount = createMount({ strict: true });
     classes = getClasses(<Button>Hello World</Button>);
   });
 
@@ -22,7 +23,6 @@ describe('<Button />', () => {
     mount,
     refInstanceof: window.HTMLButtonElement,
     skip: ['componentProp'],
-    after: () => mount.cleanUp(),
   }));
 
   it('should render with the root & text classes but no others', () => {
@@ -294,7 +294,7 @@ describe('<Button />', () => {
     );
     const button = getByRole('button');
 
-    expect(button.querySelector('.touch-ripple')).to.be.ok;
+    expect(button.querySelector('.touch-ripple')).not.to.equal(null);
   });
 
   it('can disable the ripple', () => {
@@ -305,7 +305,14 @@ describe('<Button />', () => {
     );
     const button = getByRole('button');
 
-    expect(button.querySelector('.touch-ripple')).to.be.null;
+    expect(button.querySelector('.touch-ripple')).to.equal(null);
+  });
+
+  it('can disable the elevation', () => {
+    const { getByRole } = render(<Button disableElevation>Hello World</Button>);
+    const button = getByRole('button');
+
+    expect(button).to.have.class(classes.disableElevation);
   });
 
   it('should have a focusRipple by default', () => {
@@ -321,7 +328,7 @@ describe('<Button />', () => {
       button.focus();
     });
 
-    expect(button.querySelector('.pulsate-focus-visible')).to.be.ok;
+    expect(button.querySelector('.pulsate-focus-visible')).not.to.equal(null);
   });
 
   it('can disable the focusRipple', () => {
@@ -340,23 +347,20 @@ describe('<Button />', () => {
       button.focus();
     });
 
-    expect(button.querySelector('.pulsate-focus-visible')).to.be.null;
+    expect(button.querySelector('.pulsate-focus-visible')).to.equal(null);
   });
 
   describe('server-side', () => {
-    let serverRender;
     // Only run the test on node.
     if (!/jsdom/.test(window.navigator.userAgent)) {
       return;
     }
 
-    before(() => {
-      serverRender = createRender();
-    });
+    const serverRender = createServerRender({ expectUseLayoutEffectWarning: true });
 
     it('should server-side render', () => {
       const markup = serverRender(<Button>Hello World</Button>);
-      assert.strictEqual(markup.text(), 'Hello World');
+      expect(markup.text()).to.equal('Hello World');
     });
   });
 });

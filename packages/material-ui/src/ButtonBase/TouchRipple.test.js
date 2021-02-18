@@ -1,7 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import { useFakeTimers } from 'sinon';
 import { expect } from 'chai';
-import { createMount, getClasses } from '@material-ui/core/test-utils';
+import { getClasses } from '@material-ui/core/test-utils';
+import createMount from 'test/utils/createMount';
 import { createClientRender } from 'test/utils/createClientRender';
 import describeConformance from '../test-utils/describeConformance';
 import TouchRipple, { DELAY_RIPPLE } from './TouchRipple';
@@ -10,15 +11,15 @@ const cb = () => {};
 
 describe('<TouchRipple />', () => {
   let classes;
-  let mount;
-  const render = createClientRender({ strict: true });
+  const mount = createMount();
+  const render = createClientRender();
 
   /**
    * @param {object} other props to spread to TouchRipple
    */
   function renderTouchRipple(other) {
     const touchRippleRef = React.createRef();
-    const { container } = render(
+    const { container, unmount } = render(
       <TouchRipple
         ref={touchRippleRef}
         classes={{
@@ -42,16 +43,12 @@ describe('<TouchRipple />', () => {
       queryRipple() {
         return container.querySelector('.ripple');
       },
+      unmount,
     };
   }
 
   before(() => {
     classes = getClasses(<TouchRipple />);
-    mount = createMount({ strict: true });
-  });
-
-  after(() => {
-    mount.cleanUp();
   });
 
   describeConformance(<TouchRipple />, () => ({
@@ -155,6 +152,9 @@ describe('<TouchRipple />', () => {
   });
 
   describe('mobile', () => {
+    /**
+     * @type {ReturnType<typeof useFakeTimers>}
+     */
     let clock;
 
     before(() => {
@@ -226,6 +226,18 @@ describe('<TouchRipple />', () => {
       clock.tick(DELAY_RIPPLE);
       expect(queryAllActiveRipples()).to.have.lengthOf(0);
       expect(queryAllStoppingRipples()).to.have.lengthOf(0);
+    });
+
+    it('should not leak on multi-touch', function multiTouchTest() {
+      const { instance, unmount } = renderTouchRipple();
+
+      instance.start({ type: 'touchstart', touches: [{}] }, () => {});
+      instance.start({ type: 'touchstart', touches: [{}] }, () => {});
+      unmount();
+
+      // expect this to run gracefully without
+      // "react state update on an unmounted component"
+      clock.runAll();
     });
   });
 });

@@ -4,9 +4,7 @@ description: Here are the most significant improvements in May.
 
 # May 2019 Update
 
-**Olivier Tassinari**
-
-*June 8, 2019*
+Olivier Tassinari. June 8, 2019.
 
 Here are the most significant improvements in May:
 
@@ -20,15 +18,15 @@ But this summary is just scratching the surface. We have accepted 206 commits fr
 
 *(We'll do our best, no guarantee!)*
 
-- We will release an improved Slider component with range support. You can already [preview it](https://deploy-preview-15703--material-ui.netlify.com/components/slider/).
+- We will release an improved Slider component with range support. You can already [preview it](https://deploy-preview-15703--material-ui.netlify.app/components/slider/).
 
 ![Slider](/static/blog/may-2019-update/slider.png)
 
-- We will work on a new Tree View component. You can already [preview it](https://deploy-preview-14827--material-ui.netlify.com/components/tree-view/).
+- We will work on a new Tree View component. You can already [preview it](https://deploy-preview-14827--material-ui.netlify.app/components/tree-view/).
 
 ![Tree View](/static/blog/may-2019-update/tree-view.png)
 
-- We will add more themes to the [premium theme marketplace](https://themes.material-ui.com/).
+- We will add more themes to the [premium theme marketplace](https://material-ui.com/store/).
 - We will start exploring how we can provide style adapters in v5 (styled-components, JSS, linaria, naked, etc.)
 - We will experiment around advisory offerings for enterprises.
 If you are an enterprise and are looking for one of the following:
@@ -37,6 +35,4 @@ If you are an enterprise and are looking for one of the following:
 
 You can contact us at advisory@material-ui.com.
 
-<hr />
-
-Material-UI is an MIT-licensed open source project. It’s an independent project with ongoing development helped by the support of these awesome [backers](/discover-more/backers/). Please join them ✨.
+- ❓ Please upvote our [GitHub issues](https://github.com/mui-org/material-ui/issues) if you want something specific. The number of 👍 helps us to prioritize.
